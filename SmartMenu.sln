@@ -3,7 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartMenu", "SmartMenu\SmartMenu.csproj", "{302EE6CF-BD3B-4A91-A178-15A6106425A4}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FrontEnd", "FrontEnd", "{2879C441-F3CD-403F-975B-74DDB631C95C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "Gateway", "{234463FD-6550-4D3A-9BC9-776C66B8F5CD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration", "{9E75BEE9-5AFD-493F-9980-2A10C32E4336}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{7CBAE200-352A-4283-A8AF-95B4B97E062E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartMenu.Services.CouponAPI", "SmartMenu.Services.CouponAPI\SmartMenu.Services.CouponAPI.csproj", "{241327F6-5194-4386-BF36-A068DAD508BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,13 +19,16 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{302EE6CF-BD3B-4A91-A178-15A6106425A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{302EE6CF-BD3B-4A91-A178-15A6106425A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{302EE6CF-BD3B-4A91-A178-15A6106425A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{302EE6CF-BD3B-4A91-A178-15A6106425A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{241327F6-5194-4386-BF36-A068DAD508BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{241327F6-5194-4386-BF36-A068DAD508BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{241327F6-5194-4386-BF36-A068DAD508BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{241327F6-5194-4386-BF36-A068DAD508BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{241327F6-5194-4386-BF36-A068DAD508BB} = {7CBAE200-352A-4283-A8AF-95B4B97E062E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8DA5B723-4F90-4225-AB47-4FC4F5112305}
