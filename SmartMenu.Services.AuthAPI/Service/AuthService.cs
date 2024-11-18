@@ -11,11 +11,13 @@ namespace SmartMenu.Services.AuthAPI.Service
         private readonly AppDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IJwtTokenGenerator _jwtTokenGenerator;
 
-        public AuthService(AppDbContext db,
+        public AuthService(AppDbContext db, IJwtTokenGenerator jwtTokenGenerator,
             UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _db = db;
+            _jwtTokenGenerator = jwtTokenGenerator;
             _userManager = userManager;
             _roleManager = roleManager;
         }
@@ -25,12 +27,17 @@ namespace SmartMenu.Services.AuthAPI.Service
         public async Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto)
         {
             var user = _db.ApplicationUsers.FirstOrDefault(u => u.UserName.ToLower() == loginRequestDto.UserName.ToLower());
+
             bool isValid = await _userManager.CheckPasswordAsync(user, loginRequestDto.Password);
+
             if (user == null || isValid == false)
             {
                 return new LoginResponseDto() { User = null, Token = "" };
             }
+
             //if user was found , Generate JWT Token
+            var token = _jwtTokenGenerator.GenerateToken(user);
+
             UserDto userDTO = new()
             {
                 Email = user.Email,
@@ -38,11 +45,13 @@ namespace SmartMenu.Services.AuthAPI.Service
                 Name = user.Name,
                 PhoneNumber = user.PhoneNumber
             };
+
             LoginResponseDto loginResponseDto = new LoginResponseDto()
             {
                 User = userDTO,
-                Token = ""
+                Token = token
             };
+
             return loginResponseDto;
         }
 
