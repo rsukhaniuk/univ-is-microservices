@@ -16,6 +16,8 @@ namespace SmartMenu.Services.AuthAPI.Controllers
             _response = new();
         }
 
+
+
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegistrationRequestDto model)
         {
@@ -42,6 +44,7 @@ namespace SmartMenu.Services.AuthAPI.Controllers
             }
             _response.Result = loginResponse;
             return Ok(_response);
+
         }
 
         [HttpPost("AssignRole")]
@@ -55,6 +58,7 @@ namespace SmartMenu.Services.AuthAPI.Controllers
                 return BadRequest(_response);
             }
             return Ok(_response);
+
         }
     }
 }

@@ -115,7 +115,7 @@ namespace SmartMenu.Services.CouponAPI.Controllers
         }
 
         [HttpDelete]
-		[Route("{id:int}")]
+        [Route("{id:int}")]
         [Authorize(Roles = "ADMIN")]
         public ResponseDto Delete(int id)
         {
