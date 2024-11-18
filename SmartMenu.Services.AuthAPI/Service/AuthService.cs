@@ -11,67 +11,82 @@ namespace SmartMenu.Services.AuthAPI.Service
         private readonly AppDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        public class AuthService : IAuthService
+
+        public AuthService(AppDbContext db,
+            UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            private readonly AppDbContext _db;
-            private readonly UserManager<ApplicationUser> _userManager;
-            private readonly RoleManager<IdentityRole> _roleManager;
+            _db = db;
+            _userManager = userManager;
+            _roleManager = roleManager;
+        }
 
-            public AuthService(AppDbContext db,
-                UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+
+
+        public async Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto)
+        {
+            var user = _db.ApplicationUsers.FirstOrDefault(u => u.UserName.ToLower() == loginRequestDto.UserName.ToLower());
+            bool isValid = await _userManager.CheckPasswordAsync(user, loginRequestDto.Password);
+            if (user == null || isValid == false)
             {
-                _db = db;
-                _userManager = userManager;
-                _roleManager = roleManager;
+                return new LoginResponseDto() { User = null, Token = "" };
             }
-
-
-
-            public Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto)
+            //if user was found , Generate JWT Token
+            UserDto userDTO = new()
             {
-                throw new NotImplementedException();
-            }
-
-            public async Task<string> Register(RegistrationRequestDto registrationRequestDto)
+                Email = user.Email,
+                ID = user.Id,
+                Name = user.Name,
+                PhoneNumber = user.PhoneNumber
+            };
+            LoginResponseDto loginResponseDto = new LoginResponseDto()
             {
-                ApplicationUser user = new()
+                User = userDTO,
+                Token = ""
+            };
+            return loginResponseDto;
+        }
+
+        public async Task<string> Register(RegistrationRequestDto registrationRequestDto)
+        {
+            ApplicationUser user = new()
+            {
+                UserName = registrationRequestDto.Email,
+                Email = registrationRequestDto.Email,
+                NormalizedEmail = registrationRequestDto.Email.ToUpper(),
+                Name = registrationRequestDto.Name,
+                PhoneNumber = registrationRequestDto.PhoneNumber
+            };
+
+            try
+            {
+                var result = await _userManager.CreateAsync(user, registrationRequestDto.Password);
+                if (result.Succeeded)
                 {
-                    UserName = registrationRequestDto.Email,
-                    Email = registrationRequestDto.Email,
-                    NormalizedEmail = registrationRequestDto.Email.ToUpper(),
-                    Name = registrationRequestDto.Name,
-                    PhoneNumber = registrationRequestDto.PhoneNumber
-                };
+                    var userToReturn = _db.ApplicationUsers.First(u => u.UserName == registrationRequestDto.Email);
 
-                try
-                {
-                    var result = await _userManager.CreateAsync(user, registrationRequestDto.Password);
-                    if (result.Succeeded)
+                    UserDto userDto = new()
                     {
-                        var userToReturn = _db.ApplicationUsers.First(u => u.UserName == registrationRequestDto.Email);
+                        Email = userToReturn.Email,
+                        ID = userToReturn.Id,
+                        Name = userToReturn.Name,
+                        PhoneNumber = userToReturn.PhoneNumber
+                    };
 
-                        UserDto userDto = new()
-                        {
-                            Email = userToReturn.Email,
-                            ID = userToReturn.Id,
-                            Name = userToReturn.Name,
-                            PhoneNumber = userToReturn.PhoneNumber
-                        };
-
-                        return "";
-
-                    }
-                    else
-                    {
-                        return result.Errors.FirstOrDefault().Description;
-                    }
+                    return "";
 
                 }
-                catch (Exception ex)
+                else
                 {
-
+                    return result.Errors.FirstOrDefault().Description;
                 }
-                return "Error Encountered";
+
             }
+            catch (Exception ex)
+            {
+
+            }
+            return "Error Encountered";
         }
     }
+}
+
