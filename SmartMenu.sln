@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartMenu.Services.CouponAP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartMenu.Web", "SmartMenu.Web\SmartMenu.Web.csproj", "{B0218C61-3146-4648-AF8A-81907188726E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartMenu.Services.AuthAPI", "SmartMenu.Services.AuthAPI\SmartMenu.Services.AuthAPI.csproj", "{38268E25-8C57-4992-8094-A1E9ACFC3509}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{B0218C61-3146-4648-AF8A-81907188726E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0218C61-3146-4648-AF8A-81907188726E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0218C61-3146-4648-AF8A-81907188726E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38268E25-8C57-4992-8094-A1E9ACFC3509}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38268E25-8C57-4992-8094-A1E9ACFC3509}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38268E25-8C57-4992-8094-A1E9ACFC3509}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38268E25-8C57-4992-8094-A1E9ACFC3509}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -36,6 +42,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{241327F6-5194-4386-BF36-A068DAD508BB} = {7CBAE200-352A-4283-A8AF-95B4B97E062E}
 		{B0218C61-3146-4648-AF8A-81907188726E} = {2879C441-F3CD-403F-975B-74DDB631C95C}
+		{38268E25-8C57-4992-8094-A1E9ACFC3509} = {7CBAE200-352A-4283-A8AF-95B4B97E062E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8DA5B723-4F90-4225-AB47-4FC4F5112305}
