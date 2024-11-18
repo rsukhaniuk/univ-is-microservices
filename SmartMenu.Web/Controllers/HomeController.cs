@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using SmartMenu.Web.Models;
 using System.Diagnostics;
+using Mango.Web.Utility;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SmartMenu.Web.Controllers
 {
