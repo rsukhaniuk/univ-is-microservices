@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using SmartMenu.Web.Models;
 using SmartMenu.Web.Service.IService;
 using SmartMenu.Web.Utility;
@@ -16,11 +17,35 @@ namespace SmartMenu.Web.Controllers
         [HttpGet]
         public IActionResult Login()
         {
+            LoginRequestDto loginRequestDto = new();
+            return View(loginRequestDto);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginRequestDto obj)
+        {
+            ResponseDto responseDto = await _authService.LoginAsync(obj);
+            if (responseDto != null && responseDto.IsSuccess)
+            {
+                LoginResponseDto loginResponseDto =
+                    JsonConvert.DeserializeObject<LoginResponseDto>(Convert.ToString(responseDto.Result));
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ModelState.AddModelError("CustomError", responseDto.Message);
+                return View(obj);
+            }
+        }
+        [HttpGet]
+        public IActionResult Register()
+        {
             var roleList = new List<SelectListItem>()
             {
                 new SelectListItem{Text=SD.RoleAdmin,Value=SD.RoleAdmin},
                 new SelectListItem{Text=SD.RoleCustomer,Value=SD.RoleCustomer},
             };
+
             ViewBag.RoleList = roleList;
             return View();
         }
@@ -30,6 +55,7 @@ namespace SmartMenu.Web.Controllers
         {
             ResponseDto result = await _authService.RegisterAsync(obj);
             ResponseDto assingRole;
+
             if (result != null && result.IsSuccess)
             {
                 if (string.IsNullOrEmpty(obj.Role))
@@ -43,11 +69,13 @@ namespace SmartMenu.Web.Controllers
                     return RedirectToAction(nameof(Login));
                 }
             }
+
             var roleList = new List<SelectListItem>()
             {
                 new SelectListItem{Text=SD.RoleAdmin,Value=SD.RoleAdmin},
                 new SelectListItem{Text=SD.RoleCustomer,Value=SD.RoleCustomer},
             };
+
             ViewBag.RoleList = roleList;
             return View(obj);
         }
