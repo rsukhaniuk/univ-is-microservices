@@ -25,3 +25,4 @@ namespace SmartMenu.Web.Service
             _contextAccessor.HttpContext?.Response.Cookies.Append(SD.TokenCookie, token);
         }
     }
+}
