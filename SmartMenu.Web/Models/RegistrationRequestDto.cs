@@ -1,4 +1,4 @@
-﻿namespace SmartMenu.Services.AuthAPI.Models.Dto
+﻿namespace SmartMenu.Web.Models
 {
     public class RegistrationRequestDto
     {

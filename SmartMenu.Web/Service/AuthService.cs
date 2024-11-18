@@ -1,5 +1,4 @@
-﻿using SmartMenu.Services.AuthAPI.Models.Dto;
-using SmartMenu.Web.Models;
+﻿using SmartMenu.Web.Models;
 using SmartMenu.Web.Service.IService;
 using SmartMenu.Web.Utility;
 
