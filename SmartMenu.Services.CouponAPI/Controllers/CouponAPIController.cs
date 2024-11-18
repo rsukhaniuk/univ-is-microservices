@@ -6,7 +6,7 @@ using SmartMenu.Services.CouponAPI.Models.Dto;
 
 namespace SmartMenu.Services.CouponAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/coupon")]
     [ApiController]
     public class CouponAPIController : ControllerBase
     {
@@ -111,7 +111,8 @@ namespace SmartMenu.Services.CouponAPI.Controllers
         }
 
         [HttpDelete]
-        public ResponseDto Delete(int id)
+		[Route("{id:int}")]
+		public ResponseDto Delete(int id)
         {
             try
             {
