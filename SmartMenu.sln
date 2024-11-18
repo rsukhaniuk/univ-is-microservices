@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartMenu.Services.CouponAP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartMenu.Web", "SmartMenu.Web\SmartMenu.Web.csproj", "{B0218C61-3146-4648-AF8A-81907188726E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartMenu.Services.AuthAPI", "SmartMenu.Services.AuthAPI\SmartMenu.Services.AuthAPI.csproj", "{38268E25-8C57-4992-8094-A1E9ACFC3509}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartMenu.Services.AuthAPI", "SmartMenu.Services.AuthAPI\SmartMenu.Services.AuthAPI.csproj", "{38268E25-8C57-4992-8094-A1E9ACFC3509}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
