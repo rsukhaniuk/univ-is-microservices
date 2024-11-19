@@ -5,8 +5,13 @@ using Microsoft.OpenApi.Models;
 using SmartMenu.Services.RecipeAPI;
 using SmartMenu.Services.RecipeAPI.Data;
 using SmartMenu.Services.RecipeAPI.Extensions;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var cultureInfo = new CultureInfo("en-US");
+CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
 builder.Services.AddDbContext<AppDbContext>(option =>
 {

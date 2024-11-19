@@ -2,7 +2,7 @@
 {
     public class RecipeDto
     {
-        public int ProductId { get; set; }
+        public int RecipeId { get; set; }
         public string Name { get; set; }
         public double Price { get; set; }
         public string Description { get; set; }
