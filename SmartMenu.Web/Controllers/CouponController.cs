@@ -13,81 +13,82 @@ namespace SmartMenu.Web.Controllers
             _couponService = couponService;
         }
 
-		public async Task<IActionResult> CouponIndex()
-		{
-			List<CouponDto>? list = new();
 
-			ResponseDto? response = await _couponService.GetAllAsync();
+        public async Task<IActionResult> CouponIndex()
+        {
+            List<CouponDto>? list = new();
 
-			if (response != null && response.IsSuccess)
-			{
-				list = JsonConvert.DeserializeObject<List<CouponDto>>(Convert.ToString(response.Result));
-			}
-			else
-			{
-				TempData["error"] = response?.Message;
-			}
+            ResponseDto? response = await _couponService.GetAllAsync();
 
-			return View(list);
-		}
+            if (response != null && response.IsSuccess)
+            {
+                list = JsonConvert.DeserializeObject<List<CouponDto>>(Convert.ToString(response.Result));
+            }
+            else
+            {
+                TempData["error"] = response?.Message;
+            }
 
-		public async Task<IActionResult> CouponCreate()
-		{
-			return View();
-		}
+            return View(list);
+        }
 
-		[HttpPost]
-		public async Task<IActionResult> CouponCreate(CouponDto model)
-		{
-			if (ModelState.IsValid)
-			{
-				ResponseDto? response = await _couponService.CreateAsync(model);
+        public async Task<IActionResult> CouponCreate()
+        {
+            return View();
+        }
 
-				if (response != null && response.IsSuccess)
-				{
-					TempData["success"] = "Coupon created successfully";
-					return RedirectToAction(nameof(CouponIndex));
-				}
-				else
-				{
-					TempData["error"] = response?.Message;
-				}
-			}
-			return View(model);
-		}
+        [HttpPost]
+        public async Task<IActionResult> CouponCreate(CouponDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                ResponseDto? response = await _couponService.CreateAsync(model);
 
-		public async Task<IActionResult> CouponDelete(int couponId)
-		{
-			ResponseDto? response = await _couponService.GetByIdAsync(couponId);
+                if (response != null && response.IsSuccess)
+                {
+                    TempData["success"] = "Coupon created successfully";
+                    return RedirectToAction(nameof(CouponIndex));
+                }
+                else
+                {
+                    TempData["error"] = response?.Message;
+                }
+            }
+            return View(model);
+        }
 
-			if (response != null && response.IsSuccess)
-			{
-				CouponDto? model = JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(response.Result));
-				return View(model);
-			}
-			else
-			{
-				TempData["error"] = response?.Message;
-			}
-			return NotFound();
-		}
+        public async Task<IActionResult> CouponDelete(int couponId)
+        {
+            ResponseDto? response = await _couponService.GetByIdAsync(couponId);
 
-		[HttpPost]
-		public async Task<IActionResult> CouponDelete(CouponDto couponDto)
-		{
-			ResponseDto? response = await _couponService.DeleteAsync(couponDto.CouponId);
+            if (response != null && response.IsSuccess)
+            {
+                CouponDto? model = JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(response.Result));
+                return View(model);
+            }
+            else
+            {
+                TempData["error"] = response?.Message;
+            }
+            return NotFound();
+        }
 
-			if (response != null && response.IsSuccess)
-			{
-				TempData["success"] = "Coupon deleted successfully";
-				return RedirectToAction(nameof(CouponIndex));
-			}
-			else
-			{
-				TempData["error"] = response?.Message;
-			}
-			return View(couponDto);
-		}
+        [HttpPost]
+        public async Task<IActionResult> CouponDelete(CouponDto couponDto)
+        {
+            ResponseDto? response = await _couponService.DeleteAsync(couponDto.CouponId);
 
-	}
+            if (response != null && response.IsSuccess)
+            {
+                TempData["success"] = "Coupon deleted successfully";
+                return RedirectToAction(nameof(CouponIndex));
+            }
+            else
+            {
+                TempData["error"] = response?.Message;
+            }
+            return View(couponDto);
+        }
+
+    }
 }
