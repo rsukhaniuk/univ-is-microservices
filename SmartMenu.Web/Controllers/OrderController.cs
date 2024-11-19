@@ -102,7 +102,10 @@ namespace SmartMenu.Web.Controllers
 					case "cancelled":
 						list = list.Where(u => u.Status == SD.Status_Cancelled || u.Status == SD.Status_Refunded);
 						break;
-					default:
+                    case "completed":
+                        list = list.Where(u => u.Status == SD.Status_Completed);
+                        break;
+                    default:
 						break;
 				}
             }

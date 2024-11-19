@@ -11,7 +11,7 @@ namespace SmartMenu.Web.Controllers
         private readonly IProductService _productService;
         public ProductController(IProductService productService)
         {
-            _productService=productService;
+            _productService = productService;
         }
 
 
@@ -23,7 +23,7 @@ namespace SmartMenu.Web.Controllers
 
             if (response != null && response.IsSuccess)
             {
-                list= JsonConvert.DeserializeObject<List<ProductDto>>(Convert.ToString(response.Result));
+                list = JsonConvert.DeserializeObject<List<ProductDto>>(Convert.ToString(response.Result));
             }
             else
             {
@@ -60,13 +60,13 @@ namespace SmartMenu.Web.Controllers
 
         public async Task<IActionResult> ProductDelete(int productId)
         {
-			ResponseDto? response = await _productService.GetProductByIdAsync(productId);
+            ResponseDto? response = await _productService.GetProductByIdAsync(productId);
 
-			if (response != null && response.IsSuccess)
-			{
-                ProductDto? model= JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(response.Result));
+            if (response != null && response.IsSuccess)
+            {
+                ProductDto? model = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(response.Result));
                 return View(model);
-			}
+            }
             else
             {
                 TempData["error"] = response?.Message;
@@ -127,5 +127,24 @@ namespace SmartMenu.Web.Controllers
             return View(productDto);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAll(string status)
+        {
+			List<ProductDto>? list = new();
+
+			ResponseDto? response = await _productService.GetAllProductsAsync();
+
+			if (response != null && response.IsSuccess)
+			{
+				list = JsonConvert.DeserializeObject<List<ProductDto>>(Convert.ToString(response.Result));
+			}
+			else
+			{
+				list = new List<ProductDto>();
+			}
+
+			return Json(new { data = list.OrderByDescending(p => p.ProductId) });
+
+		}
     }
 }
