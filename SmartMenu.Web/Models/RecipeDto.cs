@@ -1,23 +1,21 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using System.ComponentModel;
+﻿using SmartMenu.Web.Utility;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SmartMenu.Services.RecipeAPI.Models
+namespace SmartMenu.Web.Models
 {
-    public class Recipe
+    public class RecipeDto
     {
-        [Key]
         public int RecipeId { get; set; }
-        [Required]
         public string Name { get; set; }
-        [Range(1, 1000)]
-
         public double Price { get; set; }
         public string Description { get; set; }
         public string CategoryName { get; set; }
         public string? ImageUrl { get; set; }
         public string? ImageLocalPath { get; set; }
+        [Range(1, 100)]
+        public int Count { get; set; } = 1;
+        [MaxFileSize(1)]
+        [AllowedExtensions(new string[] { ".jpg", ".png" })]
+        public IFormFile? Image { get; set; }
     }
 }
