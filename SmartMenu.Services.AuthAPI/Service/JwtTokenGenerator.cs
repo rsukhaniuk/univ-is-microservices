@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using SmartMenu.Services.AuthAPI.Models;
+﻿using SmartMenu.Services.AuthAPI.Models;
 using SmartMenu.Services.AuthAPI.Service.IService;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;

@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using SmartMenu.Web.Models;
+﻿using SmartMenu.Web.Models;
 using SmartMenu.Web.Service.IService;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace SmartMenu.Web.Controllers
 {
@@ -18,11 +19,11 @@ namespace SmartMenu.Web.Controllers
         {
             List<CouponDto>? list = new();
 
-            ResponseDto? response = await _couponService.GetAllAsync();
+            ResponseDto? response = await _couponService.GetAllCouponsAsync();
 
             if (response != null && response.IsSuccess)
             {
-                list = JsonConvert.DeserializeObject<List<CouponDto>>(Convert.ToString(response.Result));
+                list= JsonConvert.DeserializeObject<List<CouponDto>>(Convert.ToString(response.Result));
             }
             else
             {
@@ -42,7 +43,7 @@ namespace SmartMenu.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                ResponseDto? response = await _couponService.CreateAsync(model);
+                ResponseDto? response = await _couponService.CreateCouponsAsync(model);
 
                 if (response != null && response.IsSuccess)
                 {
@@ -59,13 +60,13 @@ namespace SmartMenu.Web.Controllers
 
         public async Task<IActionResult> CouponDelete(int couponId)
         {
-            ResponseDto? response = await _couponService.GetByIdAsync(couponId);
+			ResponseDto? response = await _couponService.GetCouponByIdAsync(couponId);
 
-            if (response != null && response.IsSuccess)
-            {
-                CouponDto? model = JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(response.Result));
+			if (response != null && response.IsSuccess)
+			{
+				CouponDto? model= JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(response.Result));
                 return View(model);
-            }
+			}
             else
             {
                 TempData["error"] = response?.Message;
@@ -76,7 +77,7 @@ namespace SmartMenu.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> CouponDelete(CouponDto couponDto)
         {
-            ResponseDto? response = await _couponService.DeleteAsync(couponDto.CouponId);
+            ResponseDto? response = await _couponService.DeleteCouponsAsync(couponDto.CouponId);
 
             if (response != null && response.IsSuccess)
             {

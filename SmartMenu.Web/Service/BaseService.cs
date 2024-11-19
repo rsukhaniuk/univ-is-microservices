@@ -1,20 +1,19 @@
 ﻿using SmartMenu.Web.Models;
 using SmartMenu.Web.Service.IService;
-using static SmartMenu.Web.Utility.SD;
+using Newtonsoft.Json;
 using System.Net;
 using System.Text;
-using Newtonsoft.Json;
+using static SmartMenu.Web.Utility.SD;
 
 namespace SmartMenu.Web.Service
 {
-    
     public class BaseService : IBaseService
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ITokenProvider _tokenProvider;
         public BaseService(IHttpClientFactory httpClientFactory, ITokenProvider tokenProvider)
         {
-            _httpClientFactory = httpClientFactory;
+                _httpClientFactory = httpClientFactory;
             _tokenProvider = tokenProvider;
         }
 
@@ -45,15 +44,15 @@ namespace SmartMenu.Web.Service
                 {
                     var content = new MultipartFormDataContent();
 
-                    foreach (var prop in requestDto.Data.GetType().GetProperties())
+                    foreach(var prop in requestDto.Data.GetType().GetProperties())
                     {
                         var value = prop.GetValue(requestDto.Data);
-                        if (value is FormFile)
+                        if(value is FormFile)
                         {
                             var file = (FormFile)value;
                             if (file != null)
                             {
-                                content.Add(new StreamContent(file.OpenReadStream()), prop.Name, file.FileName);
+                                content.Add(new StreamContent(file.OpenReadStream()),prop.Name,file.FileName);
                             }
                         }
                         else
@@ -73,7 +72,7 @@ namespace SmartMenu.Web.Service
 
 
 
-
+               
 
                 HttpResponseMessage? apiResponse = null;
 
@@ -110,8 +109,7 @@ namespace SmartMenu.Web.Service
                         var apiResponseDto = JsonConvert.DeserializeObject<ResponseDto>(apiContent);
                         return apiResponseDto;
                 }
-            }
-            catch (Exception ex)
+            }catch (Exception ex)
             {
                 var dto = new ResponseDto
                 {

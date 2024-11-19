@@ -1,5 +1,4 @@
-﻿using System.Security.AccessControl;
-using static SmartMenu.Web.Utility.SD;
+﻿using static SmartMenu.Web.Utility.SD;
 
 namespace SmartMenu.Web.Models
 {

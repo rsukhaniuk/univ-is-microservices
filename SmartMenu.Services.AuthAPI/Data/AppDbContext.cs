@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using SmartMenu.Services.AuthAPI.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using SmartMenu.Services.AuthAPI.Models;
 
 namespace SmartMenu.Services.AuthAPI.Data
 {

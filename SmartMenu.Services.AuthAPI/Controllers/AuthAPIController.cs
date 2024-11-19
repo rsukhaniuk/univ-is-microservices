@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SmartMenu.Services.AuthAPI.Models.Dto;
+﻿using SmartMenu.Services.AuthAPI.Models.Dto;
 using SmartMenu.Services.AuthAPI.Service.IService;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace SmartMenu.Services.AuthAPI.Controllers
 {
@@ -10,7 +11,7 @@ namespace SmartMenu.Services.AuthAPI.Controllers
     {
         private readonly IAuthService _authService;
         protected ResponseDto _response;
-        public AuthAPIController(IAuthService authService)
+        public AuthAPIController(IAuthService authService, IConfiguration configuration)
         {
             _authService = authService;
             _response = new();
@@ -26,7 +27,7 @@ namespace SmartMenu.Services.AuthAPI.Controllers
             if (!string.IsNullOrEmpty(errorMessage))
             {
                 _response.IsSuccess = false;
-                _response.Message = errorMessage;
+                _response.Message= errorMessage;
                 return BadRequest(_response);
             }
             return Ok(_response);
@@ -50,7 +51,7 @@ namespace SmartMenu.Services.AuthAPI.Controllers
         [HttpPost("AssignRole")]
         public async Task<IActionResult> AssignRole([FromBody] RegistrationRequestDto model)
         {
-            var assignRoleSuccessful = await _authService.AssignRole(model.Email, model.Role.ToUpper());
+            var assignRoleSuccessful = await _authService.AssignRole(model.Email,model.Role.ToUpper());
             if (!assignRoleSuccessful)
             {
                 _response.IsSuccess = false;
@@ -60,5 +61,7 @@ namespace SmartMenu.Services.AuthAPI.Controllers
             return Ok(_response);
 
         }
+
+
     }
 }

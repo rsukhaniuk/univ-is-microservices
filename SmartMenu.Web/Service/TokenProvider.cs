@@ -1,5 +1,6 @@
 ﻿using SmartMenu.Web.Service.IService;
 using SmartMenu.Web.Utility;
+using Newtonsoft.Json.Linq;
 
 namespace SmartMenu.Web.Service
 {
@@ -27,7 +28,7 @@ namespace SmartMenu.Web.Service
 
         public void SetToken(string token)
         {
-            _contextAccessor.HttpContext?.Response.Cookies.Append(SD.TokenCookie, token);
+           _contextAccessor.HttpContext?.Response.Cookies.Append(SD.TokenCookie, token);
         }
     }
 }

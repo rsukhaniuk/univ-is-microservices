@@ -1,13 +1,13 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using SmartMenu.Web.Models;
+using SmartMenu.Web.Service.IService;
+using SmartMenu.Web.Utility;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
-using SmartMenu.Web.Models;
-using SmartMenu.Web.Service.IService;
-using SmartMenu.Web.Utility;
-using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace SmartMenu.Web.Controllers
 {
@@ -16,10 +16,10 @@ namespace SmartMenu.Web.Controllers
         private readonly IAuthService _authService;
         private readonly ITokenProvider _tokenProvider;
 
-        public AuthController(IAuthService authService, ITokenProvider tokenProvider)
+        public AuthController(IAuthService authService, ITokenProvider  tokenProvider)
         {
             _authService = authService;
-            _tokenProvider = tokenProvider;
+            _tokenProvider = tokenProvider; 
         }
 
         [HttpGet]
@@ -36,7 +36,7 @@ namespace SmartMenu.Web.Controllers
 
             if (responseDto != null && responseDto.IsSuccess)
             {
-                LoginResponseDto loginResponseDto =
+                LoginResponseDto loginResponseDto = 
                     JsonConvert.DeserializeObject<LoginResponseDto>(Convert.ToString(responseDto.Result));
 
                 await SignInUser(loginResponseDto);
@@ -70,14 +70,14 @@ namespace SmartMenu.Web.Controllers
             ResponseDto result = await _authService.RegisterAsync(obj);
             ResponseDto assingRole;
 
-            if (result != null && result.IsSuccess)
+            if(result!=null && result.IsSuccess)
             {
                 if (string.IsNullOrEmpty(obj.Role))
                 {
                     obj.Role = SD.RoleCustomer;
                 }
                 assingRole = await _authService.AssignRoleAsync(obj);
-                if (assingRole != null && assingRole.IsSuccess)
+                if (assingRole!=null && assingRole.IsSuccess)
                 {
                     TempData["success"] = "Registration Successful";
                     return RedirectToAction(nameof(Login));
@@ -103,7 +103,7 @@ namespace SmartMenu.Web.Controllers
         {
             await HttpContext.SignOutAsync();
             _tokenProvider.ClearToken();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index","Home");
         }
 
 
@@ -114,7 +114,7 @@ namespace SmartMenu.Web.Controllers
             var jwt = handler.ReadJwtToken(model.Token);
 
             var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Email,
+            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Email, 
                 jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Email).Value));
             identity.AddClaim(new Claim(JwtRegisteredClaimNames.Sub,
                 jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Sub).Value));
