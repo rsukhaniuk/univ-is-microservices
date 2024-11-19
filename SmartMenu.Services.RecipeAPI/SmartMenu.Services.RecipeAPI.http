@@ -1,0 +1,6 @@
+@SmartMenu.Services.RecipeAPI_HostAddress = http://localhost:5111
+
+GET {{SmartMenu.Services.RecipeAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

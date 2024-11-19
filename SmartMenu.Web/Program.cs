@@ -2,7 +2,6 @@ using SmartMenu.Web.Service.IService;
 using SmartMenu.Web.Service;
 using SmartMenu.Web.Utility;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using SmartMenu.Web.Service.Mango.Web.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
