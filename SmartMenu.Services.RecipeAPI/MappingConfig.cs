@@ -10,7 +10,7 @@ namespace SmartMenu.Services.RecipeAPI
         {
             var mappingConfig = new MapperConfiguration(config =>
             {
-                config.CreateMap<CategoryDto, Category>().ReverseMap();
+                config.CreateMap<RecipeDto, Recipe>().ReverseMap();
             });
             return mappingConfig;
         }

@@ -1,7 +1,10 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using SmartMenu.Services.RecipeAPI;
 using SmartMenu.Services.RecipeAPI.Data;
+using SmartMenu.Services.RecipeAPI.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,23 +59,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
-
-
 app.UseAuthorization();
-
+app.UseStaticFiles();
 app.MapControllers();
-ApplyMigration();
 
 app.Run();
 
-void ApplyMigration()
-{
-    using (var scope = app.Services.CreateScope())
-    {
-        var _db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        if (_db.Database.GetPendingMigrations().Count() > 0)
-        {
-            _db.Database.Migrate();
-        }
-    }
-}
+
