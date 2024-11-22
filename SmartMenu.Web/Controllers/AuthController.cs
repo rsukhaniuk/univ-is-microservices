@@ -41,6 +41,7 @@ namespace SmartMenu.Web.Controllers
 
                 await SignInUser(loginResponseDto);
                 _tokenProvider.SetToken(loginResponseDto.Token);
+                TempData["success"] = "Login Successful";
                 return RedirectToAction("Index", "Home");
             }
             else

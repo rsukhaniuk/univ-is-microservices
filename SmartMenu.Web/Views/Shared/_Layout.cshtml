@@ -14,7 +14,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark  box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SmartMenu.Web</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -34,8 +34,18 @@
                                     Content Management
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" asp-controller="Coupon" asp-action="CouponIndex">Coupon</a></li>
-                                    <li><a class="dropdown-item" asp-controller="Product" asp-action="ProductIndex">Product</a></li>
+                                    <li>
+                                        <a class="dropdown-item @(ViewContext.RouteData.Values["controller"].ToString() == "Coupon" ? "active" : "")"
+                                           asp-controller="Coupon" asp-action="CouponIndex">
+                                            <i class="bi bi-tag"></i> Coupon
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item @(ViewContext.RouteData.Values["controller"].ToString() == "Product" ? "active" : "")"
+                                           asp-controller="Product" asp-action="ProductIndex">
+                                            <i class="bi bi-box-seam"></i> Product
+                                        </a>
+                                    </li>
                                     <li><hr class="dropdown-divider"></li>
                                 </ul>
                             </li>
