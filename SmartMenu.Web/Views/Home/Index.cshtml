@@ -1,30 +1,42 @@
 ﻿@model IEnumerable<ProductDto>
 
-<form>
-    <div class="container row">
-        @foreach (var product in Model)
-        {
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="p-0 my-3 border rounded">
-                    <div class="card">
-                        <h3 class="card-title text-white-50 text-center py-2">@product.Name</h3>
-                        <img src="@product.ImageUrl" class="card-img-top">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between py-2">
-                                <span class="text-danger" style="font-size:20px;">@string.Format("{0:c}", product.Price)</span>
-                                <span class="badge bg-warning text-white p-2">@product.CategoryName</span>
-                            </div>
-                            <p class="card-text">@Html.Raw(product.Description)</p>
-                            <div class="row">
-                                <div class="col">
-                                    <a asp-action="ProductDetails" asp-route-productId="@product.ProductId"
-                                       class="btn btn-success form-control">Details</a>
-                                </div>
+<form method="get" asp-action="Index">
+    <div class="container my-3">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="input-group">
+                    <input type="text" name="searchTerm" class="form-control" placeholder="Search products..." value="@ViewContext.HttpContext.Request.Query["searchTerm"]" />
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="container row">
+    @foreach (var product in Model)
+
+    {
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="p-0 my-3 border rounded">
+                <div class="card">
+                    <h3 class="card-title text-white-50 text-center py-2">@product.Name</h3>
+                    <img src="@product.ImageUrl" class="card-img-top">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between py-2">
+                            <span class="text-danger" style="font-size:20px;">@string.Format("{0:c}", product.Price)</span>
+                            <span class="badge bg-warning text-white p-2">@product.CategoryName</span>
+                        </div>
+                        <p class="card-text">@Html.Raw(product.Description)</p>
+                        <div class="row">
+                            <div class="col">
+                                <a asp-action="ProductDetails" asp-route-productId="@product.ProductId"
+                                   class="btn btn-success form-control">Details</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        }
-    </div>
-</form>
+        </div>
+    }
+</div>

@@ -20,7 +20,7 @@ namespace SmartMenu.Web.Controllers
         }
 
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? searchTerm)
         {
             List<ProductDto>? list = new();
 
@@ -29,6 +29,15 @@ namespace SmartMenu.Web.Controllers
             if (response != null && response.IsSuccess)
             {
                 list = JsonConvert.DeserializeObject<List<ProductDto>>(Convert.ToString(response.Result));
+
+                // Filter products if search term is provided
+                if (!string.IsNullOrEmpty(searchTerm))
+                {
+                    list = list?.Where(p =>
+                            p.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                            p.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+                        .ToList();
+                }
             }
             else
             {
