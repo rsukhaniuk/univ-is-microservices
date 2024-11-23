@@ -90,6 +90,14 @@ namespace SmartMenu.Web.Controllers
                 StripeRequestDto stripeResponseResult = JsonConvert.DeserializeObject<StripeRequestDto>
                                             (Convert.ToString(stripeResponse.Result));
                 Response.Headers.Add("Location", stripeResponseResult.StripeSessionUrl);
+
+                var clearCartResponse = await _cartService.ClearCartAsync(cart.CartHeader.UserId);
+                if (clearCartResponse == null || !clearCartResponse.IsSuccess)
+                {
+                    TempData["error"] = "Failed to clear cart after order placement.";
+                    return View(cart);
+                }
+
                 return new StatusCodeResult(303);
 
 

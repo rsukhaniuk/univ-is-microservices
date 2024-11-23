@@ -175,6 +175,21 @@
         "AuthenticationProviderKey": "Bearer"
       }
     },
+    {
+      "DownstreamPathTemplate": "/api/cart/ClearCart/{userId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7003
+        }
+      ],
+      "UpstreamPathTemplate": "/api/cart/ClearCart/{userId}",
+      "UpstreamHttpMethod": [ "POST" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
 
     //"OrderAPI": "https://localhost:7004",
     {

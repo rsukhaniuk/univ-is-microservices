@@ -1,6 +1,7 @@
 ﻿using SmartMenu.Web.Models;
 using SmartMenu.Web.Service.IService;
 using SmartMenu.Web.Utility;
+using Stripe.Climate;
 
 namespace SmartMenu.Web.Service
 {
@@ -60,6 +61,15 @@ namespace SmartMenu.Web.Service
                 ApiType = SD.ApiType.POST,
                 Data = cartDto,
                 Url = SD.ShoppingCartAPIBase + "/api/cart/CartUpsert"
+            });
+        }
+
+        public async Task<ResponseDto?> ClearCartAsync(string userId)
+        {
+            return await _baseService.SendAsync(new RequestDto()
+            {
+                ApiType = SD.ApiType.POST,
+                Url = SD.ShoppingCartAPIBase + "/api/cart/ClearCart/" + userId
             });
         }
     }

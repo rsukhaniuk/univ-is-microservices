@@ -191,5 +191,36 @@ namespace SmartMenu.Services.ShoppingCartAPI.Controllers
             return _response;
         }
 
+        [HttpPost("ClearCart/{userId}")]
+        public async Task<ResponseDto> ClearCart(string userId)
+        {
+            try
+            {
+                // Retrieve the CartHeader for the user
+                var cartHeader = await _db.CartHeaders.FirstOrDefaultAsync(u => u.UserId == userId);
+
+                if (cartHeader != null)
+                {
+                    // Remove all CartDetails associated with the CartHeader
+                    var cartDetails = _db.CartDetails.Where(u => u.CartHeaderId == cartHeader.CartHeaderId);
+                    _db.CartDetails.RemoveRange(cartDetails);
+
+                    // Remove the CartHeader itself
+                    _db.CartHeaders.Remove(cartHeader);
+
+                    await _db.SaveChangesAsync();
+                }
+
+                _response.Result = true;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+            }
+
+            return _response;
+        }
+
     }
 }
