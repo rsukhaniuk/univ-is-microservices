@@ -263,6 +263,32 @@ namespace SmartMenu.Web.Controllers
         [Authorize]
         public async Task<IActionResult> ChangePassword(ChangePasswordDto model)
         {
+            // Manual validation using ModelState
+            if (string.IsNullOrWhiteSpace(model.CurrentPassword))
+            {
+                ModelState.AddModelError(nameof(model.CurrentPassword), "Current password is required.");
+            }
+            if (string.IsNullOrWhiteSpace(model.NewPassword))
+            {
+                ModelState.AddModelError(nameof(model.NewPassword), "New password is required.");
+            }
+            if (string.IsNullOrWhiteSpace(model.ConfirmNewPassword))
+            {
+                ModelState.AddModelError(nameof(model.ConfirmNewPassword), "Please confirm the new password.");
+            }
+            if (!string.IsNullOrWhiteSpace(model.NewPassword) &&
+                !model.NewPassword.Equals(model.ConfirmNewPassword, StringComparison.Ordinal))
+            {
+                ModelState.AddModelError(nameof(model.ConfirmNewPassword), "The new password and confirmation do not match.");
+            }
+
+            // If ModelState is invalid, return the view with error messages
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            // If validation passes, call the service
             var response = await _authService.ChangePasswordAsync(model);
 
             if (response != null && response.IsSuccess)
