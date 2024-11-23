@@ -13,10 +13,12 @@ namespace SmartMenu.Web.Controllers
     {
         private readonly ICartService _cartService;
         private readonly IOrderService _orderService;
-        public CartController(ICartService cartService, IOrderService orderService)
+        private readonly IAuthService _authService;
+        public CartController(ICartService cartService, IOrderService orderService, IAuthService _authService)
         {
             _cartService = cartService;
             _orderService = orderService;
+            _authService = _authService;
         }
 
         [Authorize]
@@ -29,13 +31,17 @@ namespace SmartMenu.Web.Controllers
         public async Task<IActionResult> Checkout()
         {
             return View(await LoadCartDtoBasedOnLoggedInUser());
+
+            
         }
+
         [HttpPost]
         [ActionName("Checkout")]
         public async Task<IActionResult> Checkout(CartDto cartDto)
         {
 
             CartDto cart = await LoadCartDtoBasedOnLoggedInUser();
+
             cart.CartHeader.Phone = cartDto.CartHeader.Phone;
             cart.CartHeader.Email = cartDto.CartHeader.Email;
             cart.CartHeader.Name = cartDto.CartHeader.Name;
@@ -146,6 +152,10 @@ namespace SmartMenu.Web.Controllers
                 CartDto cartDto = JsonConvert.DeserializeObject<CartDto>(Convert.ToString(response.Result));
                 return cartDto;
             }
+
+
+           
+
             return new CartDto();
         }
     }
