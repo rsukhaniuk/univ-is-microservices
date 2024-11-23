@@ -76,7 +76,7 @@ namespace SmartMenu.Web.Service
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = SD.ApiType.GET,
-                Url = $"{SD.AuthAPIBase}/api/auth/UserDetails/{userId}"
+                Url = $"{SD.AuthAPIBase}/api/auth/GetUserDetails/{userId}"
             });
         }
     }

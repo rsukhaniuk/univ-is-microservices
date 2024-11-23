@@ -212,7 +212,5 @@ namespace SmartMenu.Services.AuthAPI.Controllers
                 return StatusCode(500, _response);
             }
         }
-
-
     }
 }
