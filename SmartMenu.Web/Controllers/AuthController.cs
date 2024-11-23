@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SmartMenu.Web.Controllers
 {
@@ -134,5 +135,121 @@ namespace SmartMenu.Web.Controllers
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
         }
 
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> PersonalData()
+        {
+            var userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?.FirstOrDefault()?.Value;
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                TempData["error"] = "User not found.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            var response = await _authService.GetUserDetailsAsync(userId);
+
+            if (response == null || !response.IsSuccess)
+            {
+                TempData["error"] = "Unable to load user details.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            var user = JsonConvert.DeserializeObject<EditAccountDto>(Convert.ToString(response.Result));
+            return View(user);
+        }
+
+        // GET: Edit Account
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> EditAccount()
+        {
+            var userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?.FirstOrDefault()?.Value;
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                TempData["error"] = "User not found.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            var response = await _authService.GetUserDetailsAsync(userId);
+
+            if (response == null || !response.IsSuccess)
+            {
+                TempData["error"] = "Unable to load user details.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            var user = JsonConvert.DeserializeObject<EditAccountDto>(Convert.ToString(response.Result));
+            return View(user);
+        }
+
+        // POST: Edit Account
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> EditAccount(EditAccountDto model)
+        {
+            var response = await _authService.EditAccountAsync(model);
+
+            if (response != null && response.IsSuccess)
+            {
+                TempData["success"] = "Account updated successfully.";
+                return RedirectToAction(nameof(PersonalData));
+            }
+
+            TempData["error"] = response?.Message ?? "Failed to update account.";
+            return View(model);
+        }
+
+        // GET: Change Password
+        [HttpGet]
+        [Authorize]
+        public IActionResult ChangePassword()
+        {
+            return View(new ChangePasswordDto());
+        }
+
+        // POST: Change Password
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> ChangePassword(ChangePasswordDto model)
+        {
+            var response = await _authService.ChangePasswordAsync(model);
+
+            if (response != null && response.IsSuccess)
+            {
+                TempData["success"] = "Password changed successfully.";
+                return RedirectToAction(nameof(PersonalData));
+            }
+
+            TempData["error"] = response?.Message ?? "Failed to change password.";
+            return View(model);
+        }
+
+        // POST: Delete Account
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> DeleteAccount()
+        {
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                TempData["error"] = "User not found.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            var response = await _authService.DeleteAccountAsync(userId);
+
+            if (response != null && response.IsSuccess)
+            {
+                await Logout();
+                TempData["success"] = "Account deleted successfully.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            TempData["error"] = response?.Message ?? "Failed to delete account.";
+            return RedirectToAction(nameof(PersonalData));
+        }
     }
 }

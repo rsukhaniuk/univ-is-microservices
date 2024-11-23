@@ -171,5 +171,21 @@ namespace SmartMenu.Services.AuthAPI.Service
             var result = await _userManager.ChangePasswordAsync(user, changePasswordDto.CurrentPassword, changePasswordDto.NewPassword);
             return result.Succeeded;
         }
+
+        public async Task<EditAccountDto?> GetUserDetailsAsync(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+                return null;
+
+            return new EditAccountDto
+            {
+                UserId = user.Id,
+                NewName = user.Name,
+                NewEmail = user.Email,
+                NewPhoneNumber = user.PhoneNumber
+            };
+        }
     }
 }

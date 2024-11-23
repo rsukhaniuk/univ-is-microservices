@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
+using SmartMenu.Services.AuthAPI.Models;
 
 namespace SmartMenu.Services.AuthAPI.Controllers
 {
@@ -13,6 +15,7 @@ namespace SmartMenu.Services.AuthAPI.Controllers
     {
         private readonly IAuthService _authService;
         protected ResponseDto _response;
+
         public AuthAPIController(IAuthService authService, IConfiguration configuration)
         {
             _authService = authService;
@@ -162,6 +165,44 @@ namespace SmartMenu.Services.AuthAPI.Controllers
                 }
 
                 _response.Message = "Password changed successfully.";
+                return Ok(_response);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+                return StatusCode(500, _response);
+            }
+        }
+
+        [Authorize]
+        [HttpGet("GetUserDetails/{userId}")]
+        public async Task<IActionResult> GetUserDetails(string userId)
+        {
+            try
+            {
+                // Retrieve the logged-in user's ID from JWT claims
+                var loggedInUserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+                if (string.IsNullOrEmpty(loggedInUserId) || !loggedInUserId.Equals(userId, StringComparison.OrdinalIgnoreCase))
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "You are not authorized to view this account.";
+                    return Unauthorized(_response);
+                }
+
+                // Retrieve user details
+                var userDetails = await _authService.GetUserDetailsAsync(userId);
+
+                if (userDetails == null)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "User not found.";
+                    return NotFound(_response);
+                }
+
+                _response.Result = userDetails;
+                _response.IsSuccess = true;
                 return Ok(_response);
             }
             catch (Exception ex)
