@@ -74,7 +74,9 @@
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link " asp-controller="Auth" asp-action="PersonalData">Hello @User.Identity.Name</a>
+                                <a class="nav-link" asp-controller="Auth" asp-action="PersonalData">
+                                    <i class="bi bi-person-circle"></i> <span class="ms-1">Personal Account</span>
+                                </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " asp-controller="Auth" asp-action="Logout">Logout</a>

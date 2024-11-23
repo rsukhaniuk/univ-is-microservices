@@ -189,10 +189,32 @@ namespace SmartMenu.Web.Controllers
         [Authorize]
         public async Task<IActionResult> EditAccount(EditAccountDto model)
         {
+            if (string.IsNullOrEmpty(model.NewName))
+            {
+                ModelState.AddModelError(nameof(model.NewName), "Name is required.");
+            }
+            if (string.IsNullOrEmpty(model.NewEmail))
+            {
+                ModelState.AddModelError(nameof(model.NewEmail), "Email is required.");
+            }
+            if (string.IsNullOrEmpty(model.NewPhoneNumber))
+            {
+                ModelState.AddModelError(nameof(model.NewPhoneNumber), "Phone number is required.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                
+                return View(model);
+            }
+
             var response = await _authService.EditAccountAsync(model);
 
             if (response != null && response.IsSuccess)
             {
+                //// Refresh the user's claims
+                //await RefreshAuthenticationClaims();
+
                 TempData["success"] = "Account updated successfully.";
                 return RedirectToAction(nameof(PersonalData));
             }
@@ -200,6 +222,33 @@ namespace SmartMenu.Web.Controllers
             TempData["error"] = response?.Message ?? "Failed to update account.";
             return View(model);
         }
+
+        //private async Task RefreshAuthenticationClaims()
+        //{
+        //    var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+        //    if (!string.IsNullOrEmpty(userId))
+        //    {
+        //        var userDetailsResponse = await _authService.GetUserDetailsAsync(userId);
+
+        //        if (userDetailsResponse != null && userDetailsResponse.IsSuccess)
+        //        {
+        //            var user = JsonConvert.DeserializeObject<EditAccountDto>(Convert.ToString(userDetailsResponse.Result));
+
+        //            // Create a new claims identity
+        //            var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+        //            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UserId));
+        //            identity.AddClaim(new Claim(ClaimTypes.Name, user.NewName ?? ""));
+        //            identity.AddClaim(new Claim(ClaimTypes.Email, user.NewEmail ?? ""));
+
+        //            var principal = new ClaimsPrincipal(identity);
+
+        //            // Refresh the authentication cookie
+        //            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        //            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+        //        }
+        //    }
+        //}
 
         // GET: Change Password
         [HttpGet]
