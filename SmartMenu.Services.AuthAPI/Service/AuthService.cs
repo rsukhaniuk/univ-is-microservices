@@ -112,5 +112,64 @@ namespace SmartMenu.Services.AuthAPI.Service
             }
             return "Error Encountered";
         }
+
+        public async Task<bool> EditAccount(EditAccountDto editAccountDto)
+        {
+            var user = await _userManager.FindByIdAsync(editAccountDto.UserId);
+            if (user == null) return false;
+
+            // Update name if provided
+            if (!string.IsNullOrEmpty(editAccountDto.NewName))
+                user.Name = editAccountDto.NewName;
+
+            // Update phone number if provided
+            if (!string.IsNullOrEmpty(editAccountDto.NewPhoneNumber))
+                user.PhoneNumber = editAccountDto.NewPhoneNumber;
+
+            // Update email if provided
+            if (!string.IsNullOrEmpty(editAccountDto.NewEmail) && !editAccountDto.NewEmail.Equals(user.Email, StringComparison.OrdinalIgnoreCase))
+            {
+                // Check if the new email already exists
+                var existingUser = await _userManager.FindByEmailAsync(editAccountDto.NewEmail);
+                if (existingUser != null)
+                {
+                    return false; // Email is already taken
+                }
+
+                user.Email = editAccountDto.NewEmail;
+                user.NormalizedEmail = editAccountDto.NewEmail.ToUpper();
+                user.UserName = editAccountDto.NewEmail; // Optional: Update UserName if it mirrors Email
+            }
+
+            var result = await _userManager.UpdateAsync(user);
+            return result.Succeeded;
+        }
+
+        public async Task<bool> DeleteAccount(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return false;
+
+            // Perform the account deletion
+            var result = await _userManager.DeleteAsync(user);
+            return result.Succeeded;
+        }
+
+        public async Task<bool> ChangePassword(string userId, ChangePasswordDto changePasswordDto)
+        {
+            // Ensure the new password matches the confirmation password
+            if (changePasswordDto.NewPassword != changePasswordDto.ConfirmNewPassword)
+            {
+                return false;
+            }
+
+            // Find the user by ID
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return false;
+
+            // Verify and update the password
+            var result = await _userManager.ChangePasswordAsync(user, changePasswordDto.CurrentPassword, changePasswordDto.NewPassword);
+            return result.Succeeded;
+        }
     }
 }

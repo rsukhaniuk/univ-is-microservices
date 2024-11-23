@@ -2,6 +2,8 @@
 using SmartMenu.Services.AuthAPI.Service.IService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace SmartMenu.Services.AuthAPI.Controllers
 {
@@ -60,6 +62,114 @@ namespace SmartMenu.Services.AuthAPI.Controllers
             }
             return Ok(_response);
 
+        }
+
+        [Authorize]
+        [HttpPut("EditAccount")]
+        public async Task<IActionResult> EditAccount([FromBody] EditAccountDto model)
+        {
+            try
+            {
+                // Retrieve the logged-in user's ID from JWT claims
+                var loggedInUserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+                if (string.IsNullOrEmpty(loggedInUserId) || !loggedInUserId.Equals(model.UserId, StringComparison.OrdinalIgnoreCase))
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "You are not authorized to edit this account.";
+                    return Unauthorized(_response);
+                }
+
+                // Perform the edit operation
+                var editSuccessful = await _authService.EditAccount(model);
+                if (!editSuccessful)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Failed to update the account. Please check the details.";
+                    return BadRequest(_response);
+                }
+
+                _response.Message = "Account updated successfully.";
+                return Ok(_response);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+                return StatusCode(500, _response);
+            }
+        }
+
+        [Authorize]
+        [HttpDelete("DeleteAccount/{userId}")]
+        public async Task<IActionResult> DeleteAccount(string userId)
+        {
+            try
+            {
+                // Retrieve the logged-in user's ID from JWT claims
+                var loggedInUserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+                if (string.IsNullOrEmpty(loggedInUserId) || !loggedInUserId.Equals(userId, StringComparison.OrdinalIgnoreCase))
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "You are not authorized to delete this account.";
+                    return Unauthorized(_response);
+                }
+
+                // Perform the delete operation
+                var deleteSuccessful = await _authService.DeleteAccount(userId);
+                if (!deleteSuccessful)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Failed to delete the account. The user may not exist.";
+                    return BadRequest(_response);
+                }
+
+                _response.Message = "Account deleted successfully.";
+                return Ok(_response);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+                return StatusCode(500, _response);
+            }
+        }
+
+        [Authorize]
+        [HttpPost("ChangePassword")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto model)
+        {
+            try
+            {
+                // Retrieve the logged-in user's ID from JWT claims
+                var loggedInUserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+                if (string.IsNullOrEmpty(loggedInUserId))
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Unable to identify the logged-in user.";
+                    return Unauthorized(_response);
+                }
+
+                // Perform the password change
+                var changeSuccessful = await _authService.ChangePassword(loggedInUserId, model);
+                if (!changeSuccessful)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Failed to change the password. Please check the details.";
+                    return BadRequest(_response);
+                }
+
+                _response.Message = "Password changed successfully.";
+                return Ok(_response);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+                return StatusCode(500, _response);
+            }
         }
 
 
