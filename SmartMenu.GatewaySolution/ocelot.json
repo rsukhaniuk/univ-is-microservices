@@ -25,10 +25,7 @@
         }
       ],
       "UpstreamPathTemplate": "/api/product/{id}",
-      "UpstreamHttpMethod": [ "Get", "DELETE" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer"
-      }
+      "UpstreamHttpMethod": [ "Get", "DELETE" ]
     },
     {
       "DownstreamPathTemplate": "/api/product",

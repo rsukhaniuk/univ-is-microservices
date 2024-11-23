@@ -25,10 +25,13 @@
                                     <p class="text-muted pt-3">@Html.Raw(Model.Description)</p>
                                 </div>
                             </div>
-                            <div class="row mx-0">
-                                <input asp-for="Count" class="form-control" placeholder="Enter quantity" />
-                                <span asp-validation-for="Count" class="text-danger"></span>
-                            </div>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <div class="row mx-0">
+                                    <input asp-for="Count" class="form-control" placeholder="Enter quantity" />
+                                    <span asp-validation-for="Count" class="text-danger"></span>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>
@@ -38,7 +41,14 @@
                     <a asp-action="Index" class="btn btn-outline-primary form-control">Back to List</a>
                 </div>
                 <div class="col-12 col-md-6">
-                    <button type="submit" class="btn btn-success form-control">Add to Cart</button>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <button type="submit" class="btn btn-success form-control">Add to Cart</button>
+                    }
+                    else
+                    {
+                        <a asp-action="Login" asp-controller="Auth" class="btn btn-outline-primary form-control">Login to Add to Cart</a>
+                    }
                 </div>
             </div>
         </div>
