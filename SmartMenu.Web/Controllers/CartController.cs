@@ -14,11 +14,11 @@ namespace SmartMenu.Web.Controllers
         private readonly ICartService _cartService;
         private readonly IOrderService _orderService;
         private readonly IAuthService _authService;
-        public CartController(ICartService cartService, IOrderService orderService, IAuthService _authService)
+        public CartController(ICartService cartService, IOrderService orderService, IAuthService authService)
         {
             _cartService = cartService;
             _orderService = orderService;
-            _authService = _authService;
+            _authService = authService;
         }
 
         [Authorize]
@@ -30,9 +30,33 @@ namespace SmartMenu.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Checkout()
         {
-            return View(await LoadCartDtoBasedOnLoggedInUser());
+            // Load cart based on logged-in user
+            var cart = await LoadCartDtoBasedOnLoggedInUser();
 
-            
+            // Fetch user details from AuthService if not already populated
+            if (string.IsNullOrEmpty(cart.CartHeader.Name) || string.IsNullOrEmpty(cart.CartHeader.Email) || string.IsNullOrEmpty(cart.CartHeader.Phone))
+            {
+                var userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?.FirstOrDefault()?.Value;
+
+                if (!string.IsNullOrEmpty(userId))
+                {
+                    ResponseDto? response = await _authService.GetUserDetailsAsync(userId);
+
+
+                    if (response != null && response.IsSuccess)
+                    {
+                        var userDetails = JsonConvert.DeserializeObject<EditAccountDto>(response.Result.ToString());
+                        if (userDetails != null)
+                        {
+                            cart.CartHeader.Name = userDetails.NewName;
+                            cart.CartHeader.Email = userDetails.NewEmail;
+                            cart.CartHeader.Phone = userDetails.NewPhoneNumber;
+                        }
+                    }
+                }
+            }
+
+            return View(cart);
         }
 
         [HttpPost]
