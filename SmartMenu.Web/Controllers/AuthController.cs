@@ -301,12 +301,37 @@ namespace SmartMenu.Web.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> DeleteAccountConfirmation()
+        {
+            var userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?.FirstOrDefault()?.Value;
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                TempData["error"] = "User not found.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            var response = await _authService.GetUserDetailsAsync(userId);
+
+            if (response == null || !response.IsSuccess)
+            {
+                TempData["error"] = "Unable to load user details.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            var user = JsonConvert.DeserializeObject<EditAccountDto>(Convert.ToString(response.Result));
+
+            return View(user);
+        }
+
         // POST: Delete Account
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> DeleteAccount()
         {
-            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?.FirstOrDefault()?.Value;
 
             if (string.IsNullOrEmpty(userId))
             {
