@@ -137,16 +137,32 @@ namespace SmartMenu.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> ApplyCoupon(CartDto cartDto)
         {
-            
-            ResponseDto? response = await _cartService.ApplyCouponAsync(cartDto);
-            if (response != null & response.IsSuccess)
-            {
-                TempData["success"] = "Cart updated successfully";
-                return RedirectToAction(nameof(CartIndex));
-            }
-            return View();
-        }
+            var userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?.FirstOrDefault()?.Value;
+            ResponseDto? response1 = await _cartService.GetCartByUserIdAsnyc(userId);
+            CartDto cartDto1 = JsonConvert.DeserializeObject<CartDto>(Convert.ToString(response1.Result));
 
+            cartDto1.CartHeader.CouponCode = cartDto.CartHeader.CouponCode;
+
+            ResponseDto? response = await _cartService.ApplyCouponAsync(cartDto1);
+
+            if (response != null)
+            {
+                if (response.IsSuccess)
+                {
+                    TempData["success"] = "Coupon applied successfully.";
+                }
+                else
+                {
+                    TempData["error"] = response.Message ?? "Failed to apply coupon.";
+                }
+            }
+            else
+            {
+                TempData["error"] = "An error occurred while applying the coupon.";
+            }
+
+            return RedirectToAction(nameof(CartIndex));
+        }
         [HttpPost]
         public async Task<IActionResult> EmailCart(CartDto cartDto)
         {

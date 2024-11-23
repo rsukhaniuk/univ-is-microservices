@@ -77,10 +77,50 @@ namespace SmartMenu.Services.ShoppingCartAPI.Controllers
         {
             try
             {
-                var cartFromDb = await _db.CartHeaders.FirstAsync(u => u.UserId == cartDto.CartHeader.UserId);
+                // Retrieve the cart header from the database
+                var cartFromDb = await _db.CartHeaders.FirstOrDefaultAsync(u => u.UserId == cartDto.CartHeader.UserId);
+                if (cartFromDb == null)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Cart not found.";
+                    return _response;
+                }
+
+                // If CouponCode is empty, clear the coupon without validation
+                if (string.IsNullOrEmpty(cartDto.CartHeader.CouponCode))
+                {
+                    cartFromDb.CouponCode = cartDto.CartHeader.CouponCode;
+                    _db.CartHeaders.Update(cartFromDb);
+                    await _db.SaveChangesAsync();
+                    _response.Result = true;
+
+                    return _response;
+                }
+
+                // Use CouponService to validate the coupon
+                var coupon = await _couponService.GetCoupon(cartDto.CartHeader.CouponCode);
+                if (coupon == null || string.IsNullOrEmpty(coupon.CouponCode))
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Invalid coupon code.";
+                    return _response;
+                }
+
+                // Validate the cart total against the coupon's minimum amount
+                if (cartDto.CartHeader.CartTotal < coupon.MinAmount)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = $"Cart total must be at least {coupon.MinAmount:c} to use this coupon.";
+                    return _response;
+                }
+
+                // Apply the coupon
                 cartFromDb.CouponCode = cartDto.CartHeader.CouponCode;
+                cartFromDb.Discount = coupon.DiscountAmount; // Optionally store the discount amount
                 _db.CartHeaders.Update(cartFromDb);
                 await _db.SaveChangesAsync();
+
+                _response.IsSuccess = true;
                 _response.Result = true;
             }
             catch (Exception ex)
@@ -88,6 +128,7 @@ namespace SmartMenu.Services.ShoppingCartAPI.Controllers
                 _response.IsSuccess = false;
                 _response.Message = ex.ToString();
             }
+
             return _response;
         }
 

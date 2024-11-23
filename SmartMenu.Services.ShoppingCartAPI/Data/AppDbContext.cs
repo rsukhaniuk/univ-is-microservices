@@ -1,5 +1,6 @@
 ﻿using SmartMenu.Services.ShoppingCartAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using Stripe;
 
 namespace SmartMenu.Services.ShoppingCartAPI.Data
 {
@@ -11,6 +12,6 @@ namespace SmartMenu.Services.ShoppingCartAPI.Data
 
         public DbSet<CartHeader> CartHeaders { get; set; }
         public DbSet<CartDetails> CartDetails { get; set; }
-     
+
     }
 }
