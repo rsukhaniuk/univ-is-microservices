@@ -1,7 +1,6 @@
 ﻿@model CartDto
 
 @if (Model.CartHeader != null && Model.CartDetails?.Count() > 0)
-
 {
     <form method="post" asp-action="EmailCart">
         <br />
@@ -22,11 +21,10 @@
                 <div class="card-body">
                     <div class="d-none d-lg-block">
                         <div class="row text-muted align-items-center">
-                            <div class="col-lg-2 "></div>
+                            <div class="col-lg-2"></div>
                             <div class="col-lg-5">Product Details</div>
-                            <div class="col-lg-2 text-center">Price</div>
-                            <div class="col-lg-2 text-center">Count</div>
-                            <div class="col-lg-1 text-center">Action</div>
+                            <div class="col-lg-2 text-center">Price × Quantity</div>
+                            <div class="col-lg-3 text-center">Actions</div>
                         </div>
                     </div>
                     <hr />
@@ -34,23 +32,44 @@
                     @foreach (var cartObj in Model.CartDetails)
                     {
                         <div class="row align-items-center">
+                            <!-- Product Image -->
                             <div class="col-4 col-md-2 text-center py-2">
                                 <img src="@cartObj.Product.ImageUrl" class="rounded border shadow-sm" width="100%" />
                             </div>
+
+                            <!-- Product Name and Description -->
                             <div class="col-8 col-md-5">
                                 <h5 class="text-dark">@cartObj.Product.Name</h5>
                                 <div class="text-muted small">@Html.Raw(cartObj.Product.Description)</div>
                             </div>
-                            <div class="col-3 col-md-2 text-muted text-center pt-md-3">
-                                <span class="fw-bold">@string.Format("{0:c}", cartObj.Product.Price)</span>
+
+                            <!-- Price × Quantity -->
+                            <div class="col-6 col-md-2 text-center pt-md-3">
+                                <span class="fw-bold">
+                                    @string.Format("{0:c}", cartObj.Product.Price)
+                                    <span class="text-muted">×</span> @cartObj.Count
+                                    <span class="text-primary fw-bold">= @string.Format("{0:c}", cartObj.Product.Price * cartObj.Count)</span>
+                                </span>
                             </div>
-                            <div class="col-3 col-md-2 text-muted text-center pt-md-3">
-                                <span class="fw-bold">@cartObj.Count</span>
-                            </div>
-                            <div class="col-2 col-lg-1 text-center pt-md-3">
-                                <a asp-action="Remove" asp-route-cartDetailsId="@cartObj.CartDetailsId" class="btn btn-sm btn-danger">
-                                    <i class="bi bi-trash-fill"></i>
-                                </a>
+
+                            <!-- Actions -->
+                            <div class="col-6 col-md-3 text-center pt-md-3">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <!-- Group for + and - buttons -->
+                                    <div class="btn-group me-3" role="group">
+                                        <!-- Adjusted margin -->
+                                        <a asp-action="IncreaseQuantity" asp-route-cartId="@cartObj.CartDetailsId" class="btn btn-sm btn-outline-success">
+                                            <i class="bi bi-plus-circle"></i>
+                                        </a>
+                                        <a asp-action="DecreaseQuantity" asp-route-cartId="@cartObj.CartDetailsId" class="btn btn-sm btn-outline-danger ms-2">
+                                            <i class="bi bi-dash-circle"></i>
+                                        </a>
+                                    </div>
+                                    <!-- Remove button -->
+                                    <a asp-action="Remove" asp-route-cartDetailsId="@cartObj.CartDetailsId" class="btn btn-sm btn-danger">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         <hr />
@@ -59,15 +78,12 @@
                     <div class="row align-items-center">
                         <div class="col-6">
                             @if (string.IsNullOrEmpty(Model.CartHeader.CouponCode))
-
                             {
                                 <span>Coupon:</span>
                                 <input asp-for="CartHeader.CouponCode" class="form-control form-control-sm d-inline-block w-50" />
                                 <button type="submit" asp-action="ApplyCoupon" class="btn btn-sm btn-success">Apply</button>
                             }
-
                             else
-
                             {
                                 <span>Coupon:</span>
                                 <input asp-for="CartHeader.CouponCode" class="form-control form-control-sm d-inline-block w-50" disabled />
@@ -78,7 +94,6 @@
                             <span class="text-danger fw-bold fs-5">Order Total: @string.Format("{0:c}", Model.CartHeader.CartTotal)</span>
                             <br />
                             @if (Model.CartHeader.Discount > 0)
-
                             {
                                 <span class="text-success">Order Discount: @string.Format("{0:c}", Model.CartHeader.Discount)</span>
                             }
@@ -94,9 +109,7 @@
         </div>
     </form>
 }
-
 else
-
 {
     <div class="text-center mt-5">
         <p class="text-muted">Your cart is empty. Please add items to your cart.</p>
