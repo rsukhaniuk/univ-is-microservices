@@ -4,6 +4,7 @@ using SmartMenu.Services.ProductAPI.Models;
 using SmartMenu.Services.ProductAPI.Models.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace SmartMenu.Services.ProductAPI.Controllers
 {
@@ -27,8 +28,8 @@ namespace SmartMenu.Services.ProductAPI.Controllers
         {
             try
             {
-                IEnumerable<Product> objList = _db.Products.ToList();
-                _response.Result = _mapper.Map<IEnumerable<ProductDto>>(objList);
+                var products = _db.Products.Include(p => p.Category).ToList(); // Include Category
+                _response.Result = _mapper.Map<IEnumerable<ProductDto>>(products);
             }
             catch (Exception ex)
             {
@@ -44,8 +45,8 @@ namespace SmartMenu.Services.ProductAPI.Controllers
         {
             try
             {
-                Product obj = _db.Products.First(u=>u.ProductId==id);
-                _response.Result = _mapper.Map<ProductDto>(obj);
+                var product = _db.Products.Include(p => p.Category).FirstOrDefault(p => p.ProductId == id); // Include Category
+                _response.Result = _mapper.Map<ProductDto>(product);
             }
             catch (Exception ex)
             {
@@ -55,13 +56,21 @@ namespace SmartMenu.Services.ProductAPI.Controllers
             return _response;
         }
 
-       [HttpPost]
+        [HttpPost]
         [Authorize(Roles = "ADMIN")]
         public ResponseDto Post(ProductDto ProductDto)
         {
             try
             {
                 Product product = _mapper.Map<Product>(ProductDto);
+
+                if (!_db.Categories.Any(c => c.CategoryId == product.CategoryId))
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Invalid Category ID.";
+                    return _response;
+                }
+
                 _db.Products.Add(product);
                 _db.SaveChanges();
 
@@ -112,6 +121,13 @@ namespace SmartMenu.Services.ProductAPI.Controllers
             try
             {
                 Product product = _mapper.Map<Product>(ProductDto);
+
+                if (!_db.Categories.Any(c => c.CategoryId == product.CategoryId))
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Invalid Category ID.";
+                    return _response;
+                }
 
                 if (ProductDto.Image != null)
                 {
