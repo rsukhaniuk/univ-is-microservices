@@ -130,12 +130,29 @@ namespace SmartMenu.Web.Controllers
             if (response != null && response.IsSuccess)
             {
                 ProductDto? model = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(response.Result));
+
+                var categoriesResponse = await _categoryService.GetAllCategoriesAsync();
+                if (categoriesResponse != null && categoriesResponse.IsSuccess)
+                {
+                    var categories = JsonConvert.DeserializeObject<List<CategoryDto>>(categoriesResponse.Result.ToString());
+                    ViewBag.Categories = categories.Select(c => new SelectListItem
+                    {
+                        Value = c.CategoryId.ToString(),
+                        Text = c.Name
+                    }).ToList();
+                }
+                else
+                {
+                    ViewBag.Categories = new List<SelectListItem>();
+                }
+
                 return View(model);
             }
             else
             {
                 TempData["error"] = response?.Message;
             }
+
             return NotFound();
         }
 
@@ -156,6 +173,19 @@ namespace SmartMenu.Web.Controllers
                     TempData["error"] = response?.Message;
                 }
             }
+
+            var categoriesResponse = await _categoryService.GetAllCategoriesAsync();
+            if (categoriesResponse != null && categoriesResponse.IsSuccess)
+            {
+                var categories = JsonConvert.DeserializeObject<List<CategoryDto>>(categoriesResponse.Result.ToString());
+                ViewBag.Categories = categories.Select(c => new SelectListItem
+                {
+                    Value = c.CategoryId.ToString(),
+                    Text = c.Name
+                }).ToList();
+            }
+
+
             return View(productDto);
         }
 
