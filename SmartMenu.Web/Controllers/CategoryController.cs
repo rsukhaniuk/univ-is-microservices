@@ -146,3 +146,4 @@ namespace SmartMenu.Web.Controllers
             return Json(new { data = list.OrderByDescending(c => c.CategoryId) });
         }
     }
+}

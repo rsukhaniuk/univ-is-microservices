@@ -46,6 +46,13 @@
                                             <i class="bi bi-box-seam"></i> Product
                                         </a>
                                     </li>
+                                    <li>
+                                        <a class="dropdown-item @(ViewContext.RouteData.Values["controller"].ToString() == "Category" ? "active" : "")"
+                                           asp-controller="Category" asp-action="CategoryIndex">
+                                            <i class="bi bi-list"></i> Category
+                                        </a>
+                                    </li>
+
                                     <li><hr class="dropdown-divider"></li>
                                 </ul>
                             </li>
