@@ -190,9 +190,19 @@ namespace SmartMenu.Web.Controllers
             return View();
         }
 
-        [HttpPost]
+        
+
         public async Task<IActionResult> IncreaseQuantity(int cartDetailsId)
         {
+            var userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?.FirstOrDefault()?.Value;
+            ResponseDto? response = await _cartService.RemoveFromCartAsync(cartDetailsId);
+            if (response != null & response.IsSuccess)
+            {
+                TempData["success"] = "Cart updated successfully";
+                return RedirectToAction(nameof(CartIndex));
+            }
+
+
             var cartDto = await GetCartDetailsForUpdate(cartDetailsId);
             if (cartDto != null)
             {
@@ -210,7 +220,7 @@ namespace SmartMenu.Web.Controllers
             return RedirectToAction(nameof(CartIndex));
         }
 
-        [HttpPost]
+        
         public async Task<IActionResult> DecreaseQuantity(int cartDetailsId)
         {
             var cartDto = await GetCartDetailsForUpdate(cartDetailsId);
