@@ -7,8 +7,8 @@ namespace SmartMenu.Web.Service.IService
      
         Task<ResponseDto?> GetAllCategoriesAsync();
         Task<ResponseDto?> GetCategoryByIdAsync(int id);
-        Task<ResponseDto?> CreateCategoriesAsync(ProductDto productDto);
-        Task<ResponseDto?> UpdateCategoriesAsync(ProductDto productDto);
-        Task<ResponseDto?> DeleteCategoriesAsync(int id);
+        Task<ResponseDto?> CreateCategoryAsync(CategoryDto categoryDto);
+        Task<ResponseDto?> UpdateCategoryAsync(CategoryDto categoryDto);
+        Task<ResponseDto?> DeleteCategoryAsync(int id);
     }
 }
