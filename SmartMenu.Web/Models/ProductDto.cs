@@ -18,6 +18,6 @@ namespace SmartMenu.Web.Models
         [AllowedExtensions(new string[] { ".jpg", ".png" })]
         public IFormFile? Image { get; set; }
 
-        public CategoryDto Category { get; set; }
+        public CategoryDto? Category { get; set; }
     }
 }

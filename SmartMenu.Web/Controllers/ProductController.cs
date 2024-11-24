@@ -3,15 +3,20 @@ using SmartMenu.Web.Service.IService;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using SmartMenu.Web.Service;
 
 namespace SmartMenu.Web.Controllers
 {
     public class ProductController : Controller
     {
         private readonly IProductService _productService;
-        public ProductController(IProductService productService)
+        private readonly ICategoryService _categoryService;
+
+        public ProductController(IProductService productService, ICategoryService categoryService)
         {
             _productService = productService;
+            _categoryService = categoryService;
         }
 
 
@@ -35,6 +40,21 @@ namespace SmartMenu.Web.Controllers
 
         public async Task<IActionResult> ProductCreate()
         {
+            var categoriesResponse = await _categoryService.GetAllCategoriesAsync(); // Assuming _categoryService exists
+            if (categoriesResponse != null && categoriesResponse.IsSuccess)
+            {
+                var categories = JsonConvert.DeserializeObject<List<CategoryDto>>(categoriesResponse.Result.ToString());
+                ViewBag.Categories = categories.Select(c => new SelectListItem
+                {
+                    Value = c.CategoryId.ToString(),
+                    Text = c.Name
+                }).ToList();
+            }
+            else
+            {
+                ViewBag.Categories = new List<SelectListItem>();
+                TempData["error"] = "Unable to load categories.";
+            }
             return View();
         }
 
@@ -55,7 +75,19 @@ namespace SmartMenu.Web.Controllers
                     TempData["error"] = response?.Message;
                 }
             }
+            var categoriesResponse = await _categoryService.GetAllCategoriesAsync();
+            if (categoriesResponse != null && categoriesResponse.IsSuccess)
+            {
+                var categories = JsonConvert.DeserializeObject<List<CategoryDto>>(categoriesResponse.Result.ToString());
+                ViewBag.Categories = categories.Select(c => new SelectListItem
+                {
+                    Value = c.CategoryId.ToString(),
+                    Text = c.Name
+                }).ToList();
+            }
             return View(model);
+
+            //return View(model);
         }
 
         public async Task<IActionResult> ProductDelete(int productId)

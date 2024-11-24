@@ -11,6 +11,6 @@
         public string? ImageLocalPath { get; set; }
         public IFormFile? Image { get; set; }
 
-        public CategoryDto Category { get; set; }
+        public CategoryDto? Category { get; set; }
     }
 }
