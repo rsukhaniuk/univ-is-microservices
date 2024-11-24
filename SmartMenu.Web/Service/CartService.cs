@@ -72,5 +72,23 @@ namespace SmartMenu.Web.Service
                 Url = SD.ShoppingCartAPIBase + "/api/cart/ClearCart/" + userId
             });
         }
+
+        public async Task<ResponseDto?> IncreaseQuantity(string cartDetailsId)
+        {
+            return await _baseService.SendAsync(new RequestDto()
+            {
+                ApiType = SD.ApiType.POST,
+                Url = SD.ShoppingCartAPIBase + "/api/cart/IncreaseQuantity/" + cartDetailsId
+            });
+        }
+
+        public async Task<ResponseDto?> DecreaseQuantity(string cartDetailsId)
+        {
+            return await _baseService.SendAsync(new RequestDto()
+            {
+                ApiType = SD.ApiType.POST,
+                Url = SD.ShoppingCartAPIBase + "/api/cart/DecreaseQuantity/" + cartDetailsId
+            });
+        }
     }
 }

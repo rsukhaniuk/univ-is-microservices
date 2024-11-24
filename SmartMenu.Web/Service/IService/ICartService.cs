@@ -10,5 +10,7 @@ namespace SmartMenu.Web.Service.IService
         Task<ResponseDto?> ApplyCouponAsync(CartDto cartDto);
         Task<ResponseDto?> EmailCart(CartDto cartDto);
         Task<ResponseDto?> ClearCartAsync(string userId);
+        Task<ResponseDto?> IncreaseQuantity(string cartDetailsId);
+        Task<ResponseDto?> DecreaseQuantity(string cartDetailsId);
     }
 }
