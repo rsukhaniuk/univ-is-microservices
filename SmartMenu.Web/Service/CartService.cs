@@ -73,7 +73,7 @@ namespace SmartMenu.Web.Service
             });
         }
 
-        public async Task<ResponseDto?> IncreaseQuantity(string cartDetailsId)
+        public async Task<ResponseDto?> IncreaseQuantityAsync(int cartDetailsId)
         {
             return await _baseService.SendAsync(new RequestDto()
             {
@@ -82,7 +82,7 @@ namespace SmartMenu.Web.Service
             });
         }
 
-        public async Task<ResponseDto?> DecreaseQuantity(string cartDetailsId)
+        public async Task<ResponseDto?> DecreaseQuantityAsync(int cartDetailsId)
         {
             return await _baseService.SendAsync(new RequestDto()
             {

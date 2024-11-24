@@ -190,89 +190,39 @@ namespace SmartMenu.Web.Controllers
             return View();
         }
 
-        
-
-        //public async Task<IActionResult> IncreaseQuantity(int cartDetailsId)
-        //{
-        //    var userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?.FirstOrDefault()?.Value;
-        //    ResponseDto? response = await _cartService.RemoveFromCartAsync(cartDetailsId);
-        //    if (response != null & response.IsSuccess)
-        //    {
-        //        TempData["success"] = "Cart updated successfully";
-        //        return RedirectToAction(nameof(CartIndex));
-        //    }
 
 
-        //    var cartDto = await GetCartDetailsForUpdate(cartDetailsId);
-        //    if (cartDto != null)
-        //    {
-        //        cartDto.CartDetails.First().Count += 1; // Increase quantity
-        //        var response = await _cartService.UpsertCartAsync(cartDto);
+        public async Task<IActionResult> IncreaseQuantity(int cartDetailsId)
+        {
+            var response = await _cartService.IncreaseQuantityAsync(cartDetailsId);
 
-        //        if (response != null && response.IsSuccess)
-        //        {
-        //            TempData["success"] = "Quantity increased successfully!";
-        //            return RedirectToAction(nameof(CartIndex));
-        //        }
-        //    }
+            if (response != null && response.IsSuccess)
+            {
+                TempData["success"] = "Quantity increased successfully!";
+            }
+            else
+            {
+                TempData["error"] = response?.Message ?? "Failed to increase quantity!";
+            }
 
-        //    TempData["error"] = "Failed to increase quantity!";
-        //    return RedirectToAction(nameof(CartIndex));
-        //}
+            return RedirectToAction(nameof(CartIndex));
+        }
 
-        
-        //public async Task<IActionResult> DecreaseQuantity(int cartDetailsId)
-        //{
-        //    var cartDto = await GetCartDetailsForUpdate(cartDetailsId);
-        //    if (cartDto != null)
-        //    {
-        //        if (cartDto.CartDetails.First().Count > 1)
-        //        {
-        //            cartDto.CartDetails.First().Count -= 1; // Decrease quantity
-        //            var response = await _cartService.UpsertCartAsync(cartDto);
+        public async Task<IActionResult> DecreaseQuantity(int cartDetailsId)
+        {
+            var response = await _cartService.DecreaseQuantityAsync(cartDetailsId);
 
-        //            if (response != null && response.IsSuccess)
-        //            {
-        //                TempData["success"] = "Quantity decreased successfully!";
-        //                return RedirectToAction(nameof(CartIndex));
-        //            }
-        //        }
-        //        else
-        //        {
-        //            TempData["error"] = "Quantity cannot be less than 1.";
-        //            return RedirectToAction(nameof(CartIndex));
-        //        }
-        //    }
+            if (response != null && response.IsSuccess)
+            {
+                TempData["success"] = "Quantity decreased successfully!";
+            }
+            else
+            {
+                TempData["error"] = response?.Message ?? "Failed to decrease quantity!";
+            }
 
-        //    TempData["error"] = "Failed to decrease quantity!";
-        //    return RedirectToAction(nameof(CartIndex));
-        //}
-
-        //private async Task<CartDto?> GetCartDetailsForUpdate(int cartDetailsId)
-        //{
-        //    var userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?.FirstOrDefault()?.Value;
-        //    if (string.IsNullOrEmpty(userId))
-        //    {
-        //        TempData["error"] = "User not logged in.";
-        //        return null;
-        //    }
-
-        //    // Retrieve the current cart
-        //    var response = await _cartService.GetCartByUserIdAsnyc(userId);
-        //    if (response != null && response.IsSuccess)
-        //    {
-        //        var cartDto = JsonConvert.DeserializeObject<CartDto>(response.Result.ToString());
-        //        var cartDetails = cartDto.CartDetails?.FirstOrDefault(cd => cd.CartDetailsId == cartDetailsId);
-
-        //        if (cartDetails != null)
-        //        {
-        //            cartDto.CartDetails = new List<CartDetailsDto> { cartDetails };
-        //            return cartDto;
-        //        }
-        //    }
-
-        //    return null;
-        //}
+            return RedirectToAction(nameof(CartIndex));
+        }
 
 
         private async Task<CartDto> LoadCartDtoBasedOnLoggedInUser()
