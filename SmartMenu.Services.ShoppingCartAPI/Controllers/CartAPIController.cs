@@ -232,6 +232,45 @@ namespace SmartMenu.Services.ShoppingCartAPI.Controllers
             return _response;
         }
 
+        [HttpPost("DecreaseQuantity/{cartDetailsId}")]
+        public async Task<ResponseDto> DecreaseQuantity(int cartDetailsId)
+        {
+            try
+            {
+                var cartDetails = await _db.CartDetails.Include(cd => cd.CartHeader)
+                    .FirstOrDefaultAsync(cd => cd.CartDetailsId == cartDetailsId);
+
+                if (cartDetails == null)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Cart item not found.";
+                    return _response;
+                }
+
+                if (cartDetails.Count > 1)
+                {
+                    cartDetails.Count -= 1; // Decrease quantity
+                    _db.CartDetails.Update(cartDetails);
+                    await _db.SaveChangesAsync();
+
+                    _response.IsSuccess = true;
+                    _response.Result = _mapper.Map<CartDetailsDto>(cartDetails);
+                }
+                else
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Quantity cannot be less than 1.";
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+            }
+
+            return _response;
+        }
+
 
 
         [HttpPost("RemoveCart")]
