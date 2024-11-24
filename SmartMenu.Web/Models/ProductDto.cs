@@ -9,7 +9,7 @@ namespace SmartMenu.Web.Models
         public string Name { get; set; }
         public double Price { get; set; }
         public string Description { get; set; }
-        public string CategoryName { get; set; }
+        public int CategoryId { get; set; }
         public string? ImageUrl { get; set; }
         public string? ImageLocalPath { get; set; }
         [Range(1,100)]
@@ -17,5 +17,7 @@ namespace SmartMenu.Web.Models
         [MaxFileSize(1)]
         [AllowedExtensions(new string[] { ".jpg", ".png" })]
         public IFormFile? Image { get; set; }
+
+        public CategoryDto Category { get; set; }
     }
 }

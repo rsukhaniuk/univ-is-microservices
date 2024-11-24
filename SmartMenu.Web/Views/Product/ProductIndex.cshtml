@@ -29,7 +29,7 @@
                 {
                     <tr>
                         <td>@item.Name</td>
-                        <td>@item.CategoryName</td>
+                        <td>@item.Category.Name</td>
                         <td>@((item.Price).ToString("c"))</td>
                         <td>
                             <a class="btn btn-outline-primary me-2" asp-action="ProductEdit" asp-route-productId="@item.ProductId">
