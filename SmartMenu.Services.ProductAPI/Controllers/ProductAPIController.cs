@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SmartMenu.Services.ProductAPI.Controllers
 {
+    /// <summary>
+    /// API controller for managing products.
+    /// </summary>
     [Route("api/product")]
     [ApiController]
     public class ProductAPIController : ControllerBase
@@ -16,6 +19,11 @@ namespace SmartMenu.Services.ProductAPI.Controllers
         private ResponseDto _response;
         private IMapper _mapper;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProductAPIController"/> class.
+        /// </summary>
+        /// <param name="db">The database context.</param>
+        /// <param name="mapper">The AutoMapper instance.</param>
         public ProductAPIController(AppDbContext db, IMapper mapper)
         {
             _db = db;
@@ -23,6 +31,10 @@ namespace SmartMenu.Services.ProductAPI.Controllers
             _response = new ResponseDto();
         }
 
+        /// <summary>
+        /// Gets the list of products.
+        /// </summary>
+        /// <returns>The response containing the list of products.</returns>
         [HttpGet]
         public ResponseDto Get()
         {
@@ -39,6 +51,11 @@ namespace SmartMenu.Services.ProductAPI.Controllers
             return _response;
         }
 
+        /// <summary>
+        /// Gets a product by ID.
+        /// </summary>
+        /// <param name="id">The product ID.</param>
+        /// <returns>The response containing the product.</returns>
         [HttpGet]
         [Route("{id:int}")]
         public ResponseDto Get(int id)
@@ -56,6 +73,11 @@ namespace SmartMenu.Services.ProductAPI.Controllers
             return _response;
         }
 
+        /// <summary>
+        /// Creates a new product.
+        /// </summary>
+        /// <param name="ProductDto">The product data transfer object.</param>
+        /// <returns>The response containing the created product.</returns>
         [HttpPost]
         [Authorize(Roles = "ADMIN")]
         public ResponseDto Post(ProductDto ProductDto)
@@ -76,17 +98,16 @@ namespace SmartMenu.Services.ProductAPI.Controllers
 
                 if (ProductDto.Image != null)
                 {
-                   
                     string fileName = product.ProductId + Path.GetExtension(ProductDto.Image.FileName);
                     string filePath = @"wwwroot\ProductImages\" + fileName;
 
-                    //I have added the if condition to remove the any image with same name if that exist in the folder by any change
-                        var directoryLocation = Path.Combine(Directory.GetCurrentDirectory(), filePath);
-                        FileInfo file = new FileInfo(directoryLocation);
-                        if (file.Exists)
-                        {
-                            file.Delete();
-                        }
+                    // Remove any existing image with the same name
+                    var directoryLocation = Path.Combine(Directory.GetCurrentDirectory(), filePath);
+                    FileInfo file = new FileInfo(directoryLocation);
+                    if (file.Exists)
+                    {
+                        file.Delete();
+                    }
 
                     var filePathDirectory = Path.Combine(Directory.GetCurrentDirectory(), filePath);
                     using (var fileStream = new FileStream(filePathDirectory, FileMode.Create))
@@ -94,7 +115,7 @@ namespace SmartMenu.Services.ProductAPI.Controllers
                         ProductDto.Image.CopyTo(fileStream);
                     }
                     var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}{HttpContext.Request.PathBase.Value}";
-                    product.ImageUrl = baseUrl+ "/ProductImages/"+ fileName;
+                    product.ImageUrl = baseUrl + "/ProductImages/" + fileName;
                     product.ImageLocalPath = filePath;
                 }
                 else
@@ -113,7 +134,11 @@ namespace SmartMenu.Services.ProductAPI.Controllers
             return _response;
         }
 
-
+        /// <summary>
+        /// Updates an existing product.
+        /// </summary>
+        /// <param name="ProductDto">The product data transfer object.</param>
+        /// <returns>The response containing the updated product.</returns>
         [HttpPut]
         [Authorize(Roles = "ADMIN")]
         public ResponseDto Put(ProductDto ProductDto)
@@ -153,7 +178,6 @@ namespace SmartMenu.Services.ProductAPI.Controllers
                     product.ImageLocalPath = filePath;
                 }
 
-
                 _db.Products.Update(product);
                 _db.SaveChanges();
 
@@ -167,6 +191,11 @@ namespace SmartMenu.Services.ProductAPI.Controllers
             return _response;
         }
 
+        /// <summary>
+        /// Deletes a product by ID.
+        /// </summary>
+        /// <param name="id">The product ID.</param>
+        /// <returns>The response indicating the result of the delete operation.</returns>
         [HttpDelete]
         [Route("{id:int}")]
         [Authorize(Roles = "ADMIN")]
@@ -174,7 +203,7 @@ namespace SmartMenu.Services.ProductAPI.Controllers
         {
             try
             {
-                Product obj = _db.Products.First(u=>u.ProductId==id);
+                Product obj = _db.Products.First(u => u.ProductId == id);
                 if (!string.IsNullOrEmpty(obj.ImageLocalPath))
                 {
                     var oldFilePathDirectory = Path.Combine(Directory.GetCurrentDirectory(), obj.ImageLocalPath);

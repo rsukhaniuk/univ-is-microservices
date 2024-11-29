@@ -7,16 +7,31 @@ using static SmartMenu.Web.Utility.SD;
 
 namespace SmartMenu.Web.Service
 {
+    /// <summary>
+    /// Provides base functionality for sending HTTP requests.
+    /// </summary>
     public class BaseService : IBaseService
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ITokenProvider _tokenProvider;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaseService"/> class.
+        /// </summary>
+        /// <param name="httpClientFactory">The HTTP client factory.</param>
+        /// <param name="tokenProvider">The token provider.</param>
         public BaseService(IHttpClientFactory httpClientFactory, ITokenProvider tokenProvider)
         {
-                _httpClientFactory = httpClientFactory;
+            _httpClientFactory = httpClientFactory;
             _tokenProvider = tokenProvider;
         }
 
+        /// <summary>
+        /// Sends an HTTP request asynchronously.
+        /// </summary>
+        /// <param name="requestDto">The request data transfer object.</param>
+        /// <param name="withBearer">Indicates whether to include a bearer token in the request.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the response data transfer object.</returns>
         public async Task<ResponseDto?> SendAsync(RequestDto requestDto, bool withBearer = true)
         {
             try
@@ -31,7 +46,8 @@ namespace SmartMenu.Web.Service
                 {
                     message.Headers.Add("Accept", "application/json");
                 }
-                //token
+
+                // Add bearer token if required
                 if (withBearer)
                 {
                     var token = _tokenProvider.GetToken();
@@ -44,15 +60,14 @@ namespace SmartMenu.Web.Service
                 {
                     var content = new MultipartFormDataContent();
 
-                    foreach(var prop in requestDto.Data.GetType().GetProperties())
+                    foreach (var prop in requestDto.Data.GetType().GetProperties())
                     {
                         var value = prop.GetValue(requestDto.Data);
-                        if(value is FormFile)
+                        if (value is FormFile file)
                         {
-                            var file = (FormFile)value;
                             if (file != null)
                             {
-                                content.Add(new StreamContent(file.OpenReadStream()),prop.Name,file.FileName);
+                                content.Add(new StreamContent(file.OpenReadStream()), prop.Name, file.FileName);
                             }
                         }
                         else
@@ -69,10 +84,6 @@ namespace SmartMenu.Web.Service
                         message.Content = new StringContent(JsonConvert.SerializeObject(requestDto.Data), Encoding.UTF8, "application/json");
                     }
                 }
-
-
-
-               
 
                 HttpResponseMessage? apiResponse = null;
 
@@ -109,7 +120,8 @@ namespace SmartMenu.Web.Service
                         var apiResponseDto = JsonConvert.DeserializeObject<ResponseDto>(apiContent);
                         return apiResponseDto;
                 }
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 var dto = new ResponseDto
                 {

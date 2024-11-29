@@ -9,11 +9,21 @@ using System.Diagnostics;
 
 namespace SmartMenu.Web.Controllers
 {
+    /// <summary>
+    /// Controller for managing the home page and related actions in the SmartMenu web application.
+    /// </summary>
     public class HomeController : Controller
     {
         private readonly IProductService _productService;
         private readonly ICartService _cartService;
         private readonly ICategoryService _categoryService;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HomeController"/> class.
+        /// </summary>
+        /// <param name="productService">The service for managing products.</param>
+        /// <param name="cartService">The service for managing the shopping cart.</param>
+        /// <param name="categoryService">The service for managing categories.</param>
         public HomeController(IProductService productService, ICartService cartService, ICategoryService categoryService)
         {
             _productService = productService;
@@ -21,7 +31,14 @@ namespace SmartMenu.Web.Controllers
             _categoryService = categoryService;
         }
 
-
+        /// <summary>
+        /// Displays the index page with a list of products.
+        /// </summary>
+        /// <param name="searchTerm">The search term to filter products.</param>
+        /// <param name="categoryId">The category ID to filter products.</param>
+        /// <param name="pageNumber">The current page number for pagination.</param>
+        /// <param name="sortOrder">The sort order for products.</param>
+        /// <returns>Returns the view with the list of products.</returns>
         public async Task<IActionResult> Index(string? searchTerm, int? categoryId, int pageNumber = 1, string? sortOrder = null)
         {
             const int pageSize = 6;
@@ -89,7 +106,11 @@ namespace SmartMenu.Web.Controllers
             return View(paginatedList);
         }
 
-
+        /// <summary>
+        /// Displays the details of a product.
+        /// </summary>
+        /// <param name="productId">The ID of the product to display.</param>
+        /// <returns>Returns the view with the product details.</returns>
         public async Task<IActionResult> ProductDetails(int productId)
         {
             ProductDto? model = new();
@@ -108,7 +129,11 @@ namespace SmartMenu.Web.Controllers
             return View(model);
         }
 
-
+        /// <summary>
+        /// Handles the post request to add a product to the shopping cart.
+        /// </summary>
+        /// <param name="productDto">The data transfer object for the product to add to the cart.</param>
+        /// <returns>Returns the view with the product details or redirects to the index page.</returns>
         [Authorize]
         [HttpPost]
         [ActionName("ProductDetails")]
@@ -128,7 +153,7 @@ namespace SmartMenu.Web.Controllers
                 ProductId = productDto.ProductId,
             };
 
-            List<CartDetailsDto> cartDetailsDtos = new() { cartDetails};
+            List<CartDetailsDto> cartDetailsDtos = new() { cartDetails };
             cartDto.CartDetails = cartDetailsDtos;
 
             ResponseDto? response = await _cartService.UpsertCartAsync(cartDto);
@@ -146,12 +171,19 @@ namespace SmartMenu.Web.Controllers
             return View(productDto);
         }
 
-
+        /// <summary>
+        /// Displays the privacy policy page.
+        /// </summary>
+        /// <returns>Returns the view for the privacy policy.</returns>
         public IActionResult Privacy()
         {
             return View();
         }
 
+        /// <summary>
+        /// Displays the error page.
+        /// </summary>
+        /// <returns>Returns the view for the error page.</returns>
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

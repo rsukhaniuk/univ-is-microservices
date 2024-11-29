@@ -3,15 +3,34 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SmartMenu.Services.ProductAPI.Data
 {
+    /// <summary>
+    /// Represents the application's database context.
+    /// </summary>
     public class AppDbContext : DbContext
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AppDbContext"/> class.
+        /// </summary>
+        /// <param name="options">The options to be used by a <see cref="DbContext"/>.</param>
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
 
+        /// <summary>
+        /// Gets or sets the products in the database.
+        /// </summary>
         public DbSet<Product> Products { get; set; }
+
+        /// <summary>
+        /// Gets or sets the categories in the database.
+        /// </summary>
         public DbSet<Category> Categories { get; set; }
 
+        /// <summary>
+        /// Configures the model that was discovered by convention from the entity types
+        /// exposed in <see cref="DbSet{TEntity}"/> properties on the derived context.
+        /// </summary>
+        /// <param name="modelBuilder">The builder being used to construct the model for this context.</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

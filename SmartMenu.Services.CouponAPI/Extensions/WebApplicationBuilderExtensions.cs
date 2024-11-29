@@ -4,8 +4,16 @@ using System.Text;
 
 namespace SmartMenu.Services.CouponAPI.Extensions
 {
+    /// <summary>
+    /// Extension methods for configuring the WebApplicationBuilder.
+    /// </summary>
     public static class WebApplicationBuilderExtensions
     {
+        /// <summary>
+        /// Adds JWT authentication to the application.
+        /// </summary>
+        /// <param name="builder">The WebApplicationBuilder instance.</param>
+        /// <returns>The WebApplicationBuilder instance with authentication configured.</returns>
         public static WebApplicationBuilder AddAppAuthetication(this WebApplicationBuilder builder)
         {
             var settingsSection = builder.Configuration.GetSection("ApiSettings");
@@ -15,7 +23,6 @@ namespace SmartMenu.Services.CouponAPI.Extensions
             var audience = settingsSection.GetValue<string>("Audience");
 
             var key = Encoding.ASCII.GetBytes(secret);
-
 
             builder.Services.AddAuthentication(x =>
             {

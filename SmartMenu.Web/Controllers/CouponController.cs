@@ -6,15 +6,26 @@ using System.Collections.Generic;
 
 namespace SmartMenu.Web.Controllers
 {
+    /// <summary>
+    /// Controller for managing coupons in the SmartMenu web application.
+    /// </summary>
     public class CouponController : Controller
     {
         private readonly ICouponService _couponService;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CouponController"/> class.
+        /// </summary>
+        /// <param name="couponService">The service for managing coupons.</param>
         public CouponController(ICouponService couponService)
         {
             _couponService = couponService;
         }
 
-
+        /// <summary>
+        /// Displays the index page for coupons.
+        /// </summary>
+        /// <returns>Returns the view with the list of coupons.</returns>
         public async Task<IActionResult> CouponIndex()
         {
             List<CouponDto>? list = new();
@@ -23,7 +34,7 @@ namespace SmartMenu.Web.Controllers
 
             if (response != null && response.IsSuccess)
             {
-                list= JsonConvert.DeserializeObject<List<CouponDto>>(Convert.ToString(response.Result));
+                list = JsonConvert.DeserializeObject<List<CouponDto>>(Convert.ToString(response.Result));
             }
             else
             {
@@ -33,11 +44,20 @@ namespace SmartMenu.Web.Controllers
             return View(list);
         }
 
+        /// <summary>
+        /// Displays the create page for coupons.
+        /// </summary>
+        /// <returns>Returns the view for creating a coupon.</returns>
         public async Task<IActionResult> CouponCreate()
         {
             return View();
         }
 
+        /// <summary>
+        /// Handles the post request to create a new coupon.
+        /// </summary>
+        /// <param name="model">The data transfer object for the coupon.</param>
+        /// <returns>Returns the view with the created coupon or redirects to the index page.</returns>
         [HttpPost]
         public async Task<IActionResult> CouponCreate(CouponDto model)
         {
@@ -58,15 +78,20 @@ namespace SmartMenu.Web.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Displays the delete page for a coupon.
+        /// </summary>
+        /// <param name="couponId">The ID of the coupon to be deleted.</param>
+        /// <returns>Returns the view with the coupon to be deleted.</returns>
         public async Task<IActionResult> CouponDelete(int couponId)
         {
-			ResponseDto? response = await _couponService.GetCouponByIdAsync(couponId);
+            ResponseDto? response = await _couponService.GetCouponByIdAsync(couponId);
 
-			if (response != null && response.IsSuccess)
-			{
-				CouponDto? model= JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(response.Result));
+            if (response != null && response.IsSuccess)
+            {
+                CouponDto? model = JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(response.Result));
                 return View(model);
-			}
+            }
             else
             {
                 TempData["error"] = response?.Message;
@@ -74,6 +99,11 @@ namespace SmartMenu.Web.Controllers
             return NotFound();
         }
 
+        /// <summary>
+        /// Handles the post request to delete a coupon.
+        /// </summary>
+        /// <param name="couponDto">The data transfer object for the coupon to be deleted.</param>
+        /// <returns>Returns the view with the deleted coupon or redirects to the index page.</returns>
         [HttpPost]
         public async Task<IActionResult> CouponDelete(CouponDto couponDto)
         {
@@ -90,6 +120,5 @@ namespace SmartMenu.Web.Controllers
             }
             return View(couponDto);
         }
-
     }
 }

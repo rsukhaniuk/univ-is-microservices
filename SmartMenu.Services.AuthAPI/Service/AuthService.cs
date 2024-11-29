@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace SmartMenu.Services.AuthAPI.Service
 {
+    /// <summary>
+    /// Service for handling authentication-related operations.
+    /// </summary>
     public class AuthService : IAuthService
     {
         private readonly AppDbContext _db;
@@ -13,15 +16,28 @@ namespace SmartMenu.Services.AuthAPI.Service
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthService"/> class.
+        /// </summary>
+        /// <param name="db">The database context.</param>
+        /// <param name="jwtTokenGenerator">The JWT token generator.</param>
+        /// <param name="userManager">The user manager.</param>
+        /// <param name="roleManager">The role manager.</param>
         public AuthService(AppDbContext db, IJwtTokenGenerator jwtTokenGenerator,
             UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-                _db = db;
+            _db = db;
             _jwtTokenGenerator = jwtTokenGenerator;
             _userManager = userManager;
             _roleManager = roleManager;
         }
 
+        /// <summary>
+        /// Assigns a role to a user.
+        /// </summary>
+        /// <param name="email">The email of the user.</param>
+        /// <param name="roleName">The name of the role.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains a boolean indicating success.</returns>
         public async Task<bool> AssignRole(string email, string roleName)
         {
             var user = _db.ApplicationUsers.FirstOrDefault(u => u.Email.ToLower() == email.ToLower());
@@ -29,30 +45,34 @@ namespace SmartMenu.Services.AuthAPI.Service
             {
                 if (!_roleManager.RoleExistsAsync(roleName).GetAwaiter().GetResult())
                 {
-                    //create role if it does not exist
+                    // Create role if it does not exist
                     _roleManager.CreateAsync(new IdentityRole(roleName)).GetAwaiter().GetResult();
                 }
                 await _userManager.AddToRoleAsync(user, roleName);
                 return true;
             }
             return false;
-
         }
 
+        /// <summary>
+        /// Logs in a user.
+        /// </summary>
+        /// <param name="loginRequestDto">The login request data transfer object.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the login response data transfer object.</returns>
         public async Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto)
         {
             var user = _db.ApplicationUsers.FirstOrDefault(u => u.UserName.ToLower() == loginRequestDto.UserName.ToLower());
 
-            bool isValid = await _userManager.CheckPasswordAsync(user,loginRequestDto.Password);
+            bool isValid = await _userManager.CheckPasswordAsync(user, loginRequestDto.Password);
 
-            if(user==null || isValid == false)
+            if (user == null || isValid == false)
             {
-                return new LoginResponseDto() { User = null,Token="" };
+                return new LoginResponseDto() { User = null, Token = "" };
             }
 
-            //if user was found , Generate JWT Token
+            // If user was found, generate JWT token
             var roles = await _userManager.GetRolesAsync(user);
-            var token = _jwtTokenGenerator.GenerateToken(user,roles);
+            var token = _jwtTokenGenerator.GenerateToken(user, roles);
 
             UserDto userDTO = new()
             {
@@ -71,6 +91,11 @@ namespace SmartMenu.Services.AuthAPI.Service
             return loginResponseDto;
         }
 
+        /// <summary>
+        /// Registers a new user.
+        /// </summary>
+        /// <param name="registrationRequestDto">The registration request data transfer object.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains a string indicating the result of the registration.</returns>
         public async Task<string> Register(RegistrationRequestDto registrationRequestDto)
         {
             ApplicationUser user = new()
@@ -84,7 +109,7 @@ namespace SmartMenu.Services.AuthAPI.Service
 
             try
             {
-                var result =await  _userManager.CreateAsync(user,registrationRequestDto.Password);
+                var result = await _userManager.CreateAsync(user, registrationRequestDto.Password);
                 if (result.Succeeded)
                 {
                     var userToReturn = _db.ApplicationUsers.First(u => u.UserName == registrationRequestDto.Email);
@@ -98,21 +123,24 @@ namespace SmartMenu.Services.AuthAPI.Service
                     };
 
                     return "";
-
                 }
                 else
                 {
                     return result.Errors.FirstOrDefault().Description;
                 }
-
             }
             catch (Exception ex)
             {
-
+                // Handle exception
             }
             return "Error Encountered";
         }
 
+        /// <summary>
+        /// Edits a user's account information.
+        /// </summary>
+        /// <param name="editAccountDto">The edit account data transfer object.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains a boolean indicating success.</returns>
         public async Task<bool> EditAccount(EditAccountDto editAccountDto)
         {
             var user = await _userManager.FindByIdAsync(editAccountDto.UserId);
@@ -145,6 +173,11 @@ namespace SmartMenu.Services.AuthAPI.Service
             return result.Succeeded;
         }
 
+        /// <summary>
+        /// Deletes a user's account.
+        /// </summary>
+        /// <param name="userId">The user ID.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains a boolean indicating success.</returns>
         public async Task<bool> DeleteAccount(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -155,6 +188,12 @@ namespace SmartMenu.Services.AuthAPI.Service
             return result.Succeeded;
         }
 
+        /// <summary>
+        /// Changes a user's password.
+        /// </summary>
+        /// <param name="userId">The user ID.</param>
+        /// <param name="changePasswordDto">The change password data transfer object.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains a boolean indicating success.</returns>
         public async Task<bool> ChangePassword(string userId, ChangePasswordDto changePasswordDto)
         {
             // Ensure the new password matches the confirmation password
@@ -172,6 +211,11 @@ namespace SmartMenu.Services.AuthAPI.Service
             return result.Succeeded;
         }
 
+        /// <summary>
+        /// Gets the details of a user.
+        /// </summary>
+        /// <param name="userId">The user ID.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the edit account data transfer object.</returns>
         public async Task<EditAccountDto?> GetUserDetailsAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);

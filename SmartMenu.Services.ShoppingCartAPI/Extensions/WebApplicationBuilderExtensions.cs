@@ -4,8 +4,16 @@ using System.Text;
 
 namespace SmartMenu.Services.ShoppingCartAPI.Extensions
 {
+    /// <summary>
+    /// Provides extension methods for configuring the web application builder.
+    /// </summary>
     public static class WebApplicationBuilderExtensions
     {
+        /// <summary>
+        /// Adds JWT authentication to the web application builder.
+        /// </summary>
+        /// <param name="builder">The web application builder.</param>
+        /// <returns>The web application builder with authentication configured.</returns>
         public static WebApplicationBuilder AddAppAuthetication(this WebApplicationBuilder builder)
         {
             var settingsSection = builder.Configuration.GetSection("ApiSettings");
@@ -15,7 +23,6 @@ namespace SmartMenu.Services.ShoppingCartAPI.Extensions
             var audience = settingsSection.GetValue<string>("Audience");
 
             var key = Encoding.ASCII.GetBytes(secret);
-
 
             builder.Services.AddAuthentication(x =>
             {

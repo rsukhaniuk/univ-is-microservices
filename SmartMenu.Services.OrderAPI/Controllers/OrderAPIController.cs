@@ -3,7 +3,7 @@ using SmartMenu.Services.OrderAPI.Data;
 using SmartMenu.Services.OrderAPI.Models;
 using SmartMenu.Services.OrderAPI.Models.Dto;
 using SmartMenu.Services.OrderAPI.Utility;
-using SmartMenu.Services.ShoppingCartAPI.Service.IService;
+using SmartMenu.Services.OrderAPI.Service.IService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +22,14 @@ namespace SmartMenu.Services.OrderAPI.Controllers
         private readonly AppDbContext _db;
         private IProductService _productService;
         private readonly IConfiguration _configuration;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OrderAPIController"/> class.
+        /// </summary>
+        /// <param name="db">The database context.</param>
+        /// <param name="productService">The product service.</param>
+        /// <param name="mapper">The mapper.</param>
+        /// <param name="configuration">The configuration.</param>
         public OrderAPIController(AppDbContext db,
             IProductService productService, IMapper mapper, IConfiguration configuration)
         {
@@ -32,6 +40,11 @@ namespace SmartMenu.Services.OrderAPI.Controllers
             _configuration = configuration;
         }
 
+        /// <summary>
+        /// Gets the orders for the specified user.
+        /// </summary>
+        /// <param name="userId">The user ID.</param>
+        /// <returns>The response containing the list of orders.</returns>
         [Authorize]
         [HttpGet("GetOrders")]
         public ResponseDto? Get(string? userId = "")
@@ -45,11 +58,11 @@ namespace SmartMenu.Services.OrderAPI.Controllers
                 }
                 else
                 {
-                    objList = _db.OrderHeaders.Include(u => u.OrderDetails).Where(u=>u.UserId==userId).OrderByDescending(u => u.OrderHeaderId).ToList();
+                    objList = _db.OrderHeaders.Include(u => u.OrderDetails).Where(u => u.UserId == userId).OrderByDescending(u => u.OrderHeaderId).ToList();
                 }
                 _response.Result = _mapper.Map<IEnumerable<OrderHeaderDto>>(objList);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 _response.IsSuccess = false;
                 _response.Message = ex.Message;
@@ -57,6 +70,11 @@ namespace SmartMenu.Services.OrderAPI.Controllers
             return _response;
         }
 
+        /// <summary>
+        /// Gets the order by ID.
+        /// </summary>
+        /// <param name="id">The order ID.</param>
+        /// <returns>The response containing the order details.</returns>
         [Authorize]
         [HttpGet("GetOrder/{id:int}")]
         public ResponseDto? Get(int id)
@@ -74,8 +92,11 @@ namespace SmartMenu.Services.OrderAPI.Controllers
             return _response;
         }
 
-
-
+        /// <summary>
+        /// Creates a new order.
+        /// </summary>
+        /// <param name="cartDto">The cart data transfer object.</param>
+        /// <returns>The response containing the created order details.</returns>
         [Authorize]
         [HttpPost("CreateOrder")]
         public async Task<ResponseDto> CreateOrder([FromBody] CartDto cartDto)
@@ -96,33 +117,35 @@ namespace SmartMenu.Services.OrderAPI.Controllers
             catch (Exception ex)
             {
                 _response.IsSuccess = false;
-                _response.Message=ex.Message;
+                _response.Message = ex.Message;
             }
             return _response;
         }
 
-
+        /// <summary>
+        /// Creates a Stripe session for payment.
+        /// </summary>
+        /// <param name="stripeRequestDto">The Stripe request data transfer object.</param>
+        /// <returns>The response containing the Stripe session details.</returns>
         [Authorize]
         [HttpPost("CreateStripeSession")]
         public async Task<ResponseDto> CreateStripeSession([FromBody] StripeRequestDto stripeRequestDto)
         {
             try
             {
-                
                 var options = new SessionCreateOptions
                 {
                     SuccessUrl = stripeRequestDto.ApprovedUrl,
                     CancelUrl = stripeRequestDto.CancelUrl,
-                    LineItems = new List<SessionLineItemOptions>(),                     
+                    LineItems = new List<SessionLineItemOptions>(),
                     Mode = "payment",
-                    
                 };
 
                 var DiscountsObj = new List<SessionDiscountOptions>()
                 {
                     new SessionDiscountOptions
                     {
-                        Coupon=stripeRequestDto.OrderHeader.CouponCode
+                        Coupon = stripeRequestDto.OrderHeader.CouponCode
                     }
                 };
 
@@ -156,24 +179,26 @@ namespace SmartMenu.Services.OrderAPI.Controllers
                 orderHeader.StripeSessionId = session.Id;
                 _db.SaveChanges();
                 _response.Result = stripeRequestDto;
-
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                _response.Message= ex.Message;
+                _response.Message = ex.Message;
                 _response.IsSuccess = false;
             }
             return _response;
         }
 
-
+        /// <summary>
+        /// Validates the Stripe session for payment.
+        /// </summary>
+        /// <param name="orderHeaderId">The order header ID.</param>
+        /// <returns>The response containing the validation result.</returns>
         [Authorize]
         [HttpPost("ValidateStripeSession")]
         public async Task<ResponseDto> ValidateStripeSession([FromBody] int orderHeaderId)
         {
             try
             {
-
                 OrderHeader orderHeader = _db.OrderHeaders.First(u => u.OrderHeaderId == orderHeaderId);
 
                 var service = new SessionService();
@@ -182,7 +207,7 @@ namespace SmartMenu.Services.OrderAPI.Controllers
                 var paymentIntentService = new PaymentIntentService();
                 PaymentIntent paymentIntent = paymentIntentService.Get(session.PaymentIntentId);
 
-                if(paymentIntent.Status== "succeeded")
+                if (paymentIntent.Status == "succeeded")
                 {
                     //then payment was successful
                     orderHeader.PaymentIntentId = paymentIntent.Id;
@@ -197,7 +222,6 @@ namespace SmartMenu.Services.OrderAPI.Controllers
                     string topicName = _configuration.GetValue<string>("TopicAndQueueNames:OrderCreatedTopic");
                     _response.Result = _mapper.Map<OrderHeaderDto>(orderHeader);
                 }
-
             }
             catch (Exception ex)
             {
@@ -207,7 +231,12 @@ namespace SmartMenu.Services.OrderAPI.Controllers
             return _response;
         }
 
-
+        /// <summary>
+        /// Updates the status of an order.
+        /// </summary>
+        /// <param name="orderId">The order ID.</param>
+        /// <param name="newStatus">The new status.</param>
+        /// <returns>The response containing the update result.</returns>
         [Authorize]
         [HttpPost("UpdateOrderStatus/{orderId:int}")]
         public async Task<ResponseDto> UpdateOrderStatus(int orderId, [FromBody] string newStatus)
@@ -217,7 +246,7 @@ namespace SmartMenu.Services.OrderAPI.Controllers
                 OrderHeader orderHeader = _db.OrderHeaders.First(u => u.OrderHeaderId == orderId);
                 if (orderHeader != null)
                 {
-                    if(newStatus == SD.Status_Cancelled)
+                    if (newStatus == SD.Status_Cancelled)
                     {
                         //we will give refund
                         var options = new RefundCreateOptions

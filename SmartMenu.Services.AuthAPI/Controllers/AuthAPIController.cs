@@ -9,6 +9,9 @@ using SmartMenu.Services.AuthAPI.Models;
 
 namespace SmartMenu.Services.AuthAPI.Controllers
 {
+    /// <summary>
+    /// Controller for handling authentication-related operations.
+    /// </summary>
     [Route("api/auth")]
     [ApiController]
     public class AuthAPIController : ControllerBase
@@ -16,28 +19,40 @@ namespace SmartMenu.Services.AuthAPI.Controllers
         private readonly IAuthService _authService;
         protected ResponseDto _response;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthAPIController"/> class.
+        /// </summary>
+        /// <param name="authService">The authentication service.</param>
+        /// <param name="configuration">The configuration settings.</param>
         public AuthAPIController(IAuthService authService, IConfiguration configuration)
         {
             _authService = authService;
             _response = new();
         }
 
-
-
+        /// <summary>
+        /// Registers a new user.
+        /// </summary>
+        /// <param name="model">The registration request data.</param>
+        /// <returns>An <see cref="IActionResult"/> representing the result of the operation.</returns>
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegistrationRequestDto model)
         {
-
             var errorMessage = await _authService.Register(model);
             if (!string.IsNullOrEmpty(errorMessage))
             {
                 _response.IsSuccess = false;
-                _response.Message= errorMessage;
+                _response.Message = errorMessage;
                 return BadRequest(_response);
             }
             return Ok(_response);
         }
 
+        /// <summary>
+        /// Logs in a user.
+        /// </summary>
+        /// <param name="model">The login request data.</param>
+        /// <returns>An <see cref="IActionResult"/> representing the result of the operation.</returns>
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto model)
         {
@@ -50,13 +65,17 @@ namespace SmartMenu.Services.AuthAPI.Controllers
             }
             _response.Result = loginResponse;
             return Ok(_response);
-
         }
 
+        /// <summary>
+        /// Assigns a role to a user.
+        /// </summary>
+        /// <param name="model">The registration request data.</param>
+        /// <returns>An <see cref="IActionResult"/> representing the result of the operation.</returns>
         [HttpPost("AssignRole")]
         public async Task<IActionResult> AssignRole([FromBody] RegistrationRequestDto model)
         {
-            var assignRoleSuccessful = await _authService.AssignRole(model.Email,model.Role.ToUpper());
+            var assignRoleSuccessful = await _authService.AssignRole(model.Email, model.Role.ToUpper());
             if (!assignRoleSuccessful)
             {
                 _response.IsSuccess = false;
@@ -64,16 +83,19 @@ namespace SmartMenu.Services.AuthAPI.Controllers
                 return BadRequest(_response);
             }
             return Ok(_response);
-
         }
 
+        /// <summary>
+        /// Edits the account details of the logged-in user.
+        /// </summary>
+        /// <param name="model">The account edit data.</param>
+        /// <returns>An <see cref="IActionResult"/> representing the result of the operation.</returns>
         [Authorize]
         [HttpPut("EditAccount")]
         public async Task<IActionResult> EditAccount([FromBody] EditAccountDto model)
         {
             try
             {
-                // Retrieve the logged-in user's ID from JWT claims
                 var loggedInUserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
                 if (string.IsNullOrEmpty(loggedInUserId) || !loggedInUserId.Equals(model.UserId, StringComparison.OrdinalIgnoreCase))
@@ -83,7 +105,6 @@ namespace SmartMenu.Services.AuthAPI.Controllers
                     return Unauthorized(_response);
                 }
 
-                // Perform the edit operation
                 var editSuccessful = await _authService.EditAccount(model);
                 if (!editSuccessful)
                 {
@@ -103,13 +124,17 @@ namespace SmartMenu.Services.AuthAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Deletes the account of the logged-in user.
+        /// </summary>
+        /// <param name="userId">The user ID.</param>
+        /// <returns>An <see cref="IActionResult"/> representing the result of the operation.</returns>
         [Authorize]
         [HttpDelete("DeleteAccount/{userId}")]
         public async Task<IActionResult> DeleteAccount(string userId)
         {
             try
             {
-                // Retrieve the logged-in user's ID from JWT claims
                 var loggedInUserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
                 if (string.IsNullOrEmpty(loggedInUserId) || !loggedInUserId.Equals(userId, StringComparison.OrdinalIgnoreCase))
@@ -119,7 +144,6 @@ namespace SmartMenu.Services.AuthAPI.Controllers
                     return Unauthorized(_response);
                 }
 
-                // Perform the delete operation
                 var deleteSuccessful = await _authService.DeleteAccount(userId);
                 if (!deleteSuccessful)
                 {
@@ -139,13 +163,17 @@ namespace SmartMenu.Services.AuthAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Changes the password of the logged-in user.
+        /// </summary>
+        /// <param name="model">The password change data.</param>
+        /// <returns>An <see cref="IActionResult"/> representing the result of the operation.</returns>
         [Authorize]
         [HttpPost("ChangePassword")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto model)
         {
             try
             {
-                // Retrieve the logged-in user's ID from JWT claims
                 var loggedInUserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
                 if (string.IsNullOrEmpty(loggedInUserId))
@@ -155,7 +183,6 @@ namespace SmartMenu.Services.AuthAPI.Controllers
                     return Unauthorized(_response);
                 }
 
-                // Perform the password change
                 var changeSuccessful = await _authService.ChangePassword(loggedInUserId, model);
                 if (!changeSuccessful)
                 {
@@ -175,13 +202,17 @@ namespace SmartMenu.Services.AuthAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets the details of the logged-in user.
+        /// </summary>
+        /// <param name="userId">The user ID.</param>
+        /// <returns>An <see cref="IActionResult"/> representing the result of the operation.</returns>
         [Authorize]
         [HttpGet("GetUserDetails/{userId}")]
         public async Task<IActionResult> GetUserDetails(string userId)
         {
             try
             {
-                // Retrieve the logged-in user's ID from JWT claims
                 var loggedInUserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
                 if (string.IsNullOrEmpty(loggedInUserId) || !loggedInUserId.Equals(userId, StringComparison.OrdinalIgnoreCase))
@@ -191,7 +222,6 @@ namespace SmartMenu.Services.AuthAPI.Controllers
                     return Unauthorized(_response);
                 }
 
-                // Retrieve user details
                 var userDetails = await _authService.GetUserDetailsAsync(userId);
 
                 if (userDetails == null)

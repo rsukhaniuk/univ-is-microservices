@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SmartMenu.Services.ProductAPI.Controllers
 {
+    /// <summary>
+    /// API controller for managing categories.
+    /// </summary>
     [Route("api/category")]
     [ApiController]
     public class CategoryAPIController : ControllerBase
@@ -15,6 +18,11 @@ namespace SmartMenu.Services.ProductAPI.Controllers
         private ResponseDto _response;
         private IMapper _mapper;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CategoryAPIController"/> class.
+        /// </summary>
+        /// <param name="db">The database context.</param>
+        /// <param name="mapper">The AutoMapper instance.</param>
         public CategoryAPIController(AppDbContext db, IMapper mapper)
         {
             _db = db;
@@ -22,6 +30,10 @@ namespace SmartMenu.Services.ProductAPI.Controllers
             _response = new ResponseDto();
         }
 
+        /// <summary>
+        /// Gets the list of categories.
+        /// </summary>
+        /// <returns>The response containing the list of categories.</returns>
         [HttpGet]
         public ResponseDto Get()
         {
@@ -38,6 +50,11 @@ namespace SmartMenu.Services.ProductAPI.Controllers
             return _response;
         }
 
+        /// <summary>
+        /// Gets a category by ID.
+        /// </summary>
+        /// <param name="id">The category ID.</param>
+        /// <returns>The response containing the category.</returns>
         [HttpGet]
         [Route("{id:int}")]
         public ResponseDto Get(int id)
@@ -55,6 +72,11 @@ namespace SmartMenu.Services.ProductAPI.Controllers
             return _response;
         }
 
+        /// <summary>
+        /// Creates a new category.
+        /// </summary>
+        /// <param name="CategoryDto">The category data transfer object.</param>
+        /// <returns>The response containing the created category.</returns>
         [HttpPost]
         [Authorize(Roles = "ADMIN")]
         public ResponseDto Post(CategoryDto CategoryDto)
@@ -64,7 +86,6 @@ namespace SmartMenu.Services.ProductAPI.Controllers
                 Category category = _mapper.Map<Category>(CategoryDto);
                 _db.Categories.Add(category);
                 _db.SaveChanges();
-
 
                 _response.Result = _mapper.Map<CategoryDto>(category);
             }
@@ -76,7 +97,11 @@ namespace SmartMenu.Services.ProductAPI.Controllers
             return _response;
         }
 
-
+        /// <summary>
+        /// Updates an existing category.
+        /// </summary>
+        /// <param name="CategoryDto">The category data transfer object.</param>
+        /// <returns>The response containing the updated category.</returns>
         [HttpPut]
         [Authorize(Roles = "ADMIN")]
         public ResponseDto Put(CategoryDto CategoryDto)
@@ -98,6 +123,11 @@ namespace SmartMenu.Services.ProductAPI.Controllers
             return _response;
         }
 
+        /// <summary>
+        /// Deletes a category by ID.
+        /// </summary>
+        /// <param name="id">The category ID.</param>
+        /// <returns>The response indicating the result of the delete operation.</returns>
         [HttpDelete]
         [Route("{id:int}")]
         [Authorize(Roles = "ADMIN")]
@@ -117,6 +147,5 @@ namespace SmartMenu.Services.ProductAPI.Controllers
             }
             return _response;
         }
-
     }
 }

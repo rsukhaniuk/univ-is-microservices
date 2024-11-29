@@ -20,6 +20,15 @@ namespace SmartMenu.Services.ShoppingCartAPI.Controllers
         private IProductService _productService;
         private ICouponService _couponService;
         private IConfiguration _configuration;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CartAPIController"/> class.
+        /// </summary>
+        /// <param name="db">The database context.</param>
+        /// <param name="mapper">The AutoMapper instance.</param>
+        /// <param name="productService">The product service.</param>
+        /// <param name="couponService">The coupon service.</param>
+        /// <param name="configuration">The configuration instance.</param>
         public CartAPIController(AppDbContext db,
             IMapper mapper, IProductService productService, ICouponService couponService, IConfiguration configuration)
         {
@@ -30,6 +39,12 @@ namespace SmartMenu.Services.ShoppingCartAPI.Controllers
             _couponService = couponService;
             _configuration = configuration;
         }
+
+        /// <summary>
+        /// Gets the cart for a specific user.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>A <see cref="ResponseDto"/> containing the cart details.</returns>
         [HttpGet("GetCart/{userId}")]
         public async Task<ResponseDto> GetCart(string userId)
         {
@@ -40,7 +55,7 @@ namespace SmartMenu.Services.ShoppingCartAPI.Controllers
                     CartHeader = _mapper.Map<CartHeaderDto>(_db.CartHeaders.First(u => u.UserId == userId))
                 };
                 cart.CartDetails = _mapper.Map<IEnumerable<CartDetailsDto>>(_db.CartDetails
-                    .Where(u=>u.CartHeaderId==cart.CartHeader.CartHeaderId));
+                    .Where(u => u.CartHeaderId == cart.CartHeader.CartHeaderId));
 
                 IEnumerable<ProductDto> productDtos = await _productService.GetProducts();
 
@@ -54,14 +69,14 @@ namespace SmartMenu.Services.ShoppingCartAPI.Controllers
                 if (!string.IsNullOrEmpty(cart.CartHeader.CouponCode))
                 {
                     CouponDto coupon = await _couponService.GetCoupon(cart.CartHeader.CouponCode);
-                    if(coupon!=null && cart.CartHeader.CartTotal > coupon.MinAmount)
+                    if (coupon != null && cart.CartHeader.CartTotal > coupon.MinAmount)
                     {
                         cart.CartHeader.CartTotal -= coupon.DiscountAmount;
-                        cart.CartHeader.Discount=coupon.DiscountAmount;
+                        cart.CartHeader.Discount = coupon.DiscountAmount;
                     }
                 }
 
-                _response.Result=cart;
+                _response.Result = cart;
             }
             catch (Exception ex)
             {
@@ -71,7 +86,11 @@ namespace SmartMenu.Services.ShoppingCartAPI.Controllers
             return _response;
         }
 
-
+        /// <summary>
+        /// Applies a coupon to the cart.
+        /// </summary>
+        /// <param name="cartDto">The cart data transfer object.</param>
+        /// <returns>A <see cref="ResponseDto"/> indicating the result of the operation.</returns>
         [HttpPost("ApplyCoupon")]
         public async Task<object> ApplyCoupon([FromBody] CartDto cartDto)
         {
@@ -132,24 +151,11 @@ namespace SmartMenu.Services.ShoppingCartAPI.Controllers
             return _response;
         }
 
-        [HttpPost("EmailCartRequest")]
-        public async Task<object> EmailCartRequest([FromBody] CartDto cartDto)
-        {
-            try
-            {
-                _response.Result = true;
-            }
-            catch (Exception ex)
-            {
-                _response.IsSuccess = false;
-                _response.Message = ex.ToString();
-            }
-            return _response;
-        }
-
-
-
-
+        /// <summary>
+        /// Upserts the cart.
+        /// </summary>
+        /// <param name="cartDto">The cart data transfer object.</param>
+        /// <returns>A <see cref="ResponseDto"/> indicating the result of the operation.</returns>
         [HttpPost("CartUpsert")]
         public async Task<ResponseDto> CartUpsert(CartDto cartDto)
         {
@@ -195,12 +201,17 @@ namespace SmartMenu.Services.ShoppingCartAPI.Controllers
             }
             catch (Exception ex)
             {
-                _response.Message= ex.Message.ToString();
-                _response.IsSuccess= false;
+                _response.Message = ex.Message.ToString();
+                _response.IsSuccess = false;
             }
             return _response;
         }
 
+        /// <summary>
+        /// Increases the quantity of a cart item.
+        /// </summary>
+        /// <param name="cartDetailsId">The cart details identifier.</param>
+        /// <returns>A <see cref="ResponseDto"/> indicating the result of the operation.</returns>
         [HttpPost("IncreaseQuantity/{cartDetailsId}")]
         public async Task<ResponseDto> IncreaseQuantity(int cartDetailsId)
         {
@@ -232,6 +243,11 @@ namespace SmartMenu.Services.ShoppingCartAPI.Controllers
             return _response;
         }
 
+        /// <summary>
+        /// Decreases the quantity of a cart item.
+        /// </summary>
+        /// <param name="cartDetailsId">The cart details identifier.</param>
+        /// <returns>A <see cref="ResponseDto"/> indicating the result of the operation.</returns>
         [HttpPost("DecreaseQuantity/{cartDetailsId}")]
         public async Task<ResponseDto> DecreaseQuantity(int cartDetailsId)
         {
@@ -271,10 +287,13 @@ namespace SmartMenu.Services.ShoppingCartAPI.Controllers
             return _response;
         }
 
-
-
+        /// <summary>
+        /// Removes a cart item.
+        /// </summary>
+        /// <param name="cartDetailsId">The cart details identifier.</param>
+        /// <returns>A <see cref="ResponseDto"/> indicating the result of the operation.</returns>
         [HttpPost("RemoveCart")]
-        public async Task<ResponseDto> RemoveCart([FromBody]int cartDetailsId)
+        public async Task<ResponseDto> RemoveCart([FromBody] int cartDetailsId)
         {
             try
             {
@@ -291,7 +310,7 @@ namespace SmartMenu.Services.ShoppingCartAPI.Controllers
                     _db.CartHeaders.Remove(cartHeaderToRemove);
                 }
                 await _db.SaveChangesAsync();
-               
+
                 _response.Result = true;
             }
             catch (Exception ex)
@@ -302,6 +321,11 @@ namespace SmartMenu.Services.ShoppingCartAPI.Controllers
             return _response;
         }
 
+        /// <summary>
+        /// Clears the cart for a specific user.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>A <see cref="ResponseDto"/> indicating the result of the operation.</returns>
         [HttpPost("ClearCart/{userId}")]
         public async Task<ResponseDto> ClearCart(string userId)
         {
@@ -332,6 +356,5 @@ namespace SmartMenu.Services.ShoppingCartAPI.Controllers
 
             return _response;
         }
-
     }
 }
