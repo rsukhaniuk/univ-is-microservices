@@ -13,17 +13,33 @@ namespace SmartMenu.Web.Controllers
     {
         private readonly IProductService _productService;
         private readonly ICartService _cartService;
-        public HomeController(IProductService productService, ICartService cartService)
+        private readonly ICategoryService _categoryService;
+        public HomeController(IProductService productService, ICartService cartService, ICategoryService categoryService)
         {
             _productService = productService;
             _cartService = cartService;
+            _categoryService = categoryService;
         }
 
 
-        public async Task<IActionResult> Index(string? searchTerm)
+        public async Task<IActionResult> Index(string? searchTerm, int? categoryId)
         {
             List<ProductDto>? list = new();
+            List<CategoryDto>? categories = new();
 
+            // Fetch all categories
+            ResponseDto? categoryResponse = await _categoryService.GetAllCategoriesAsync();
+            if (categoryResponse != null && categoryResponse.IsSuccess)
+            {
+                categories = JsonConvert.DeserializeObject<List<CategoryDto>>(Convert.ToString(categoryResponse.Result));
+                ViewBag.Categories = categories;
+            }
+            else
+            {
+                TempData["error"] = categoryResponse?.Message;
+            }
+
+            // Fetch all products
             ResponseDto? response = await _productService.GetAllProductsAsync();
 
             if (response != null && response.IsSuccess)
@@ -38,6 +54,12 @@ namespace SmartMenu.Web.Controllers
                             p.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
                         .ToList();
                 }
+
+                // Filter products by category
+                if (categoryId.HasValue)
+                {
+                    list = list?.Where(p => p.CategoryId == categoryId.Value).ToList();
+                }
             }
             else
             {
@@ -47,7 +69,7 @@ namespace SmartMenu.Web.Controllers
             return View(list);
         }
 
-        
+
         public async Task<IActionResult> ProductDetails(int productId)
         {
             ProductDto? model = new();

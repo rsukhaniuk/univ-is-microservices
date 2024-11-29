@@ -1,4 +1,8 @@
 ﻿@model IEnumerable<ProductDto>
+@{
+    var categories = ViewBag.Categories as List<CategoryDto>;
+    var selectedCategoryId = ViewContext.HttpContext.Request.Query["categoryId"].ToString();
+}
 
 <form method="get" asp-action="Index">
     <div class="container my-3">
@@ -7,6 +11,23 @@
                 <div class="input-group">
                     <input type="text" name="searchTerm" class="form-control" placeholder="Search products..."
                            value="@ViewContext.HttpContext.Request.Query["searchTerm"]" />
+                    <select name="categoryId" class="form-select mx-2">
+                        <option value="">All Categories</option>
+                        @if (categories != null)
+                        {
+                            foreach (var category in categories)
+                            {
+                                if (selectedCategoryId == category.CategoryId.ToString())
+                                {
+                                    <option value="@category.CategoryId" selected>@category.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@category.CategoryId">@category.Name</option>
+                                }
+                            }
+                        }
+                    </select>
                     <button type="submit" class="btn btn-primary">Search</button>
                 </div>
             </div>
