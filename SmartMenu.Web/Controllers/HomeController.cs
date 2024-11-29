@@ -22,8 +22,9 @@ namespace SmartMenu.Web.Controllers
         }
 
 
-        public async Task<IActionResult> Index(string? searchTerm, int? categoryId)
+        public async Task<IActionResult> Index(string? searchTerm, int? categoryId, int pageNumber = 1)
         {
+            const int pageSize = 6;
             List<ProductDto>? list = new();
             List<CategoryDto>? categories = new();
 
@@ -41,24 +42,23 @@ namespace SmartMenu.Web.Controllers
 
             // Fetch all products
             ResponseDto? response = await _productService.GetAllProductsAsync();
-
             if (response != null && response.IsSuccess)
             {
                 list = JsonConvert.DeserializeObject<List<ProductDto>>(Convert.ToString(response.Result));
 
-                // Filter products if search term is provided
+                // Filter by search term
                 if (!string.IsNullOrEmpty(searchTerm))
                 {
-                    list = list?.Where(p =>
-                            p.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                            p.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+                    list = list.Where(p =>
+                        p.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                        p.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
                         .ToList();
                 }
 
-                // Filter products by category
+                // Filter by category
                 if (categoryId.HasValue)
                 {
-                    list = list?.Where(p => p.CategoryId == categoryId.Value).ToList();
+                    list = list.Where(p => p.CategoryId == categoryId.Value).ToList();
                 }
             }
             else
@@ -66,7 +66,17 @@ namespace SmartMenu.Web.Controllers
                 TempData["error"] = response?.Message;
             }
 
-            return View(list);
+            // Pagination
+            int totalItems = list.Count;
+            int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+            var paginatedList = list.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
+            // Pass pagination details to the view
+            ViewBag.PageNumber = pageNumber;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalPages = totalPages;
+
+            return View(paginatedList);
         }
 
 

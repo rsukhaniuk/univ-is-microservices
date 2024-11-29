@@ -2,6 +2,8 @@
 @{
     var categories = ViewBag.Categories as List<CategoryDto>;
     var selectedCategoryId = ViewContext.HttpContext.Request.Query["categoryId"].ToString();
+    var pageNumber = ViewBag.PageNumber ?? 1;
+    var totalPages = ViewBag.TotalPages ?? 1; 
 }
 
 <form method="get" asp-action="Index">
@@ -61,3 +63,21 @@
         </div>
     }
 </div>
+
+<!-- Pagination Controls -->
+<nav class="mt-4">
+    <ul class="pagination justify-content-center">
+        <li class="page-item @(pageNumber == 1 ? "disabled" : "")">
+            <a class="page-link" href="@Url.Action("Index", new { pageNumber = pageNumber - 1, categoryId = selectedCategoryId })">Previous</a>
+        </li>
+        @for (int i = 1; i <= totalPages; i++)
+        {
+            <li class="page-item @(pageNumber == i ? "active" : "")">
+                <a class="page-link" href="@Url.Action("Index", new { pageNumber = i, categoryId = selectedCategoryId })">@i</a>
+            </li>
+        }
+        <li class="page-item @(pageNumber == totalPages ? "disabled" : "")">
+            <a class="page-link" href="@Url.Action("Index", new { pageNumber = pageNumber + 1, categoryId = selectedCategoryId })">Next</a>
+        </li>
+    </ul>
+</nav>
