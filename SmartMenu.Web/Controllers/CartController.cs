@@ -9,24 +9,40 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace SmartMenu.Web.Controllers
 {
+    /// <summary>
+    /// Controller for handling cart operations
+    /// </summary>
     public class CartController : Controller
     {
         private readonly ICartService _cartService;
         private readonly IOrderService _orderService;
         private readonly IAuthService _authService;
+        /// <summary>
+        /// Constructor for CartController
+        /// </summary>
+        /// <param name="cartService">service for cart operations</param>
+        /// <param name="orderService">service for order operations</param>
+        /// <param name="authService">service for authentication operations</param>
         public CartController(ICartService cartService, IOrderService orderService, IAuthService authService)
         {
             _cartService = cartService;
             _orderService = orderService;
             _authService = authService;
         }
-
+        /// <summary>
+        /// Method to display the cart index
+        /// </summary>
+        /// <returns>returns the view for cart index</returns>
         [Authorize]
         public async Task<IActionResult> CartIndex()
         {
             return View(await LoadCartDtoBasedOnLoggedInUser());
         }
 
+        /// <summary>
+        /// Method to add a product to the cart
+        /// </summary>
+        /// <returns>returns the view for cart index</returns>
         [Authorize]
         public async Task<IActionResult> Checkout()
         {
@@ -59,6 +75,11 @@ namespace SmartMenu.Web.Controllers
             return View(cart);
         }
 
+        /// <summary>
+        /// Post-method to checkout the cart
+        /// </summary>
+        /// <param name="cartDto">dto for the cart</param>
+        /// <returns>returns the view for cart index</returns>
         [HttpPost]
         [ActionName("Checkout")]
         public async Task<IActionResult> Checkout(CartDto cartDto)
@@ -105,7 +126,11 @@ namespace SmartMenu.Web.Controllers
             }
             return View();
         }
-
+        /// <summary>
+        /// Method to confirm the order
+        /// </summary>
+        /// <param name="orderId">id of the order</param>
+        /// <returns>returns the view for confirmation</returns>
         public async Task<IActionResult> Confirmation(int orderId)
         {
             ResponseDto? response = await _orderService.ValidateStripeSession(orderId);
@@ -122,6 +147,11 @@ namespace SmartMenu.Web.Controllers
             return View(orderId);
         }
 
+        /// <summary>
+        /// Method to remove a product from the cart
+        /// </summary>
+        /// <param name="cartDetailsId">id of the cart details</param>
+        /// <returns>returns the view for cart index</returns>
         public async Task<IActionResult> Remove(int cartDetailsId)
         {
             var userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?.FirstOrDefault()?.Value;
@@ -134,6 +164,11 @@ namespace SmartMenu.Web.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Post-method to apply a coupon
+        /// </summary>
+        /// <param name="cartDto">dto for the cart</param>
+        /// <returns>returns the view for cart index</returns>
         [HttpPost]
         public async Task<IActionResult> ApplyCoupon(CartDto cartDto)
         {
@@ -163,20 +198,30 @@ namespace SmartMenu.Web.Controllers
 
             return RedirectToAction(nameof(CartIndex));
         }
-        [HttpPost]
-        public async Task<IActionResult> EmailCart(CartDto cartDto)
-        {
-            CartDto cart = await LoadCartDtoBasedOnLoggedInUser();
-            cart.CartHeader.Email = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Email)?.FirstOrDefault()?.Value;
-            ResponseDto? response = await _cartService.EmailCart(cart);
-            if (response != null & response.IsSuccess)
-            {
-                TempData["success"] = "Email will be processed and sent shortly.";
-                return RedirectToAction(nameof(CartIndex));
-            }
-            return View();
-        }
+        ///// <summary>
+        ///// Post-method to email the cart
+        ///// </summary>
+        ///// <param name="cartDto"></param>
+        ///// <returns></returns>
+        //[HttpPost]
+        //public async Task<IActionResult> EmailCart(CartDto cartDto)
+        //{
+        //    CartDto cart = await LoadCartDtoBasedOnLoggedInUser();
+        //    cart.CartHeader.Email = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Email)?.FirstOrDefault()?.Value;
+        //    ResponseDto? response = await _cartService.EmailCart(cart);
+        //    if (response != null & response.IsSuccess)
+        //    {
+        //        TempData["success"] = "Email will be processed and sent shortly.";
+        //        return RedirectToAction(nameof(CartIndex));
+        //    }
+        //    return View();
+        //}
 
+        /// <summary>
+        /// Post-method to remove a coupon
+        /// </summary>
+        /// <param name="cartDto">dto for the cart</param>
+        /// <returns>returns the view for cart index</returns>
         [HttpPost]
         public async Task<IActionResult> RemoveCoupon(CartDto cartDto)
         {
@@ -191,7 +236,11 @@ namespace SmartMenu.Web.Controllers
         }
 
 
-
+        /// <summary>
+        /// Method to increase the quantity of a product in the cart
+        /// </summary>
+        /// <param name="cartDetailsId">id of the cart details</param>
+        /// <returns>returns the view for cart index</returns>
         public async Task<IActionResult> IncreaseQuantity(int cartDetailsId)
         {
             var response = await _cartService.IncreaseQuantityAsync(cartDetailsId);
@@ -208,6 +257,11 @@ namespace SmartMenu.Web.Controllers
             return RedirectToAction(nameof(CartIndex));
         }
 
+        /// <summary>
+        /// Method to decrease the quantity of a product in the cart
+        /// </summary>
+        /// <param name="cartDetailsId">id of the cart details</param>
+        /// <returns>returns the view for cart index</returns>
         public async Task<IActionResult> DecreaseQuantity(int cartDetailsId)
         {
             var response = await _cartService.DecreaseQuantityAsync(cartDetailsId);
@@ -224,7 +278,10 @@ namespace SmartMenu.Web.Controllers
             return RedirectToAction(nameof(CartIndex));
         }
 
-
+        /// <summary>
+        /// Method to load the cart dto based on the logged-in user
+        /// </summary>
+        /// <returns>returns the cart dto</returns>
         private async Task<CartDto> LoadCartDtoBasedOnLoggedInUser()
         {
             var userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?.FirstOrDefault()?.Value;

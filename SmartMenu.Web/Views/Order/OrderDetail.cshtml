@@ -84,6 +84,16 @@
                                             <small class="text-muted">Quantity: @detail.Count</small>
                                         </div>
                                         <span class="text-success">@((detail.Count * detail.Price).ToString("c"))</span>
+
+                                    </li>
+                                }
+                                <!-- Загальна знижка -->
+                                @if (Model.Discount > 0)
+
+                                {
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <strong class="text-danger">Discount</strong>
+                                        <strong class="text-danger">-@Model.Discount.ToString("c")</strong>
                                     </li>
                                 }
                                 <li class="list-group-item bg-primary text-white">
@@ -109,7 +119,7 @@
                                 }
                             }
 
-                            @if (Model.Status == SD.Status_Approved || Model.Status == SD.Status_ReadyForPickup)
+                            @if (Model.Status == SD.Status_Approved)
 
                             {
                                 <button asp-action="CancelOrder" asp-route-orderId="@Model.OrderHeaderId" type="submit" class="btn btn-danger form-control my-1">Cancel Order</button>

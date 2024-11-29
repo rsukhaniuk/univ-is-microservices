@@ -40,7 +40,14 @@
                             <!-- Product Name and Description -->
                             <div class="col-8 col-md-5">
                                 <h5 class="text-dark">@cartObj.Product.Name</h5>
-                                <div class="text-muted small">@Html.Raw(cartObj.Product.Description)</div>
+                                <div class="text-muted small">
+                                    @{
+                                        // Розділити текст на частини за розривом рядка (\n)
+                                        var descriptionParts = cartObj.Product.Description.Split(new[] { "\n" }, StringSplitOptions.None);
+                                        string limitedDescription = descriptionParts[0]; // Взяти тільки перший абзац
+                                    }
+                                    @Html.Raw(limitedDescription)
+                                </div>
                             </div>
 
                             <!-- Price × Quantity -->

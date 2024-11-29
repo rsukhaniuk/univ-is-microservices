@@ -12,17 +12,29 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace SmartMenu.Web.Controllers
 {
+    /// <summary>
+    /// Controller for handling user authentication and account management in the web-application.
+    /// </summary>
     public class AuthController : Controller
     {
         private readonly IAuthService _authService;
         private readonly ITokenProvider _tokenProvider;
 
+        /// <summary>
+        /// Constructor for the AuthController.
+        /// </summary>
+        /// <param name="authService"></param>
+        /// <param name="tokenProvider"></param>
         public AuthController(IAuthService authService, ITokenProvider  tokenProvider)
         {
             _authService = authService;
             _tokenProvider = tokenProvider; 
         }
 
+        /// <summary>
+        /// Get-method for the Login view.
+        /// </summary>
+        /// <returns>returns the Login view with a new LoginRequestDto object.</returns>
         [HttpGet]
         public IActionResult Login()
         {
@@ -30,6 +42,11 @@ namespace SmartMenu.Web.Controllers
             return View(loginRequestDto);
         }
 
+        /// <summary>
+        /// Post-method for the Login view.
+        /// </summary>
+        /// <param name="obj">LoginRequestDto that contains the user's login information.</param>
+        /// <returns>returns the Login view with a new LoginRequestDto object.</returns>
         [HttpPost]
         public async Task<IActionResult> Login(LoginRequestDto obj)
         {
@@ -52,7 +69,10 @@ namespace SmartMenu.Web.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Get-method for the Register view.
+        /// </summary>
+        /// <returns>returns the Register view with a new RegistrationRequestDto object.</returns>
         [HttpGet]
         public IActionResult Register()
         {
@@ -66,6 +86,11 @@ namespace SmartMenu.Web.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Post-method for the Register view.
+        /// </summary>
+        /// <param name="obj">RegistrationRequestDto that contains the user's registration information.</param>
+        /// <returns>returns the Register view with a new RegistrationRequestDto object.</returns>
         [HttpPost]
         public async Task<IActionResult> Register(RegistrationRequestDto obj)
         {
@@ -100,7 +125,10 @@ namespace SmartMenu.Web.Controllers
             return View(obj);
         }
 
-
+        /// <summary>
+        /// Logout the user and clear the token.
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
@@ -108,7 +136,11 @@ namespace SmartMenu.Web.Controllers
             return RedirectToAction("Index","Home");
         }
 
-
+        /// <summary>
+        /// Sign in the user.
+        /// </summary>
+        /// <param name="model">LoginResponseDto that contains the user's login information</param>
+        /// <returns></returns>
         private async Task SignInUser(LoginResponseDto model)
         {
             var handler = new JwtSecurityTokenHandler();
@@ -135,6 +167,10 @@ namespace SmartMenu.Web.Controllers
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
         }
 
+        /// <summary>
+        /// Get-method for the PersonalData view.
+        /// </summary>
+        /// <returns>returns the PersonalData view with a new EditAccountDto object.</returns>
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> PersonalData()
@@ -159,7 +195,10 @@ namespace SmartMenu.Web.Controllers
             return View(user);
         }
 
-        // GET: Edit Account
+        /// <summary>
+        /// Get-method for editing the user's account details.
+        /// </summary>
+        /// <returns>returns the EditAccount view with a new EditAccountDto object.</returns>
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> EditAccount()
@@ -184,7 +223,11 @@ namespace SmartMenu.Web.Controllers
             return View(user);
         }
 
-        // POST: Edit Account
+        /// <summary>
+        /// Post-method for editing the user's account details.
+        /// </summary>
+        /// <param name="model">EditAccountDto that contains the user's updated account information.</param>
+        /// <returns>returns  view with a new EditAccountDto object.</returns>
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> EditAccount(EditAccountDto model)
@@ -223,34 +266,12 @@ namespace SmartMenu.Web.Controllers
             return View(model);
         }
 
-        //private async Task RefreshAuthenticationClaims()
-        //{
-        //    var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
-        //    if (!string.IsNullOrEmpty(userId))
-        //    {
-        //        var userDetailsResponse = await _authService.GetUserDetailsAsync(userId);
 
-        //        if (userDetailsResponse != null && userDetailsResponse.IsSuccess)
-        //        {
-        //            var user = JsonConvert.DeserializeObject<EditAccountDto>(Convert.ToString(userDetailsResponse.Result));
-
-        //            // Create a new claims identity
-        //            var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-        //            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UserId));
-        //            identity.AddClaim(new Claim(ClaimTypes.Name, user.NewName ?? ""));
-        //            identity.AddClaim(new Claim(ClaimTypes.Email, user.NewEmail ?? ""));
-
-        //            var principal = new ClaimsPrincipal(identity);
-
-        //            // Refresh the authentication cookie
-        //            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        //            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-        //        }
-        //    }
-        //}
-
-        // GET: Change Password
+        /// <summary>
+        /// Get-method for changing the user's password.
+        /// </summary>
+        /// <returns>returns the ChangePassword view with a new ChangePasswordDto object.</returns>
         [HttpGet]
         [Authorize]
         public IActionResult ChangePassword()
@@ -258,7 +279,11 @@ namespace SmartMenu.Web.Controllers
             return View(new ChangePasswordDto());
         }
 
-        // POST: Change Password
+        /// <summary>
+        /// Post-method for changing the user's password.
+        /// </summary>
+        /// <param name="model">ChangePasswordDto that contains the user's current and new password.</param>
+        /// <returns>returns the ChangePassword view with a new ChangePasswordDto object.</returns>
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> ChangePassword(ChangePasswordDto model)
@@ -301,6 +326,10 @@ namespace SmartMenu.Web.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Get-method for deleting the user's account.
+        /// </summary>
+        /// <returns>returns the DeleteAccountConfirmation view with a new EditAccountDto object.</returns>
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> DeleteAccountConfirmation()
@@ -326,7 +355,10 @@ namespace SmartMenu.Web.Controllers
             return View(user);
         }
 
-        // POST: Delete Account
+        /// <summary>
+        /// Post-method for deleting the user's account.
+        /// </summary>
+        /// <returns>returns the Index view with a success message if the account was deleted successfully.</returns>
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> DeleteAccount()

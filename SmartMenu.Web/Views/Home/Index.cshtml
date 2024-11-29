@@ -73,7 +73,14 @@
                             <span class="text-danger fw-bold" style="font-size:1.25rem;">@string.Format("{0:c}", product.Price)</span>
                             <span class="badge bg-warning text-white p-2">@product.Category.Name</span>
                         </div>
-                        <p class="card-text text-muted">@Html.Raw(product.Description)</p>
+                        <p class="card-text text-muted">
+                            @{
+                                // Розділити текст на частини за подвійним розривом рядка (\n\n)
+                                var descriptionParts = product.Description.Split(new[] { "\n" }, StringSplitOptions.None);
+                                string limitedDescription = descriptionParts[0]; // Взяти тільки перший абзац
+                            }
+                            @Html.Raw(limitedDescription)
+                        </p>
                         <div class="row">
                             <div class="col">
                                 <a asp-action="ProductDetails" asp-route-productId="@product.ProductId"

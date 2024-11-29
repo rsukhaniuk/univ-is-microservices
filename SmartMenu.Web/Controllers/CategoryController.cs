@@ -6,15 +6,26 @@ using System.Collections.Generic;
 
 namespace SmartMenu.Web.Controllers
 {
+    /// <summary>
+    /// Controller for Category in the SmartMenu web application
+    /// </summary>
     public class CategoryController : Controller
     {
         private readonly ICategoryService _categoryService;
 
+        /// <summary>
+        /// Constructor for the CategoryController
+        /// </summary>
+        /// <param name="categoryService">service for category</param>
         public CategoryController(ICategoryService categoryService)
         {
             _categoryService = categoryService;
         }
 
+        /// <summary>
+        /// Method to display the index page for categories
+        /// </summary>
+        /// <returns>returns the view</returns>
         public async Task<IActionResult> CategoryIndex()
         {
             List<CategoryDto>? list = new();
@@ -33,11 +44,20 @@ namespace SmartMenu.Web.Controllers
             return View(list);
         }
 
+        /// <summary>
+        /// Method to display the create page for categories
+        /// </summary>
+        /// <returns>returns the view</returns>
         public IActionResult CategoryCreate()
         {
             return View();
         }
 
+        /// <summary>
+        /// Post-method to create a category
+        /// </summary>
+        /// <param name="model">dto for category</param>
+        /// <returns>returns the view</returns>
         [HttpPost]
         public async Task<IActionResult> CategoryCreate(CategoryDto model)
         {
@@ -58,6 +78,11 @@ namespace SmartMenu.Web.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Method to delete a category
+        /// </summary>
+        /// <param name="categoryId">id of the category</param>
+        /// <returns>returns the view</returns>
         public async Task<IActionResult> CategoryDelete(int categoryId)
         {
             ResponseDto? response = await _categoryService.GetCategoryByIdAsync(categoryId);
@@ -74,6 +99,11 @@ namespace SmartMenu.Web.Controllers
             return NotFound();
         }
 
+        /// <summary>
+        /// Post-method to delete a category
+        /// </summary>
+        /// <param name="categoryDto">dto for category</param>
+        /// <returns>returns the view</returns>
         [HttpPost]
         public async Task<IActionResult> CategoryDelete(CategoryDto categoryDto)
         {

@@ -7,15 +7,23 @@
         </div>
         <div class="row">
             <div class="col-12 col-md-6 offset-md-3 pb-2">
-                <input asp-for="UserName" class="form-control" placeholder="Username..."/>
+                <input asp-for="UserName" class="form-control" placeholder="Username..." />
                 <span asp-validation-for="UserName" class="text-danger" />
             </div>
             <div class="col-12 col-md-6 offset-md-3 pb-2">
                 <input asp-for="Password" type="password" class="form-control" placeholder="Password..." />
-                <span asp-validation-for="Password"  class="text-danger" />
+                <span asp-validation-for="Password" class="text-danger" />
             </div>
             <div class="col-12 col-md-6 offset-md-3 pb-2">
                 <button type="submit" class="form-control btn btn-success" value="Submit">Login</button>
+            </div>
+        </div>
+        <div class="row text-center pt-3">
+            <div class="col-12">
+                <p>
+                    Don't have an account?
+                    <a asp-action="Register" asp-controller="Auth" class="text-primary">Register here</a>
+                </p>
             </div>
         </div>
     </div>
