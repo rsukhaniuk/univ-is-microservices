@@ -7,31 +7,54 @@
 }
 
 <form method="get" asp-action="Index">
-    <div class="container my-3">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="input-group">
-                    <input type="text" name="searchTerm" class="form-control" placeholder="Search products..."
-                           value="@ViewContext.HttpContext.Request.Query["searchTerm"]" />
-                    <select name="categoryId" class="form-select mx-2">
-                        <option value="">All Categories</option>
-                        @if (categories != null)
+    <div class="container row my-3">
+        <div class="col-12">
+            <div class="input-group" style="width: 100%;">
+                <input type="text" name="searchTerm" class="form-control" placeholder="Search products..."
+                       value="@ViewContext.HttpContext.Request.Query["searchTerm"]" />
+                <select name="categoryId" class="form-select mx-2">
+                    <option value="">All Categories</option>
+                    @if (categories != null)
+                    {
+                        foreach (var category in categories)
                         {
-                            foreach (var category in categories)
+                            if (selectedCategoryId == category.CategoryId.ToString())
                             {
-                                if (selectedCategoryId == category.CategoryId.ToString())
-                                {
-                                    <option value="@category.CategoryId" selected>@category.Name</option>
-                                }
-                                else
-                                {
-                                    <option value="@category.CategoryId">@category.Name</option>
-                                }
+                                <option value="@category.CategoryId" selected>@category.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@category.CategoryId">@category.Name</option>
                             }
                         }
-                    </select>
-                    <button type="submit" class="btn btn-primary">Search</button>
-                </div>
+                    }
+                </select>
+                <select name="sortOrder" class="form-select mx-2">
+                    <option value="">Sort By</option>
+                    @{
+                        var sortOrder = ViewContext.HttpContext.Request.Query["sortOrder"].ToString();
+                        var sortOptions = new List<(string Value, string Text)>
+                    {
+                    ("priceAsc", "Price: Low to High"),
+                    ("priceDesc", "Price: High to Low"),
+                    ("nameAsc", "Name: A to Z"),
+                    ("nameDesc", "Name: Z to A")
+                    };
+
+                        foreach (var option in sortOptions)
+                        {
+                            if (sortOrder == option.Value)
+                            {
+                                <option value="@option.Value" selected>@option.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@option.Value">@option.Text</option>
+                            }
+                        }
+                    }
+                </select>
+                <button type="submit" class="btn btn-primary">Search</button>
             </div>
         </div>
     </div>
@@ -44,7 +67,7 @@
             <div class="p-0 my-3 border rounded shadow-sm">
                 <div class="card h-100">
                     <h3 class="card-title text-dark text-center py-2 bg-light">@product.Name</h3>
-                    <img src="@product.ImageUrl" class="card-img-top" alt="@product.Name">
+                    <img src="@product.ImageUrl" class="card-img-top" alt="@product.Name" style="width: 100%; height: 300px; object-fit: cover;">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center py-2">
                             <span class="text-danger fw-bold" style="font-size:1.25rem;">@string.Format("{0:c}", product.Price)</span>

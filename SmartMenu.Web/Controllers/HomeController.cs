@@ -22,7 +22,7 @@ namespace SmartMenu.Web.Controllers
         }
 
 
-        public async Task<IActionResult> Index(string? searchTerm, int? categoryId, int pageNumber = 1)
+        public async Task<IActionResult> Index(string? searchTerm, int? categoryId, int pageNumber = 1, string? sortOrder = null)
         {
             const int pageSize = 6;
             List<ProductDto>? list = new();
@@ -60,6 +60,16 @@ namespace SmartMenu.Web.Controllers
                 {
                     list = list.Where(p => p.CategoryId == categoryId.Value).ToList();
                 }
+
+                // Sort products
+                list = sortOrder switch
+                {
+                    "priceAsc" => list.OrderBy(p => p.Price).ToList(),
+                    "priceDesc" => list.OrderByDescending(p => p.Price).ToList(),
+                    "nameAsc" => list.OrderBy(p => p.Name).ToList(),
+                    "nameDesc" => list.OrderByDescending(p => p.Name).ToList(),
+                    _ => list.OrderBy(p => p.ProductId).ToList(), // Default sort by ProductId
+                };
             }
             else
             {
