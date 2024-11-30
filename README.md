@@ -32,6 +32,8 @@ With a focus on automation, efficiency, and security, SmartMenu integrates seaml
     - **Database Schema:** [link](https://dbdiagram.io/d/SmartMenu_ShoppingCart-670f63df97a66db9a325edf7)
   - **Coupon Service:** Handles discount and coupon logic.
     - **Database Schema:** [link](https://dbdiagram.io/d/SmartMenu_Coupons-674a9ca0e9daa85aca313fc4)
+
+- Each database is designed to store only the data relevant to its respective microservice, avoiding unnecessary data coupling and ensuring better fault isolation.
 - **Database:** SQL Server 2022
 - **Communication:** REST API
 
