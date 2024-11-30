@@ -18,8 +18,8 @@ With a focus on automation, efficiency, and security, SmartMenu integrates seaml
 ## 🛠️ Tech Stack
 
 ### **Backend**
-- **Framework:** .NET Core (C#) Microservices
-- **Services:**
+- **Framework:** .NET Core Web API (C#) with a Microservices Architecture
+- **Microservices:**
   - Auth Service
   - Order Service
   - Product Service
