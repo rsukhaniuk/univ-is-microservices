@@ -22,98 +22,98 @@ namespace SmartMenu.Services.OrderAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Mango.Services.OrderAPI.Models.OrderDetails", b =>
-                {
-                    b.Property<int>("OrderDetailsId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+            modelBuilder.Entity("SmartMenu.Services.OrderAPI.Models.OrderDetails", b =>
+            {
+                b.Property<int>("OrderDetailsId")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderDetailsId"));
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderDetailsId"));
 
-                    b.Property<int>("Count")
-                        .HasColumnType("int");
+                b.Property<int>("Count")
+                    .HasColumnType("int");
 
-                    b.Property<int>("OrderHeaderId")
-                        .HasColumnType("int");
+                b.Property<int>("OrderHeaderId")
+                    .HasColumnType("int");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
+                b.Property<double>("Price")
+                    .HasColumnType("float");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                b.Property<int>("ProductId")
+                    .HasColumnType("int");
 
-                    b.Property<string>("ProductName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("ProductName")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("OrderDetailsId");
+                b.HasKey("OrderDetailsId");
 
-                    b.HasIndex("OrderHeaderId");
+                b.HasIndex("OrderHeaderId");
 
-                    b.ToTable("OrderDetails");
-                });
+                b.ToTable("OrderDetails");
+            });
 
-            modelBuilder.Entity("Mango.Services.OrderAPI.Models.OrderHeader", b =>
-                {
-                    b.Property<int>("OrderHeaderId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+            modelBuilder.Entity("SmartMenu.Services.OrderAPI.Models.OrderHeader", b =>
+            {
+                b.Property<int>("OrderHeaderId")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderHeaderId"));
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderHeaderId"));
 
-                    b.Property<string>("CouponCode")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("CouponCode")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Discount")
-                        .HasColumnType("float");
+                b.Property<double>("Discount")
+                    .HasColumnType("float");
 
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Email")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Name")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("OrderTime")
-                        .HasColumnType("datetime2");
+                b.Property<DateTime>("OrderTime")
+                    .HasColumnType("datetime2");
 
-                    b.Property<double>("OrderTotal")
-                        .HasColumnType("float");
+                b.Property<double>("OrderTotal")
+                    .HasColumnType("float");
 
-                    b.Property<string>("PaymentIntentId")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("PaymentIntentId")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Phone")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Phone")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Status")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("StripeSessionId")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("StripeSessionId")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("UserId")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("OrderHeaderId");
+                b.HasKey("OrderHeaderId");
 
-                    b.ToTable("OrderHeaders");
-                });
+                b.ToTable("OrderHeaders");
+            });
 
-            modelBuilder.Entity("Mango.Services.OrderAPI.Models.OrderDetails", b =>
-                {
-                    b.HasOne("Mango.Services.OrderAPI.Models.OrderHeader", "OrderHeader")
-                        .WithMany("OrderDetails")
-                        .HasForeignKey("OrderHeaderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            modelBuilder.Entity("SmartMenu.Services.OrderAPI.Models.OrderDetails", b =>
+            {
+                b.HasOne("SmartMenu.Services.OrderAPI.Models.OrderHeader", "OrderHeader")
+                    .WithMany("OrderDetails")
+                    .HasForeignKey("OrderHeaderId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.Navigation("OrderHeader");
-                });
+                b.Navigation("OrderHeader");
+            });
 
-            modelBuilder.Entity("Mango.Services.OrderAPI.Models.OrderHeader", b =>
-                {
-                    b.Navigation("OrderDetails");
-                });
+            modelBuilder.Entity("SmartMenu.Services.OrderAPI.Models.OrderHeader", b =>
+            {
+                b.Navigation("OrderDetails");
+            });
 #pragma warning restore 612, 618
         }
     }

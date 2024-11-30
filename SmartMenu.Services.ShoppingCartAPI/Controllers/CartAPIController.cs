@@ -10,6 +10,9 @@ using System.Reflection.PortableExecutable;
 
 namespace SmartMenu.Services.ShoppingCartAPI.Controllers
 {
+    /// <summary>
+    /// Provides endpoints for managing the shopping cart.
+    /// </summary>
     [Route("api/cart")]
     [ApiController]
     public class CartAPIController : ControllerBase
@@ -41,7 +44,7 @@ namespace SmartMenu.Services.ShoppingCartAPI.Controllers
         }
 
         /// <summary>
-        /// Gets the cart for a specific user.
+        /// Retrieves the cart for a specific user.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns>A <see cref="ResponseDto"/> containing the cart details.</returns>
@@ -65,7 +68,7 @@ namespace SmartMenu.Services.ShoppingCartAPI.Controllers
                     cart.CartHeader.CartTotal += (item.Count * item.Product.Price);
                 }
 
-                //apply coupon if any
+                // Apply coupon if any
                 if (!string.IsNullOrEmpty(cart.CartHeader.CouponCode))
                 {
                     CouponDto coupon = await _couponService.GetCoupon(cart.CartHeader.CouponCode);
@@ -165,7 +168,7 @@ namespace SmartMenu.Services.ShoppingCartAPI.Controllers
                     .FirstOrDefaultAsync(u => u.UserId == cartDto.CartHeader.UserId);
                 if (cartHeaderFromDb == null)
                 {
-                    //create header and details
+                    // Create header and details
                     CartHeader cartHeader = _mapper.Map<CartHeader>(cartDto.CartHeader);
                     _db.CartHeaders.Add(cartHeader);
                     await _db.SaveChangesAsync();
@@ -175,21 +178,20 @@ namespace SmartMenu.Services.ShoppingCartAPI.Controllers
                 }
                 else
                 {
-                    //if header is not null
-                    //check if details has same product
+                    // If header is not null, check if details have the same product
                     var cartDetailsFromDb = await _db.CartDetails.AsNoTracking().FirstOrDefaultAsync(
                         u => u.ProductId == cartDto.CartDetails.First().ProductId &&
                         u.CartHeaderId == cartHeaderFromDb.CartHeaderId);
                     if (cartDetailsFromDb == null)
                     {
-                        //create cartdetails
+                        // Create cart details
                         cartDto.CartDetails.First().CartHeaderId = cartHeaderFromDb.CartHeaderId;
                         _db.CartDetails.Add(_mapper.Map<CartDetails>(cartDto.CartDetails.First()));
                         await _db.SaveChangesAsync();
                     }
                     else
                     {
-                        //update count in cart details
+                        // Update count in cart details
                         cartDto.CartDetails.First().Count += cartDetailsFromDb.Count;
                         cartDto.CartDetails.First().CartHeaderId = cartDetailsFromDb.CartHeaderId;
                         cartDto.CartDetails.First().CartDetailsId = cartDetailsFromDb.CartDetailsId;

@@ -7,25 +7,25 @@ using System.Collections.Generic;
 namespace SmartMenu.Web.Controllers
 {
     /// <summary>
-    /// Controller for Category in the SmartMenu web application
+    /// Controller for Category in the SmartMenu web application.
     /// </summary>
     public class CategoryController : Controller
     {
         private readonly ICategoryService _categoryService;
 
         /// <summary>
-        /// Constructor for the CategoryController
+        /// Constructor for the CategoryController.
         /// </summary>
-        /// <param name="categoryService">service for category</param>
+        /// <param name="categoryService">Service for category operations.</param>
         public CategoryController(ICategoryService categoryService)
         {
             _categoryService = categoryService;
         }
 
         /// <summary>
-        /// Method to display the index page for categories
+        /// Method to display the index page for categories.
         /// </summary>
-        /// <returns>returns the view</returns>
+        /// <returns>Returns the view for category index.</returns>
         public async Task<IActionResult> CategoryIndex()
         {
             // Initialize an empty list of CategoryDto
@@ -50,9 +50,9 @@ namespace SmartMenu.Web.Controllers
         }
 
         /// <summary>
-        /// Method to display the create page for categories
+        /// Method to display the create page for categories.
         /// </summary>
-        /// <returns>returns the view</returns>
+        /// <returns>Returns the view for creating a category.</returns>
         public IActionResult CategoryCreate()
         {
             // Return the view for creating a category
@@ -60,10 +60,10 @@ namespace SmartMenu.Web.Controllers
         }
 
         /// <summary>
-        /// Post-method to create a category
+        /// Post-method to create a category.
         /// </summary>
-        /// <param name="model">dto for category</param>
-        /// <returns>returns the view</returns>
+        /// <param name="model">DTO for category.</param>
+        /// <returns>Returns the view for category index.</returns>
         [HttpPost]
         public async Task<IActionResult> CategoryCreate(CategoryDto model)
         {
@@ -90,13 +90,13 @@ namespace SmartMenu.Web.Controllers
         }
 
         /// <summary>
-        /// Method to delete a category
+        /// Method to display the delete page for a category.
         /// </summary>
-        /// <param name="categoryId">id of the category</param>
-        /// <returns>returns the view</returns>
+        /// <param name="categoryId">ID of the category.</param>
+        /// <returns>Returns the view for deleting a category.</returns>
         public async Task<IActionResult> CategoryDelete(int categoryId)
         {
-            // Call the service to get the category by id
+            // Call the service to get the category by ID
             ResponseDto? response = await _categoryService.GetCategoryByIdAsync(categoryId);
 
             // If the response is successful, deserialize the result into a CategoryDto and return the view
@@ -115,10 +115,10 @@ namespace SmartMenu.Web.Controllers
         }
 
         /// <summary>
-        /// Post-method to delete a category
+        /// Post-method to delete a category.
         /// </summary>
-        /// <param name="categoryDto">dto for category</param>
-        /// <returns>returns the view</returns>
+        /// <param name="categoryDto">DTO for category.</param>
+        /// <returns>Returns the view for category index.</returns>
         [HttpPost]
         public async Task<IActionResult> CategoryDelete(CategoryDto categoryDto)
         {
@@ -141,13 +141,13 @@ namespace SmartMenu.Web.Controllers
         }
 
         /// <summary>
-        /// Method to edit a category
+        /// Method to display the edit page for a category.
         /// </summary>
-        /// <param name="categoryId">id of the category</param>
-        /// <returns>returns the view</returns>
+        /// <param name="categoryId">ID of the category.</param>
+        /// <returns>Returns the view for editing a category.</returns>
         public async Task<IActionResult> CategoryEdit(int categoryId)
         {
-            // Call the service to get the category by id
+            // Call the service to get the category by ID
             ResponseDto? response = await _categoryService.GetCategoryByIdAsync(categoryId);
 
             // If the response is successful, deserialize the result into a CategoryDto and return the view
@@ -166,10 +166,10 @@ namespace SmartMenu.Web.Controllers
         }
 
         /// <summary>
-        /// Post-method to edit a category
+        /// Post-method to edit a category.
         /// </summary>
-        /// <param name="categoryDto">dto for category</param>
-        /// <returns>returns the view</returns>
+        /// <param name="categoryDto">DTO for category.</param>
+        /// <returns>Returns the view for category index.</returns>
         [HttpPost]
         public async Task<IActionResult> CategoryEdit(CategoryDto categoryDto)
         {
@@ -196,9 +196,9 @@ namespace SmartMenu.Web.Controllers
         }
 
         /// <summary>
-        /// Method to get all categories
+        /// Method to get all categories.
         /// </summary>
-        /// <returns>returns a JSON result</returns>
+        /// <returns>Returns a JSON result with the list of categories.</returns>
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {

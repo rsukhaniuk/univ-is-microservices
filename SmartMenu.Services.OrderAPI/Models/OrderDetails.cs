@@ -10,35 +10,35 @@ namespace SmartMenu.Services.OrderAPI.Models
     public class OrderDetails
     {
         /// <summary>
-        /// Gets or sets the order details ID.
+        /// Gets or sets the unique identifier for the order details.
         /// </summary>
         [Key]
         public int OrderDetailsId { get; set; }
 
         /// <summary>
-        /// Gets or sets the order header ID.
+        /// Gets or sets the unique identifier for the order header.
         /// </summary>
         public int OrderHeaderId { get; set; }
 
         /// <summary>
-        /// Gets or sets the order header.
+        /// Gets or sets the order header associated with these details.
         /// </summary>
         [ForeignKey("OrderHeaderId")]
         public OrderHeader? OrderHeader { get; set; }
 
         /// <summary>
-        /// Gets or sets the product ID.
+        /// Gets or sets the unique identifier for the product.
         /// </summary>
         public int ProductId { get; set; }
 
         /// <summary>
-        /// Gets or sets the product.
+        /// Gets or sets the product associated with these details.
         /// </summary>
         [NotMapped]
         public ProductDto? Product { get; set; }
 
         /// <summary>
-        /// Gets or sets the count of products.
+        /// Gets or sets the quantity of the product.
         /// </summary>
         public int Count { get; set; }
 

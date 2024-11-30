@@ -23,18 +23,18 @@ namespace SmartMenu.Web.Controllers
         /// <summary>
         /// Constructor for the AuthController.
         /// </summary>
-        /// <param name="authService"></param>
-        /// <param name="tokenProvider"></param>
-        public AuthController(IAuthService authService, ITokenProvider  tokenProvider)
+        /// <param name="authService">The authentication service.</param>
+        /// <param name="tokenProvider">The token provider.</param>
+        public AuthController(IAuthService authService, ITokenProvider tokenProvider)
         {
             _authService = authService;
-            _tokenProvider = tokenProvider; 
+            _tokenProvider = tokenProvider;
         }
 
         /// <summary>
         /// Get-method for the Login view.
         /// </summary>
-        /// <returns>returns the Login view with a new LoginRequestDto object.</returns>
+        /// <returns>Returns the Login view with a new LoginRequestDto object.</returns>
         [HttpGet]
         public IActionResult Login()
         {
@@ -46,7 +46,7 @@ namespace SmartMenu.Web.Controllers
         /// Post-method for the Login view.
         /// </summary>
         /// <param name="obj">LoginRequestDto that contains the user's login information.</param>
-        /// <returns>returns the Login view with a new LoginRequestDto object.</returns>
+        /// <returns>Returns the Login view with a new LoginRequestDto object.</returns>
         [HttpPost]
         public async Task<IActionResult> Login(LoginRequestDto obj)
         {
@@ -54,7 +54,7 @@ namespace SmartMenu.Web.Controllers
 
             if (responseDto != null && responseDto.IsSuccess)
             {
-                LoginResponseDto loginResponseDto = 
+                LoginResponseDto loginResponseDto =
                     JsonConvert.DeserializeObject<LoginResponseDto>(Convert.ToString(responseDto.Result));
 
                 await SignInUser(loginResponseDto);
@@ -72,15 +72,15 @@ namespace SmartMenu.Web.Controllers
         /// <summary>
         /// Get-method for the Register view.
         /// </summary>
-        /// <returns>returns the Register view with a new RegistrationRequestDto object.</returns>
+        /// <returns>Returns the Register view with a new RegistrationRequestDto object.</returns>
         [HttpGet]
         public IActionResult Register()
         {
             var roleList = new List<SelectListItem>()
-            {
-                new SelectListItem{Text=SD.RoleAdmin,Value=SD.RoleAdmin},
-                new SelectListItem{Text=SD.RoleCustomer,Value=SD.RoleCustomer},
-            };
+                {
+                    new SelectListItem{Text=SD.RoleAdmin,Value=SD.RoleAdmin},
+                    new SelectListItem{Text=SD.RoleCustomer,Value=SD.RoleCustomer},
+                };
 
             ViewBag.RoleList = roleList;
             return View();
@@ -90,21 +90,21 @@ namespace SmartMenu.Web.Controllers
         /// Post-method for the Register view.
         /// </summary>
         /// <param name="obj">RegistrationRequestDto that contains the user's registration information.</param>
-        /// <returns>returns the Register view with a new RegistrationRequestDto object.</returns>
+        /// <returns>Returns the Register view with a new RegistrationRequestDto object.</returns>
         [HttpPost]
         public async Task<IActionResult> Register(RegistrationRequestDto obj)
         {
             ResponseDto result = await _authService.RegisterAsync(obj);
             ResponseDto assingRole;
 
-            if(result!=null && result.IsSuccess)
+            if (result != null && result.IsSuccess)
             {
                 if (string.IsNullOrEmpty(obj.Role))
                 {
                     obj.Role = SD.RoleCustomer;
                 }
                 assingRole = await _authService.AssignRoleAsync(obj);
-                if (assingRole!=null && assingRole.IsSuccess)
+                if (assingRole != null && assingRole.IsSuccess)
                 {
                     TempData["success"] = "Registration Successful";
                     return RedirectToAction(nameof(Login));
@@ -116,10 +116,10 @@ namespace SmartMenu.Web.Controllers
             }
 
             var roleList = new List<SelectListItem>()
-            {
-                new SelectListItem{Text=SD.RoleAdmin,Value=SD.RoleAdmin},
-                new SelectListItem{Text=SD.RoleCustomer,Value=SD.RoleCustomer},
-            };
+                {
+                    new SelectListItem{Text=SD.RoleAdmin,Value=SD.RoleAdmin},
+                    new SelectListItem{Text=SD.RoleCustomer,Value=SD.RoleCustomer},
+                };
 
             ViewBag.RoleList = roleList;
             return View(obj);
@@ -128,19 +128,19 @@ namespace SmartMenu.Web.Controllers
         /// <summary>
         /// Logout the user and clear the token.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Redirects to the Home index page.</returns>
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
             _tokenProvider.ClearToken();
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
 
         /// <summary>
         /// Sign in the user.
         /// </summary>
-        /// <param name="model">LoginResponseDto that contains the user's login information</param>
-        /// <returns></returns>
+        /// <param name="model">LoginResponseDto that contains the user's login information.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
         private async Task SignInUser(LoginResponseDto model)
         {
             var handler = new JwtSecurityTokenHandler();
@@ -148,20 +148,17 @@ namespace SmartMenu.Web.Controllers
             var jwt = handler.ReadJwtToken(model.Token);
 
             var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Email, 
+            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Email,
                 jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Email).Value));
             identity.AddClaim(new Claim(JwtRegisteredClaimNames.Sub,
                 jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Sub).Value));
             identity.AddClaim(new Claim(JwtRegisteredClaimNames.Name,
                 jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Name).Value));
 
-
             identity.AddClaim(new Claim(ClaimTypes.Name,
                 jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Email).Value));
             identity.AddClaim(new Claim(ClaimTypes.Role,
                 jwt.Claims.FirstOrDefault(u => u.Type == "role").Value));
-
-
 
             var principal = new ClaimsPrincipal(identity);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
@@ -170,7 +167,7 @@ namespace SmartMenu.Web.Controllers
         /// <summary>
         /// Get-method for the PersonalData view.
         /// </summary>
-        /// <returns>returns the PersonalData view with a new EditAccountDto object.</returns>
+        /// <returns>Returns the PersonalData view with a new EditAccountDto object.</returns>
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> PersonalData()
@@ -198,7 +195,7 @@ namespace SmartMenu.Web.Controllers
         /// <summary>
         /// Get-method for editing the user's account details.
         /// </summary>
-        /// <returns>returns the EditAccount view with a new EditAccountDto object.</returns>
+        /// <returns>Returns the EditAccount view with a new EditAccountDto object.</returns>
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> EditAccount()
@@ -227,7 +224,7 @@ namespace SmartMenu.Web.Controllers
         /// Post-method for editing the user's account details.
         /// </summary>
         /// <param name="model">EditAccountDto that contains the user's updated account information.</param>
-        /// <returns>returns  view with a new EditAccountDto object.</returns>
+        /// <returns>Returns the view with a new EditAccountDto object.</returns>
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> EditAccount(EditAccountDto model)
@@ -247,7 +244,6 @@ namespace SmartMenu.Web.Controllers
 
             if (!ModelState.IsValid)
             {
-                
                 return View(model);
             }
 
@@ -255,9 +251,6 @@ namespace SmartMenu.Web.Controllers
 
             if (response != null && response.IsSuccess)
             {
-                //// Refresh the user's claims
-                //await RefreshAuthenticationClaims();
-
                 TempData["success"] = "Account updated successfully.";
                 return RedirectToAction(nameof(PersonalData));
             }
@@ -266,12 +259,10 @@ namespace SmartMenu.Web.Controllers
             return View(model);
         }
 
-
-
         /// <summary>
         /// Get-method for changing the user's password.
         /// </summary>
-        /// <returns>returns the ChangePassword view with a new ChangePasswordDto object.</returns>
+        /// <returns>Returns the ChangePassword view with a new ChangePasswordDto object.</returns>
         [HttpGet]
         [Authorize]
         public IActionResult ChangePassword()
@@ -283,7 +274,7 @@ namespace SmartMenu.Web.Controllers
         /// Post-method for changing the user's password.
         /// </summary>
         /// <param name="model">ChangePasswordDto that contains the user's current and new password.</param>
-        /// <returns>returns the ChangePassword view with a new ChangePasswordDto object.</returns>
+        /// <returns>Returns the ChangePassword view with a new ChangePasswordDto object.</returns>
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> ChangePassword(ChangePasswordDto model)
@@ -329,7 +320,7 @@ namespace SmartMenu.Web.Controllers
         /// <summary>
         /// Get-method for deleting the user's account.
         /// </summary>
-        /// <returns>returns the DeleteAccountConfirmation view with a new EditAccountDto object.</returns>
+        /// <returns>Returns the DeleteAccountConfirmation view with a new EditAccountDto object.</returns>
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> DeleteAccountConfirmation()
@@ -358,7 +349,7 @@ namespace SmartMenu.Web.Controllers
         /// <summary>
         /// Post-method for deleting the user's account.
         /// </summary>
-        /// <returns>returns the Index view with a success message if the account was deleted successfully.</returns>
+        /// <returns>Returns the Index view with a success message if the account was deleted successfully.</returns>
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> DeleteAccount()

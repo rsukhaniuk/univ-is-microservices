@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Interface IAuthService | SmartMenu - Documentation </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Interface IAuthService | SmartMenu - Documentation ">
+    
+    <meta name="description" content="Interface for authentication-related services.">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="smartmenu">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="SmartMenu.Services.AuthAPI.Service.IService.IAuthService">
+
+
+
+  <h1 id="SmartMenu_Services_AuthAPI_Service_IService_IAuthService" data-uid="SmartMenu.Services.AuthAPI.Service.IService.IAuthService" class="text-break">Interface IAuthService</h1>
+  <div class="markdown level0 summary"><p>Interface for authentication-related services.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="SmartMenu.html">SmartMenu</a>.<a class="xref" href="SmartMenu.Services.html">Services</a>.<a class="xref" href="SmartMenu.Services.AuthAPI.html">AuthAPI</a>.<a class="xref" href="SmartMenu.Services.AuthAPI.Service.html">Service</a>.<a class="xref" href="SmartMenu.Services.AuthAPI.Service.IService.html">IService</a></h6>
+  <h6><strong>Assembly</strong>: SmartMenu.Services.AuthAPI.dll</h6>
+  <h5 id="SmartMenu_Services_AuthAPI_Service_IService_IAuthService_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface IAuthService</code></pre>
+  </div>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/rsukhaniuk/univ-is-microservices/new/ocelot/apiSpec/new?filename=SmartMenu_Services_AuthAPI_Service_IService_IAuthService_AssignRole_System_String_System_String_.md&amp;value=---%0Auid%3A%20SmartMenu.Services.AuthAPI.Service.IService.IAuthService.AssignRole(System.String%2CSystem.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/rsukhaniuk/univ-is-microservices/blob/ocelot/SmartMenu.Services.AuthAPI/Service/IService/IAuthService.cs/#L30">View Source</a>
+  </span>
+  <a id="SmartMenu_Services_AuthAPI_Service_IService_IAuthService_AssignRole_" data-uid="SmartMenu.Services.AuthAPI.Service.IService.IAuthService.AssignRole*"></a>
+  <h4 id="SmartMenu_Services_AuthAPI_Service_IService_IAuthService_AssignRole_System_String_System_String_" data-uid="SmartMenu.Services.AuthAPI.Service.IService.IAuthService.AssignRole(System.String,System.String)">AssignRole(string, string)</h4>
+  <div class="markdown level1 summary"><p>Assigns a role to a user.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;bool&gt; AssignRole(string email, string roleName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">email</span></td>
+        <td><p>The email of the user.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">roleName</span></td>
+        <td><p>The name of the role.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</td>
+        <td><p>A task that represents the asynchronous operation. The task result contains a boolean indicating success.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/rsukhaniuk/univ-is-microservices/new/ocelot/apiSpec/new?filename=SmartMenu_Services_AuthAPI_Service_IService_IAuthService_ChangePassword_System_String_SmartMenu_Services_AuthAPI_Models_Dto_ChangePasswordDto_.md&amp;value=---%0Auid%3A%20SmartMenu.Services.AuthAPI.Service.IService.IAuthService.ChangePassword(System.String%2CSmartMenu.Services.AuthAPI.Models.Dto.ChangePasswordDto)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/rsukhaniuk/univ-is-microservices/blob/ocelot/SmartMenu.Services.AuthAPI/Service/IService/IAuthService.cs/#L52">View Source</a>
+  </span>
+  <a id="SmartMenu_Services_AuthAPI_Service_IService_IAuthService_ChangePassword_" data-uid="SmartMenu.Services.AuthAPI.Service.IService.IAuthService.ChangePassword*"></a>
+  <h4 id="SmartMenu_Services_AuthAPI_Service_IService_IAuthService_ChangePassword_System_String_SmartMenu_Services_AuthAPI_Models_Dto_ChangePasswordDto_" data-uid="SmartMenu.Services.AuthAPI.Service.IService.IAuthService.ChangePassword(System.String,SmartMenu.Services.AuthAPI.Models.Dto.ChangePasswordDto)">ChangePassword(string, ChangePasswordDto)</h4>
+  <div class="markdown level1 summary"><p>Changes a user's password.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;bool&gt; ChangePassword(string userId, ChangePasswordDto changePasswordDto)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">userId</span></td>
+        <td><p>The user ID.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="SmartMenu.Services.AuthAPI.Models.Dto.ChangePasswordDto.html">ChangePasswordDto</a></td>
+        <td><span class="parametername">changePasswordDto</span></td>
+        <td><p>The change password data transfer object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</td>
+        <td><p>A task that represents the asynchronous operation. The task result contains a boolean indicating success.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/rsukhaniuk/univ-is-microservices/new/ocelot/apiSpec/new?filename=SmartMenu_Services_AuthAPI_Service_IService_IAuthService_DeleteAccount_System_String_.md&amp;value=---%0Auid%3A%20SmartMenu.Services.AuthAPI.Service.IService.IAuthService.DeleteAccount(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/rsukhaniuk/univ-is-microservices/blob/ocelot/SmartMenu.Services.AuthAPI/Service/IService/IAuthService.cs/#L44">View Source</a>
+  </span>
+  <a id="SmartMenu_Services_AuthAPI_Service_IService_IAuthService_DeleteAccount_" data-uid="SmartMenu.Services.AuthAPI.Service.IService.IAuthService.DeleteAccount*"></a>
+  <h4 id="SmartMenu_Services_AuthAPI_Service_IService_IAuthService_DeleteAccount_System_String_" data-uid="SmartMenu.Services.AuthAPI.Service.IService.IAuthService.DeleteAccount(System.String)">DeleteAccount(string)</h4>
+  <div class="markdown level1 summary"><p>Deletes a user's account.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;bool&gt; DeleteAccount(string email)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">email</span></td>
+        <td><p>The email of the user.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</td>
+        <td><p>A task that represents the asynchronous operation. The task result contains a boolean indicating success.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/rsukhaniuk/univ-is-microservices/new/ocelot/apiSpec/new?filename=SmartMenu_Services_AuthAPI_Service_IService_IAuthService_EditAccount_SmartMenu_Services_AuthAPI_Models_Dto_EditAccountDto_.md&amp;value=---%0Auid%3A%20SmartMenu.Services.AuthAPI.Service.IService.IAuthService.EditAccount(SmartMenu.Services.AuthAPI.Models.Dto.EditAccountDto)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/rsukhaniuk/univ-is-microservices/blob/ocelot/SmartMenu.Services.AuthAPI/Service/IService/IAuthService.cs/#L37">View Source</a>
+  </span>
+  <a id="SmartMenu_Services_AuthAPI_Service_IService_IAuthService_EditAccount_" data-uid="SmartMenu.Services.AuthAPI.Service.IService.IAuthService.EditAccount*"></a>
+  <h4 id="SmartMenu_Services_AuthAPI_Service_IService_IAuthService_EditAccount_SmartMenu_Services_AuthAPI_Models_Dto_EditAccountDto_" data-uid="SmartMenu.Services.AuthAPI.Service.IService.IAuthService.EditAccount(SmartMenu.Services.AuthAPI.Models.Dto.EditAccountDto)">EditAccount(EditAccountDto)</h4>
+  <div class="markdown level1 summary"><p>Edits a user's account information.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;bool&gt; EditAccount(EditAccountDto editAccountDto)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SmartMenu.Services.AuthAPI.Models.Dto.EditAccountDto.html">EditAccountDto</a></td>
+        <td><span class="parametername">editAccountDto</span></td>
+        <td><p>The edit account data transfer object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</td>
+        <td><p>A task that represents the asynchronous operation. The task result contains a boolean indicating success.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/rsukhaniuk/univ-is-microservices/new/ocelot/apiSpec/new?filename=SmartMenu_Services_AuthAPI_Service_IService_IAuthService_GetUserDetailsAsync_System_String_.md&amp;value=---%0Auid%3A%20SmartMenu.Services.AuthAPI.Service.IService.IAuthService.GetUserDetailsAsync(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/rsukhaniuk/univ-is-microservices/blob/ocelot/SmartMenu.Services.AuthAPI/Service/IService/IAuthService.cs/#L59">View Source</a>
+  </span>
+  <a id="SmartMenu_Services_AuthAPI_Service_IService_IAuthService_GetUserDetailsAsync_" data-uid="SmartMenu.Services.AuthAPI.Service.IService.IAuthService.GetUserDetailsAsync*"></a>
+  <h4 id="SmartMenu_Services_AuthAPI_Service_IService_IAuthService_GetUserDetailsAsync_System_String_" data-uid="SmartMenu.Services.AuthAPI.Service.IService.IAuthService.GetUserDetailsAsync(System.String)">GetUserDetailsAsync(string)</h4>
+  <div class="markdown level1 summary"><p>Gets the details of a user.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;EditAccountDto?&gt; GetUserDetailsAsync(string userId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">userId</span></td>
+        <td><p>The user ID.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="SmartMenu.Services.AuthAPI.Models.Dto.EditAccountDto.html">EditAccountDto</a>&gt;</td>
+        <td><p>A task that represents the asynchronous operation. The task result contains the edit account data transfer object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/rsukhaniuk/univ-is-microservices/new/ocelot/apiSpec/new?filename=SmartMenu_Services_AuthAPI_Service_IService_IAuthService_Login_SmartMenu_Services_AuthAPI_Models_Dto_LoginRequestDto_.md&amp;value=---%0Auid%3A%20SmartMenu.Services.AuthAPI.Service.IService.IAuthService.Login(SmartMenu.Services.AuthAPI.Models.Dto.LoginRequestDto)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/rsukhaniuk/univ-is-microservices/blob/ocelot/SmartMenu.Services.AuthAPI/Service/IService/IAuthService.cs/#L22">View Source</a>
+  </span>
+  <a id="SmartMenu_Services_AuthAPI_Service_IService_IAuthService_Login_" data-uid="SmartMenu.Services.AuthAPI.Service.IService.IAuthService.Login*"></a>
+  <h4 id="SmartMenu_Services_AuthAPI_Service_IService_IAuthService_Login_SmartMenu_Services_AuthAPI_Models_Dto_LoginRequestDto_" data-uid="SmartMenu.Services.AuthAPI.Service.IService.IAuthService.Login(SmartMenu.Services.AuthAPI.Models.Dto.LoginRequestDto)">Login(LoginRequestDto)</h4>
+  <div class="markdown level1 summary"><p>Logs in a user.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;LoginResponseDto&gt; Login(LoginRequestDto loginRequestDto)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SmartMenu.Services.AuthAPI.Models.Dto.LoginRequestDto.html">LoginRequestDto</a></td>
+        <td><span class="parametername">loginRequestDto</span></td>
+        <td><p>The login request data transfer object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="SmartMenu.Services.AuthAPI.Models.Dto.LoginResponseDto.html">LoginResponseDto</a>&gt;</td>
+        <td><p>A task that represents the asynchronous operation. The task result contains the login response data transfer object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/rsukhaniuk/univ-is-microservices/new/ocelot/apiSpec/new?filename=SmartMenu_Services_AuthAPI_Service_IService_IAuthService_Register_SmartMenu_Services_AuthAPI_Models_Dto_RegistrationRequestDto_.md&amp;value=---%0Auid%3A%20SmartMenu.Services.AuthAPI.Service.IService.IAuthService.Register(SmartMenu.Services.AuthAPI.Models.Dto.RegistrationRequestDto)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/rsukhaniuk/univ-is-microservices/blob/ocelot/SmartMenu.Services.AuthAPI/Service/IService/IAuthService.cs/#L15">View Source</a>
+  </span>
+  <a id="SmartMenu_Services_AuthAPI_Service_IService_IAuthService_Register_" data-uid="SmartMenu.Services.AuthAPI.Service.IService.IAuthService.Register*"></a>
+  <h4 id="SmartMenu_Services_AuthAPI_Service_IService_IAuthService_Register_SmartMenu_Services_AuthAPI_Models_Dto_RegistrationRequestDto_" data-uid="SmartMenu.Services.AuthAPI.Service.IService.IAuthService.Register(SmartMenu.Services.AuthAPI.Models.Dto.RegistrationRequestDto)">Register(RegistrationRequestDto)</h4>
+  <div class="markdown level1 summary"><p>Registers a new user.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;string&gt; Register(RegistrationRequestDto registrationRequestDto)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SmartMenu.Services.AuthAPI.Models.Dto.RegistrationRequestDto.html">RegistrationRequestDto</a></td>
+        <td><span class="parametername">registrationRequestDto</span></td>
+        <td><p>The registration request data transfer object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</td>
+        <td><p>A task that represents the asynchronous operation. The task result contains a string indicating the result of the registration.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/rsukhaniuk/univ-is-microservices/new/ocelot/apiSpec/new?filename=SmartMenu_Services_AuthAPI_Service_IService_IAuthService.md&amp;value=---%0Auid%3A%20SmartMenu.Services.AuthAPI.Service.IService.IAuthService%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/rsukhaniuk/univ-is-microservices/blob/ocelot/SmartMenu.Services.AuthAPI/Service/IService/IAuthService.cs/#L8" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

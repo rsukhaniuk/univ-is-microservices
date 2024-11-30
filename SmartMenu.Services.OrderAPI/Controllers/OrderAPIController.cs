@@ -13,6 +13,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SmartMenu.Services.OrderAPI.Controllers
 {
+    /// <summary>
+    /// Provides endpoints for managing orders.
+    /// </summary>
     [Route("api/order")]
     [ApiController]
     public class OrderAPIController : ControllerBase
@@ -29,7 +32,7 @@ namespace SmartMenu.Services.OrderAPI.Controllers
         /// <param name="db">The database context.</param>
         /// <param name="productService">The product service.</param>
         /// <param name="mapper">The mapper.</param>
-        /// <param name="configuration">The configuration.</param>
+        /// <param name="configuration">The configuration settings.</param>
         public OrderAPIController(AppDbContext db,
             IProductService productService, IMapper mapper, IConfiguration configuration)
         {
@@ -41,7 +44,7 @@ namespace SmartMenu.Services.OrderAPI.Controllers
         }
 
         /// <summary>
-        /// Gets the orders for the specified user.
+        /// Retrieves the orders for the specified user.
         /// </summary>
         /// <param name="userId">The user ID.</param>
         /// <returns>The response containing the list of orders.</returns>
@@ -71,7 +74,7 @@ namespace SmartMenu.Services.OrderAPI.Controllers
         }
 
         /// <summary>
-        /// Gets the order by ID.
+        /// Retrieves the order by ID.
         /// </summary>
         /// <param name="id">The order ID.</param>
         /// <returns>The response containing the order details.</returns>
@@ -142,12 +145,12 @@ namespace SmartMenu.Services.OrderAPI.Controllers
                 };
 
                 var DiscountsObj = new List<SessionDiscountOptions>()
-                {
-                    new SessionDiscountOptions
                     {
-                        Coupon = stripeRequestDto.OrderHeader.CouponCode
-                    }
-                };
+                        new SessionDiscountOptions
+                        {
+                            Coupon = stripeRequestDto.OrderHeader.CouponCode
+                        }
+                    };
 
                 foreach (var item in stripeRequestDto.OrderHeader.OrderDetails)
                 {
@@ -209,7 +212,7 @@ namespace SmartMenu.Services.OrderAPI.Controllers
 
                 if (paymentIntent.Status == "succeeded")
                 {
-                    //then payment was successful
+                    // Payment was successful
                     orderHeader.PaymentIntentId = paymentIntent.Id;
                     orderHeader.Status = SD.Status_Approved;
                     _db.SaveChanges();
@@ -248,7 +251,7 @@ namespace SmartMenu.Services.OrderAPI.Controllers
                 {
                     if (newStatus == SD.Status_Cancelled)
                     {
-                        //we will give refund
+                        // Issue a refund
                         var options = new RefundCreateOptions
                         {
                             Reason = RefundReasons.RequestedByCustomer,

@@ -5,25 +5,25 @@ using Newtonsoft.Json;
 namespace SmartMenu.Services.ShoppingCartAPI.Service
 {
     /// <summary>
-    /// Provides methods to interact with the coupon service.
+    /// Provides methods for interacting with the coupon service.
     /// </summary>
     public class CouponService : ICouponService
     {
         private readonly IHttpClientFactory _httpClientFactory;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CouponService"/> class.
+        /// Initializes a new instance of the <see cref="CouponService"/> class with the specified HTTP client factory.
         /// </summary>
-        /// <param name="clientFactory">The HTTP client factory.</param>
+        /// <param name="clientFactory">The HTTP client factory to be used for making HTTP requests.</param>
         public CouponService(IHttpClientFactory clientFactory)
         {
             _httpClientFactory = clientFactory;
         }
 
         /// <summary>
-        /// Gets the coupon details by coupon code.
+        /// Asynchronously retrieves the coupon details by the specified coupon code.
         /// </summary>
-        /// <param name="couponCode">The coupon code.</param>
+        /// <param name="couponCode">The code of the coupon to retrieve.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the coupon details.</returns>
         public async Task<CouponDto> GetCoupon(string couponCode)
         {

@@ -26,6 +26,9 @@ namespace SmartMenu.UnitTests.CartAPI
         private Mock<IConfiguration> _configurationMock;
         private CartAPIController _controller;
 
+        /// <summary>
+        /// Sets up the test environment before each test.
+        /// </summary>
         [SetUp]
         public void SetUp()
         {
@@ -53,6 +56,9 @@ namespace SmartMenu.UnitTests.CartAPI
             _controller = new CartAPIController(_dbContext, _mapper, _productServiceMock.Object, _couponServiceMock.Object, _configurationMock.Object);
         }
 
+        /// <summary>
+        /// Cleans up the test environment after each test.
+        /// </summary>
         [TearDown]
         public void TearDown()
         {
@@ -60,6 +66,9 @@ namespace SmartMenu.UnitTests.CartAPI
             _dbContext.Dispose();
         }
 
+        /// <summary>
+        /// Tests the GetCart method to ensure it returns the cart when it exists.
+        /// </summary>
         [Test]
         public async Task GetCart_WhenCartExists_ShouldReturnCart()
         {
@@ -82,6 +91,9 @@ namespace SmartMenu.UnitTests.CartAPI
             Assert.AreEqual(100, cart.CartHeader.CartTotal, "Cart total should be calculated correctly.");
         }
 
+        /// <summary>
+        /// Tests the ApplyCoupon method to ensure it applies the coupon when it is valid.
+        /// </summary>
         [Test]
         public async Task ApplyCoupon_WhenCouponValid_ShouldApplyCoupon()
         {
@@ -109,6 +121,9 @@ namespace SmartMenu.UnitTests.CartAPI
             Assert.AreEqual("SAVE10", cartHeader.CouponCode, "Coupon code should be applied to the cart header.");
         }
 
+        /// <summary>
+        /// Tests the CartUpsert method to ensure it creates a new cart when it does not exist.
+        /// </summary>
         [Test]
         public async Task CartUpsert_WhenNewCart_ShouldCreateCart()
         {
@@ -133,6 +148,9 @@ namespace SmartMenu.UnitTests.CartAPI
             Assert.IsNotNull(cartDetails, "Cart details should be created.");
         }
 
+        /// <summary>
+        /// Tests the IncreaseQuantity method to ensure it increases the quantity of a cart item.
+        /// </summary>
         [Test]
         public async Task IncreaseQuantity_WhenCartItemExists_ShouldIncreaseQuantity()
         {
@@ -150,6 +168,9 @@ namespace SmartMenu.UnitTests.CartAPI
             Assert.AreEqual(2, cartDetails.Count, "Quantity should be increased by 1.");
         }
 
+        /// <summary>
+        /// Tests the DecreaseQuantity method to ensure it decreases the quantity of a cart item.
+        /// </summary>
         [Test]
         public async Task DecreaseQuantity_WhenCartItemExists_ShouldDecreaseQuantity()
         {
@@ -167,6 +188,9 @@ namespace SmartMenu.UnitTests.CartAPI
             Assert.AreEqual(1, cartDetails.Count, "Quantity should be decreased by 1.");
         }
 
+        /// <summary>
+        /// Tests the RemoveCart method to ensure it removes a cart item.
+        /// </summary>
         [Test]
         public async Task RemoveCart_WhenCartItemExists_ShouldRemoveCartItem()
         {
@@ -184,6 +208,9 @@ namespace SmartMenu.UnitTests.CartAPI
             Assert.IsNull(cartDetails, "Cart item should be removed.");
         }
 
+        /// <summary>
+        /// Tests the ClearCart method to ensure it clears the cart for a specific user.
+        /// </summary>
         [Test]
         public async Task ClearCart_WhenCartExists_ShouldClearCart()
         {

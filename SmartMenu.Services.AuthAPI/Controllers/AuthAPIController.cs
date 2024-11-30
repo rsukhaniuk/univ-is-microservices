@@ -10,7 +10,7 @@ using SmartMenu.Services.AuthAPI.Models;
 namespace SmartMenu.Services.AuthAPI.Controllers
 {
     /// <summary>
-    /// Controller for handling authentication-related operations.
+    /// Handles authentication-related operations.
     /// </summary>
     [Route("api/auth")]
     [ApiController]
@@ -34,7 +34,7 @@ namespace SmartMenu.Services.AuthAPI.Controllers
         /// Registers a new user.
         /// </summary>
         /// <param name="model">The registration request data.</param>
-        /// <returns>An <see cref="IActionResult"/> representing the result of the operation.</returns>
+        /// <returns>The result of the operation.</returns>
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegistrationRequestDto model)
         {
@@ -52,7 +52,7 @@ namespace SmartMenu.Services.AuthAPI.Controllers
         /// Logs in a user.
         /// </summary>
         /// <param name="model">The login request data.</param>
-        /// <returns>An <see cref="IActionResult"/> representing the result of the operation.</returns>
+        /// <returns>The result of the operation.</returns>
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto model)
         {
@@ -71,7 +71,7 @@ namespace SmartMenu.Services.AuthAPI.Controllers
         /// Assigns a role to a user.
         /// </summary>
         /// <param name="model">The registration request data.</param>
-        /// <returns>An <see cref="IActionResult"/> representing the result of the operation.</returns>
+        /// <returns>The result of the operation.</returns>
         [HttpPost("AssignRole")]
         public async Task<IActionResult> AssignRole([FromBody] RegistrationRequestDto model)
         {
@@ -89,7 +89,7 @@ namespace SmartMenu.Services.AuthAPI.Controllers
         /// Edits the account details of the logged-in user.
         /// </summary>
         /// <param name="model">The account edit data.</param>
-        /// <returns>An <see cref="IActionResult"/> representing the result of the operation.</returns>
+        /// <returns>The result of the operation.</returns>
         [Authorize]
         [HttpPut("EditAccount")]
         public async Task<IActionResult> EditAccount([FromBody] EditAccountDto model)
@@ -128,7 +128,7 @@ namespace SmartMenu.Services.AuthAPI.Controllers
         /// Deletes the account of the logged-in user.
         /// </summary>
         /// <param name="userId">The user ID.</param>
-        /// <returns>An <see cref="IActionResult"/> representing the result of the operation.</returns>
+        /// <returns>The result of the operation.</returns>
         [Authorize]
         [HttpDelete("DeleteAccount/{userId}")]
         public async Task<IActionResult> DeleteAccount(string userId)
@@ -167,7 +167,7 @@ namespace SmartMenu.Services.AuthAPI.Controllers
         /// Changes the password of the logged-in user.
         /// </summary>
         /// <param name="model">The password change data.</param>
-        /// <returns>An <see cref="IActionResult"/> representing the result of the operation.</returns>
+        /// <returns>The result of the operation.</returns>
         [Authorize]
         [HttpPost("ChangePassword")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto model)
@@ -206,7 +206,7 @@ namespace SmartMenu.Services.AuthAPI.Controllers
         /// Gets the details of the logged-in user.
         /// </summary>
         /// <param name="userId">The user ID.</param>
-        /// <returns>An <see cref="IActionResult"/> representing the result of the operation.</returns>
+        /// <returns>The result of the operation.</returns>
         [Authorize]
         [HttpGet("GetUserDetails/{userId}")]
         public async Task<IActionResult> GetUserDetails(string userId)

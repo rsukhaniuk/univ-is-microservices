@@ -9,23 +9,23 @@ namespace SmartMenu.Services.ShoppingCartAPI.Models
     public class CartHeader
     {
         /// <summary>
-        /// Gets or sets the cart header identifier.
+        /// Gets or sets the unique identifier for the cart header.
         /// </summary>
         [Key]
         public int CartHeaderId { get; set; }
 
         /// <summary>
-        /// Gets or sets the user identifier.
+        /// Gets or sets the unique identifier for the user.
         /// </summary>
         public string? UserId { get; set; }
 
         /// <summary>
-        /// Gets or sets the coupon code.
+        /// Gets or sets the coupon code applied to the cart.
         /// </summary>
         public string? CouponCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the discount amount.
+        /// Gets or sets the discount amount applied to the cart.
         /// </summary>
         [NotMapped]
         public double Discount { get; set; }

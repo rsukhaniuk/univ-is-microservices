@@ -10,29 +10,29 @@ namespace SmartMenu.Services.ShoppingCartAPI.Models
     public class CartDetails
     {
         /// <summary>
-        /// Gets or sets the cart details identifier.
+        /// Gets or sets the unique identifier for the cart details.
         /// </summary>
         [Key]
         public int CartDetailsId { get; set; }
 
         /// <summary>
-        /// Gets or sets the cart header identifier.
+        /// Gets or sets the unique identifier for the cart header.
         /// </summary>
         public int CartHeaderId { get; set; }
 
         /// <summary>
-        /// Gets or sets the cart header.
+        /// Gets or sets the cart header associated with these details.
         /// </summary>
         [ForeignKey("CartHeaderId")]
         public CartHeader CartHeader { get; set; }
 
         /// <summary>
-        /// Gets or sets the product identifier.
+        /// Gets or sets the unique identifier for the product.
         /// </summary>
         public int ProductId { get; set; }
 
         /// <summary>
-        /// Gets or sets the product details.
+        /// Gets or sets the product details associated with these cart details.
         /// </summary>
         [NotMapped]
         public ProductDto Product { get; set; }

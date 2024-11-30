@@ -19,6 +19,9 @@ namespace SmartMenu.UnitTests.AuthAPI
         private Mock<IAuthService> _authServiceMock;
         private AuthAPIController _controller;
 
+        /// <summary>
+        /// Sets up the test environment before each test.
+        /// </summary>
         [SetUp]
         public void SetUp()
         {
@@ -26,6 +29,9 @@ namespace SmartMenu.UnitTests.AuthAPI
             _controller = new AuthAPIController(_authServiceMock.Object, null);
         }
 
+        /// <summary>
+        /// Tests the Register method to ensure it returns Ok when registration is successful.
+        /// </summary>
         [Test]
         public async Task Register_WhenSuccessful_ShouldReturnOk()
         {
@@ -46,6 +52,9 @@ namespace SmartMenu.UnitTests.AuthAPI
             Assert.AreEqual(200, result.StatusCode);
         }
 
+        /// <summary>
+        /// Tests the Register method to ensure it returns BadRequest when registration fails.
+        /// </summary>
         [Test]
         public async Task Register_WhenFailed_ShouldReturnBadRequest()
         {
@@ -66,6 +75,9 @@ namespace SmartMenu.UnitTests.AuthAPI
             Assert.AreEqual(400, result.StatusCode);
         }
 
+        /// <summary>
+        /// Tests the Login method to ensure it returns Ok when login is successful.
+        /// </summary>
         [Test]
         public async Task Login_WhenSuccessful_ShouldReturnOk()
         {
@@ -90,6 +102,9 @@ namespace SmartMenu.UnitTests.AuthAPI
             Assert.AreEqual(loginResponse, responseDto.Result);
         }
 
+        /// <summary>
+        /// Tests the Login method to ensure it returns BadRequest when login fails.
+        /// </summary>
         [Test]
         public async Task Login_WhenFailed_ShouldReturnBadRequest()
         {
@@ -105,6 +120,9 @@ namespace SmartMenu.UnitTests.AuthAPI
             Assert.AreEqual(400, result.StatusCode);
         }
 
+        /// <summary>
+        /// Tests the AssignRole method to ensure it returns Ok when role assignment is successful.
+        /// </summary>
         [Test]
         public async Task AssignRole_WhenSuccessful_ShouldReturnOk()
         {
@@ -120,6 +138,9 @@ namespace SmartMenu.UnitTests.AuthAPI
             Assert.AreEqual(200, result.StatusCode);
         }
 
+        /// <summary>
+        /// Tests the AssignRole method to ensure it returns BadRequest when role assignment fails.
+        /// </summary>
         [Test]
         public async Task AssignRole_WhenFailed_ShouldReturnBadRequest()
         {
@@ -135,6 +156,10 @@ namespace SmartMenu.UnitTests.AuthAPI
             Assert.AreEqual(400, result.StatusCode);
         }
 
+        /// <summary>
+        /// Mocks user claims for testing purposes.
+        /// </summary>
+        /// <param name="userId">The user ID to mock.</param>
         private void MockUserClaims(string userId)
         {
             var claims = new List<Claim>
@@ -153,6 +178,9 @@ namespace SmartMenu.UnitTests.AuthAPI
             };
         }
 
+        /// <summary>
+        /// Tests the EditAccount method to ensure it returns Ok when the user is authorized.
+        /// </summary>
         [Test]
         public async Task EditAccount_WhenAuthorized_ShouldReturnOk()
         {
@@ -169,6 +197,9 @@ namespace SmartMenu.UnitTests.AuthAPI
             Assert.AreEqual(200, result.StatusCode, "Expected HTTP 200 OK.");
         }
 
+        /// <summary>
+        /// Tests the EditAccount method to ensure it returns Unauthorized when the user is not authorized.
+        /// </summary>
         [Test]
         public async Task EditAccount_WhenUnauthorized_ShouldReturnUnauthorized()
         {
@@ -185,6 +216,9 @@ namespace SmartMenu.UnitTests.AuthAPI
             Assert.AreEqual(401, result.StatusCode, "Expected HTTP 401 Unauthorized.");
         }
 
+        /// <summary>
+        /// Tests the DeleteAccount method to ensure it returns Ok when the account deletion is successful.
+        /// </summary>
         [Test]
         public async Task DeleteAccount_WhenSuccessful_ShouldReturnOk()
         {
@@ -200,6 +234,9 @@ namespace SmartMenu.UnitTests.AuthAPI
             Assert.AreEqual(200, result.StatusCode, "Expected HTTP 200 OK.");
         }
 
+        /// <summary>
+        /// Tests the DeleteAccount method to ensure it returns Unauthorized when the user is not authorized.
+        /// </summary>
         [Test]
         public async Task DeleteAccount_WhenUnauthorized_ShouldReturnUnauthorized()
         {
@@ -215,7 +252,5 @@ namespace SmartMenu.UnitTests.AuthAPI
             Assert.IsNotNull(result, "Expected UnauthorizedObjectResult.");
             Assert.AreEqual(401, result.StatusCode, "Expected HTTP 401 Unauthorized.");
         }
-
-
     }
 }

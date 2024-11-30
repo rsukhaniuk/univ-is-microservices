@@ -21,59 +21,59 @@ namespace SmartMenu.Services.ShoppingCartAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Mango.Services.ShoppingCartAPI.Models.CartDetails", b =>
-                {
-                    b.Property<int>("CartDetailsId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+            modelBuilder.Entity("SmartMenu.Services.ShoppingCartAPI.Models.CartDetails", b =>
+            {
+                b.Property<int>("CartDetailsId")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartDetailsId"));
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartDetailsId"));
 
-                    b.Property<int>("CartHeaderId")
-                        .HasColumnType("int");
+                b.Property<int>("CartHeaderId")
+                    .HasColumnType("int");
 
-                    b.Property<int>("Count")
-                        .HasColumnType("int");
+                b.Property<int>("Count")
+                    .HasColumnType("int");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                b.Property<int>("ProductId")
+                    .HasColumnType("int");
 
-                    b.HasKey("CartDetailsId");
+                b.HasKey("CartDetailsId");
 
-                    b.HasIndex("CartHeaderId");
+                b.HasIndex("CartHeaderId");
 
-                    b.ToTable("CartDetails");
-                });
+                b.ToTable("CartDetails");
+            });
 
-            modelBuilder.Entity("Mango.Services.ShoppingCartAPI.Models.CartHeader", b =>
-                {
-                    b.Property<int>("CartHeaderId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+            modelBuilder.Entity("SmartMenu.Services.ShoppingCartAPI.Models.CartHeader", b =>
+            {
+                b.Property<int>("CartHeaderId")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartHeaderId"));
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartHeaderId"));
 
-                    b.Property<string>("CouponCode")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("CouponCode")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("UserId")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CartHeaderId");
+                b.HasKey("CartHeaderId");
 
-                    b.ToTable("CartHeaders");
-                });
+                b.ToTable("CartHeaders");
+            });
 
-            modelBuilder.Entity("Mango.Services.ShoppingCartAPI.Models.CartDetails", b =>
-                {
-                    b.HasOne("Mango.Services.ShoppingCartAPI.Models.CartHeader", "CartHeader")
-                        .WithMany()
-                        .HasForeignKey("CartHeaderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            modelBuilder.Entity("SmartMenu.Services.ShoppingCartAPI.Models.CartDetails", b =>
+            {
+                b.HasOne("SmartMenu.Services.ShoppingCartAPI.Models.CartHeader", "CartHeader")
+                    .WithMany()
+                    .HasForeignKey("CartHeaderId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.Navigation("CartHeader");
-                });
+                b.Navigation("CartHeader");
+            });
 #pragma warning restore 612, 618
         }
     }

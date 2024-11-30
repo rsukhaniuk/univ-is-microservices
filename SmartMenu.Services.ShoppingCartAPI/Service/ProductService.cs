@@ -5,23 +5,23 @@ using Newtonsoft.Json;
 namespace SmartMenu.Services.ShoppingCartAPI.Service
 {
     /// <summary>
-    /// Service class for handling product-related operations.
+    /// Provides methods for handling product-related operations.
     /// </summary>
     public class ProductService : IProductService
     {
         private readonly IHttpClientFactory _httpClientFactory;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProductService"/> class.
+        /// Initializes a new instance of the <see cref="ProductService"/> class with the specified HTTP client factory.
         /// </summary>
-        /// <param name="clientFactory">The HTTP client factory.</param>
+        /// <param name="clientFactory">The HTTP client factory to be used for making HTTP requests.</param>
         public ProductService(IHttpClientFactory clientFactory)
         {
             _httpClientFactory = clientFactory;
         }
 
         /// <summary>
-        /// Gets the list of products.
+        /// Asynchronously retrieves the list of products.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation. The task result contains the list of products.</returns>
         public async Task<IEnumerable<ProductDto>> GetProducts()

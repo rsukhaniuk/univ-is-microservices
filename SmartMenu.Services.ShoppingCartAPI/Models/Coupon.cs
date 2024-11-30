@@ -8,19 +8,19 @@ namespace SmartMenu.Services.ShoppingCartAPI.Models
     public class Coupon
     {
         /// <summary>
-        /// Gets or sets the coupon identifier.
+        /// Gets or sets the unique identifier for the coupon.
         /// </summary>
         [Key]
         public int CouponId { get; set; }
 
         /// <summary>
-        /// Gets or sets the coupon code.
+        /// Gets or sets the code for the coupon.
         /// </summary>
         [Required]
         public string CouponCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the discount amount.
+        /// Gets or sets the discount amount provided by the coupon.
         /// </summary>
         [Required]
         public double DiscountAmount { get; set; }
