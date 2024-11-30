@@ -20,11 +20,18 @@ With a focus on automation, efficiency, and security, SmartMenu integrates seaml
 ### **Backend**
 - **Framework:** .NET Core Web API (C#) with a Microservices Architecture
 - **Microservices:**
-  - Auth Service
-  - Order Service
-  - Product Service
-  - Shopping Cart Service
-  - Coupon Service
+  Each microservice operates independently and has its own dedicated database to ensure a clear separation of concerns and improve scalability:
+
+  - **Auth Service:** Manages authentication and authorization.
+    - **Database Schema:** [link](https://dbdiagram.io/d/SmartMenu_Auth-670f628a97a66db9a325b7c6)
+  - **Order Service:** Handles order processing and status updates.
+    - **Database Schema:** [link](https://dbdiagram.io/d/SmartMenu_Orders-670f62e597a66db9a325c66e)
+  - **Product Service:** Manages productі and categories.
+    - **Database Schema:** [link](https://dbdiagram.io/d/SmartMenu_Products-673d29b6e9daa85aca094e8d)
+  - **Shopping Cart Service:** Provides shopping cart functionality.
+    - **Database Schema:** [link](https://dbdiagram.io/d/SmartMenu_ShoppingCart-670f63df97a66db9a325edf7)
+  - **Coupon Service:** Handles discount and coupon logic.
+    - **Database Schema:** [link](https://dbdiagram.io/d/SmartMenu_Coupons-674a9ca0e9daa85aca313fc4)
 - **Database:** SQL Server 2022
 - **Communication:** REST API
 
