@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 
 namespace SmartMenu.UnitTests.ProductAPI
 {
+    /// <summary>
+    /// Unit tests for the <see cref="CategoryAPIController"/>.
+    /// </summary>
     [TestFixture]
     public class CategoryAPIControllerTests
     {
@@ -19,6 +22,9 @@ namespace SmartMenu.UnitTests.ProductAPI
         private IMapper _mapper;
         private CategoryAPIController _controller;
 
+        /// <summary>
+        /// Sets up the test environment.
+        /// </summary>
         [SetUp]
         public void SetUp()
         {
@@ -47,6 +53,9 @@ namespace SmartMenu.UnitTests.ProductAPI
             _dbContext.SaveChanges();
         }
 
+        /// <summary>
+        /// Cleans up the test environment.
+        /// </summary>
         [TearDown]
         public void TearDown()
         {
@@ -55,6 +64,9 @@ namespace SmartMenu.UnitTests.ProductAPI
             _dbContext.Dispose();
         }
 
+        /// <summary>
+        /// Tests that the Get method returns all categories.
+        /// </summary>
         [Test]
         public void Get_WhenCalled_ShouldReturnAllCategories()
         {
@@ -69,6 +81,9 @@ namespace SmartMenu.UnitTests.ProductAPI
             Assert.AreEqual(2, categories.Count(), "Should return exactly 2 categories.");
         }
 
+        /// <summary>
+        /// Tests that the Get method returns the correct category by ID.
+        /// </summary>
         [Test]
         public void Get_WhenCalledWithValidId_ShouldReturnCorrectCategory()
         {
@@ -83,6 +98,9 @@ namespace SmartMenu.UnitTests.ProductAPI
             Assert.AreEqual("Category1", category.Name, "Category name should match.");
         }
 
+        /// <summary>
+        /// Tests that the Post method adds a new category.
+        /// </summary>
         [Test]
         public void Post_WhenValidCategoryDtoProvided_ShouldAddNewCategory()
         {
@@ -103,6 +121,9 @@ namespace SmartMenu.UnitTests.ProductAPI
             Assert.AreEqual("NewCategory", category.Name, "Category name should match.");
         }
 
+        /// <summary>
+        /// Tests that the Put method updates an existing category.
+        /// </summary>
         [Test]
         public void Put_WhenValidCategoryDtoProvided_ShouldUpdateExistingCategory()
         {
@@ -133,6 +154,9 @@ namespace SmartMenu.UnitTests.ProductAPI
             Assert.AreEqual("UpdatedCategory", category.Name, "Category name should be updated.");
         }
 
+        /// <summary>
+        /// Tests that the Delete method removes a category by ID.
+        /// </summary>
         [Test]
         public void Delete_WhenCalledWithValidId_ShouldRemoveCategory()
         {

@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 
 namespace SmartMenu.UnitTests.CouponAPI
 {
+    /// <summary>
+    /// Unit tests for the <see cref="CouponAPIController"/>.
+    /// </summary>
     [TestFixture]
     public class CouponAPIControllerTests
     {
@@ -20,6 +23,9 @@ namespace SmartMenu.UnitTests.CouponAPI
         private IMapper _mapper;
         private CouponAPIController _controller;
 
+        /// <summary>
+        /// Sets up the test environment.
+        /// </summary>
         [SetUp]
         public void SetUp()
         {
@@ -41,6 +47,9 @@ namespace SmartMenu.UnitTests.CouponAPI
             _controller = new CouponAPIController(_dbContext, _mapper);
         }
 
+        /// <summary>
+        /// Cleans up the test environment.
+        /// </summary>
         [TearDown]
         public void TearDown()
         {
@@ -48,6 +57,9 @@ namespace SmartMenu.UnitTests.CouponAPI
             _dbContext.Dispose();
         }
 
+        /// <summary>
+        /// Tests that the Get method returns all coupons.
+        /// </summary>
         [Test]
         public void Get_WhenCalled_ShouldReturnAllCoupons()
         {
@@ -66,6 +78,9 @@ namespace SmartMenu.UnitTests.CouponAPI
             Assert.AreEqual(2, coupons.Count(), "All coupons should be returned.");
         }
 
+        /// <summary>
+        /// Tests that the Get method returns a coupon by its ID.
+        /// </summary>
         [Test]
         public void GetById_WhenCouponExists_ShouldReturnCoupon()
         {
@@ -83,6 +98,9 @@ namespace SmartMenu.UnitTests.CouponAPI
             Assert.AreEqual("SAVE10", coupon.CouponCode, "Coupon code should match.");
         }
 
+        /// <summary>
+        /// Tests that the GetByCode method returns a coupon by its code.
+        /// </summary>
         [Test]
         public void GetByCode_WhenCouponExists_ShouldReturnCoupon()
         {
@@ -100,9 +118,9 @@ namespace SmartMenu.UnitTests.CouponAPI
             Assert.AreEqual(10, coupon.DiscountAmount, "Discount amount should match.");
         }
 
-        
-
-
+        /// <summary>
+        /// Tests that the Delete method returns an error when the coupon does not exist.
+        /// </summary>
         [Test]
         public void Delete_WhenCouponDoesNotExist_ShouldReturnError()
         {

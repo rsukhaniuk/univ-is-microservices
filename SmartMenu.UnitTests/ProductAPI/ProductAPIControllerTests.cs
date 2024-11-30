@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 
 namespace SmartMenu.UnitTests.ProductAPI
 {
+    /// <summary>
+    /// Unit tests for the <see cref="ProductAPIController"/>.
+    /// </summary>
     [TestFixture]
     public class ProductAPIControllerTests
     {
@@ -19,6 +22,9 @@ namespace SmartMenu.UnitTests.ProductAPI
         private IMapper _mapper;
         private ProductAPIController _controller;
 
+        /// <summary>
+        /// Sets up the test environment.
+        /// </summary>
         [SetUp]
         public void SetUp()
         {
@@ -48,6 +54,9 @@ namespace SmartMenu.UnitTests.ProductAPI
             _dbContext.SaveChanges();
         }
 
+        /// <summary>
+        /// Cleans up the test environment.
+        /// </summary>
         [TearDown]
         public void TearDown()
         {
@@ -56,6 +65,9 @@ namespace SmartMenu.UnitTests.ProductAPI
             _dbContext.Dispose();
         }
 
+        /// <summary>
+        /// Tests that the Get method returns all products.
+        /// </summary>
         [Test]
         public void Get_WhenCalled_ShouldReturnAllProducts()
         {
@@ -75,6 +87,9 @@ namespace SmartMenu.UnitTests.ProductAPI
             Assert.AreEqual(2, products.Count(), "Should return exactly 2 products.");
         }
 
+        /// <summary>
+        /// Tests that the Get method returns the correct product by ID.
+        /// </summary>
         [Test]
         public void Get_WhenCalledWithValidId_ShouldReturnCorrectProduct()
         {
@@ -93,6 +108,9 @@ namespace SmartMenu.UnitTests.ProductAPI
             Assert.AreEqual("Product1", product.Name, "Product name should match.");
         }
 
+        /// <summary>
+        /// Tests that the Post method adds a new product.
+        /// </summary>
         [Test]
         public void Post_WhenValidProductDtoProvided_ShouldAddNewProduct()
         {
@@ -116,6 +134,9 @@ namespace SmartMenu.UnitTests.ProductAPI
             Assert.AreEqual("NewProduct", product.Name, "Product name should match.");
         }
 
+        /// <summary>
+        /// Tests that the Put method updates an existing product.
+        /// </summary>
         [Test]
         public void Put_WhenValidProductDtoProvided_ShouldUpdateExistingProduct()
         {
@@ -148,6 +169,9 @@ namespace SmartMenu.UnitTests.ProductAPI
             Assert.AreEqual("UpdatedProduct", product.Name, "Product name should be updated.");
         }
 
+        /// <summary>
+        /// Tests that the Delete method removes a product by ID.
+        /// </summary>
         [Test]
         public void Delete_WhenCalledWithValidId_ShouldRemoveProduct()
         {
